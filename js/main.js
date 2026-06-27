@@ -5,7 +5,22 @@
 */
 const MINISTRY_PHONE = "211921444658"; // +211 921 444 658
 const MINISTRY_NAME  = "Apostle MJ Ministries";
-const ADMIN_PASSWORD = "apostlemj2024"; // Change this!
+
+/* Store SHA-256 hash of your password — never the plaintext.
+   To generate: open browser console and run:
+     crypto.subtle.digest('SHA-256', new TextEncoder().encode('YourPassword'))
+       .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+   Replace the hash below with the output. */
+const ADMIN_PASSWORD_HASH = "d6e3b3a09f2b5c1e4a8f0d7c2e9b4a1f3d8c5e2a7b0f4d9c6e3b1a8f5d2c9e7"; // set your own hash
+
+function escapeHtml(str) {
+  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+async function hashPassword(pw) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+  return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2,'0')).join('');
+}
 
 /* ===== NAVIGATION ===== */
 document.addEventListener('DOMContentLoaded', () => {
@@ -289,10 +304,11 @@ function closeLightbox() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 /* ===== ADMIN ===== */
-function adminLogin() {
+async function adminLogin() {
   const pass = document.getElementById('admin-pass');
   if (!pass) return;
-  if (pass.value === ADMIN_PASSWORD) {
+  const entered = await hashPassword(pass.value);
+  if (entered === ADMIN_PASSWORD_HASH) {
     sessionStorage.setItem('mj_admin', '1');
     document.getElementById('admin-login-screen').classList.add('hidden');
     document.getElementById('admin-dashboard').classList.remove('hidden');
@@ -334,18 +350,18 @@ function loadAdminData() {
   // Prayer table
   const pTbl = document.getElementById('prayers-table-body');
   if (pTbl) {
-    pTbl.innerHTML = prayers.length ? prayers.slice().reverse().map((p, i) => `
+    pTbl.innerHTML = prayers.length ? prayers.slice().reverse().map((p) => `
       <tr id="prayer-row-${p.id}">
-        <td><strong>${p.name}</strong></td>
-        <td>${p.phone || '-'}</td>
-        <td>${p.country || '-'}</td>
-        <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.request}</td>
+        <td><strong>${escapeHtml(p.name)}</strong></td>
+        <td>${escapeHtml(p.phone || '-')}</td>
+        <td>${escapeHtml(p.country || '-')}</td>
+        <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.request)}</td>
         <td><span class="badge badge-${p.status}">${p.status==='pending'?'⏳ Pending':p.status==='praying'?'🙏 Praying':'✅ Completed'}</span></td>
-        <td>${p.date}</td>
+        <td>${escapeHtml(p.date)}</td>
         <td style="white-space:nowrap;">
           <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${p.id},'praying')">🙏 Praying</button>
           <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${p.id},'completed')" style="margin-left:4px;">✅ Done</button>
-          <button class="btn-xs btn-xs-purple" onclick="whatsappPrayer('${p.phone}','${p.name}')" style="margin-left:4px;">WhatsApp</button>
+          <button class="btn-xs btn-xs-purple" onclick="whatsappPrayer(${JSON.stringify(p.phone)},${JSON.stringify(p.name)})" style="margin-left:4px;">WhatsApp</button>
         </td>
       </tr>`).join('') : '<tr><td colspan="7" class="text-center text-muted">No prayer requests yet.</td></tr>';
   }
@@ -355,11 +371,11 @@ function loadAdminData() {
   if (tTbl) {
     tTbl.innerHTML = testimonies.length ? testimonies.slice().reverse().map(t => `
       <tr>
-        <td><strong>${t.name}</strong></td>
-        <td>${t.location || '-'}</td>
-        <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.testimony}</td>
+        <td><strong>${escapeHtml(t.name)}</strong></td>
+        <td>${escapeHtml(t.location || '-')}</td>
+        <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(t.testimony)}</td>
         <td><span class="badge ${t.approved?'badge-completed':'badge-pending'}">${t.approved?'✅ Approved':'⏳ Pending'}</span></td>
-        <td>${t.date}</td>
+        <td>${escapeHtml(t.date)}</td>
         <td>
           <button class="btn-xs btn-xs-green" onclick="approveTestimony(${t.id})">Approve</button>
           <button class="btn-xs btn-xs-red" onclick="deleteTestimony(${t.id})" style="margin-left:4px;">Delete</button>
@@ -372,12 +388,12 @@ function loadAdminData() {
   if (mTbl) {
     mTbl.innerHTML = members.length ? members.slice().reverse().map(m => `
       <tr>
-        <td><strong>${m['full-name'] || m.name || '-'}</strong></td>
-        <td>${m.email || '-'}</td>
-        <td>${m.phone || '-'}</td>
-        <td>${m.country || '-'}</td>
-        <td>${m.department || '-'}</td>
-        <td>${m.date}</td>
+        <td><strong>${escapeHtml(m['full-name'] || m.name || '-')}</strong></td>
+        <td>${escapeHtml(m.email || '-')}</td>
+        <td>${escapeHtml(m.phone || '-')}</td>
+        <td>${escapeHtml(m.country || '-')}</td>
+        <td>${escapeHtml(m.department || '-')}</td>
+        <td>${escapeHtml(m.date)}</td>
       </tr>`).join('') : '<tr><td colspan="6" class="text-center text-muted">No members yet.</td></tr>';
   }
 }

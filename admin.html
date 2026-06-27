@@ -61,8 +61,7 @@
       <i class="fas fa-unlock"></i> Login to Dashboard
     </button>
     <p style="font-size:0.78rem;color:var(--text-muted);margin-top:1.5rem;">
-      Default password: <strong>apostlemj2024</strong><br>
-      (Change this in js/main.js — ADMIN_PASSWORD variable)
+      Staff access only. Contact the administrator if you need access.
     </p>
     <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--gray-200);">
       <a href="index.html" style="color:var(--primary-light);font-size:0.85rem;"><i class="fas fa-home"></i> Back to Website</a>
@@ -396,14 +395,14 @@ function filterPrayers(status) {
   const tbody = document.getElementById('prayers-table-body');
   if (!tbody) return;
   tbody.innerHTML = filtered.length ? filtered.slice().reverse().map(p => `
-    <tr><td><strong>${p.name}</strong></td><td>${p.phone||'-'}</td><td>${p.country||'-'}</td>
-    <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.request}</td>
+    <tr><td><strong>${escapeHtml(p.name)}</strong></td><td>${escapeHtml(p.phone||'-')}</td><td>${escapeHtml(p.country||'-')}</td>
+    <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.request)}</td>
     <td><span class="badge badge-${p.status}">${p.status==='pending'?'⏳ Pending':p.status==='praying'?'🙏 Praying':'✅ Completed'}</span></td>
-    <td>${p.date}</td>
+    <td>${escapeHtml(p.date)}</td>
     <td style="white-space:nowrap;">
       <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${p.id},'praying')">🙏</button>
       <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${p.id},'completed')" style="margin-left:3px;">✅</button>
-      <button class="btn-xs btn-xs-purple" onclick="whatsappPrayer('${p.phone}','${p.name}')" style="margin-left:3px;">WA</button>
+      <button class="btn-xs btn-xs-purple" onclick="whatsappPrayer(${JSON.stringify(p.phone)},${JSON.stringify(p.name)})" style="margin-left:3px;">WA</button>
     </td></tr>`).join('') : '<tr><td colspan="7" class="text-center text-muted">No requests with this status.</td></tr>';
 }
 
@@ -513,9 +512,9 @@ function refreshActivity() {
   const container = document.getElementById('recent-activity');
   if (!container) return;
   const activities = [];
-  prayers.slice(-3).forEach(p => activities.push({ icon:'🙏', text:`New prayer request from ${p.name} (${p.country||'Unknown'})`, date:p.date }));
-  testimonies.slice(-2).forEach(t => activities.push({ icon:'⭐', text:`New testimony from ${t.name}`, date:t.date }));
-  members.slice(-2).forEach(m => activities.push({ icon:'👤', text:`New member: ${m['full-name']||'Unknown'}`, date:m.date }));
+  prayers.slice(-3).forEach(p => activities.push({ icon:'🙏', text:`New prayer request from ${escapeHtml(p.name)} (${escapeHtml(p.country||'Unknown')})`, date:escapeHtml(p.date) }));
+  testimonies.slice(-2).forEach(t => activities.push({ icon:'⭐', text:`New testimony from ${escapeHtml(t.name)}`, date:escapeHtml(t.date) }));
+  members.slice(-2).forEach(m => activities.push({ icon:'👤', text:`New member: ${escapeHtml(m['full-name']||'Unknown')}`, date:escapeHtml(m.date) }));
   if (activities.length) {
     container.innerHTML = activities.map(a => `<div style="display:flex;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid var(--gray-200);"><span style="font-size:1.2rem;">${a.icon}</span><div><div style="font-size:0.85rem;color:var(--text);">${a.text}</div><div style="font-size:0.75rem;color:var(--text-muted);">${a.date}</div></div></div>`).join('');
   } else {
