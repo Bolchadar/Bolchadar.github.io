@@ -11,7 +11,7 @@ const MINISTRY_NAME  = "Apostle MJ Ministries";
      crypto.subtle.digest('SHA-256', new TextEncoder().encode('YourPassword'))
        .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
    Replace the hash below with the output. */
-const ADMIN_PASSWORD_HASH = "d6e3b3a09f2b5c1e4a8f0d7c2e9b4a1f3d8c5e2a7b0f4d9c6e3b1a8f5d2c9e7"; // set your own hash
+const ADMIN_PASSWORD_HASH = "d47d1c10045b4eb1f74bb7a44927d1441481073e5c5c860bf687c7993510f092";
 
 function escapeHtml(str) {
   return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
