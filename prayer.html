@@ -1,0 +1,302 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prayer Center | Apostle MJ Ministries</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .prayer-methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+    .prayer-method {
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      border: 2px solid var(--gray-200);
+      background: var(--white);
+      transition: var(--transition);
+    }
+    .prayer-method:hover { border-color: var(--primary-light); box-shadow: var(--shadow); }
+    .prayer-method i { font-size: 2.5rem; color: var(--primary-light); display: block; margin-bottom: 1rem; }
+    .prayer-method h4 { color: var(--primary); margin-bottom: 0.5rem; }
+    .prayer-method p { font-size: 0.88rem; color: var(--text-muted); }
+    .prayer-form-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-lg); overflow: hidden; }
+    .prayer-form-header { background: linear-gradient(135deg, var(--primary), var(--primary-mid)); color: var(--white); padding: 2rem; }
+    .prayer-form-header h2 { color: var(--white); margin-bottom: 0.5rem; }
+    .prayer-form-body { padding: 2.5rem; }
+    .submit-options { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .whatsapp-direct {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      color: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .whatsapp-direct h3 { color: var(--white); margin-bottom: 0.5rem; }
+    .whatsapp-direct p { color: rgba(255,255,255,0.85); font-size: 0.92rem; margin-bottom: 1rem; }
+    .countries { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .audio-tip { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-sm); padding: 1rem; font-size: 0.88rem; color: #1e40af; display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+<!-- NAVIGATION -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand" style="text-decoration:none;">
+    <img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;">
+    <div class="brand-text">
+      <span class="name">Apostle MJ Ministries</span>
+      <span class="sub">Spreading the Gospel</span>
+    </div>
+  </a><ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="prayer.html" class="active">Prayer</a></li>
+    <li><a href="sermons.html">Sermons</a></li>
+    <li><a href="testimony.html">Testimony</a></li>
+    <li><a href="devotions.html">Devotions</a></li>
+    <li><a href="charity.html">Charity</a></li>
+    <li><a href="media.html">Media</a></li>
+    <li><a href="livestream.html">Livestream</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="membership.html">Membership</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="donations.html" class="nav-donate">Give</a></li>
+  </ul>
+  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Prayer Center</div>
+  <h1>🙏 Prayer Center</h1>
+  <p>Send us your prayer request and our dedicated prayer team will intercede on your behalf. God hears every prayer!</p>
+</div>
+
+<div class="page-content">
+
+<!-- PRAYER METHODS -->
+<section class="section section-light">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">How to Reach Us</span>
+      <h2>Submit Your Prayer Request</h2>
+      <p>Choose the method that works best for you. All requests are treated with confidentiality and love.</p>
+      <div class="divider"></div>
+    </div>
+    <div class="prayer-methods">
+      <div class="prayer-method">
+        <i class="fas fa-laptop"></i>
+        <h4>Online Form</h4>
+        <p>Fill in the form below on this page — the easiest way to submit your request.</p>
+      </div>
+      <div class="prayer-method">
+        <i class="fab fa-whatsapp"></i>
+        <h4>WhatsApp</h4>
+        <p>Send your prayer directly via WhatsApp if you don't want to use the website form.</p>
+      </div>
+      <div class="prayer-method">
+        <i class="fas fa-microphone"></i>
+        <h4>Audio Recording</h4>
+        <p>Record your prayer request in your own voice — perfect if writing is difficult.</p>
+      </div>
+    </div>
+
+    <div class="grid-2" style="gap:3rem;align-items:start;">
+      <!-- PRAYER FORM -->
+      <div>
+        <div class="prayer-form-card">
+          <div class="prayer-form-header">
+            <h2><i class="fas fa-hands-praying"></i> Prayer Request Form</h2>
+            <p style="color:rgba(255,255,255,0.8);margin:0;">All fields marked <span style="color:var(--gold);">*</span> are required.</p>
+          </div>
+          <div class="prayer-form-body">
+            <form id="prayer-form" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="prayer-name">Full Name <span class="required">*</span></label>
+                  <input type="text" id="prayer-name" name="prayer-name" class="form-control" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prayer-phone">Phone Number</label>
+                  <input type="tel" id="prayer-phone" name="prayer-phone" class="form-control" placeholder="+211 912 345 678">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="prayer-country">Country</label>
+                <select id="prayer-country" name="prayer-country" class="form-control">
+                  <option value="">-- Select your country --</option>
+                  <option>South Sudan</option>
+                  <option>Kenya</option>
+                  <option>Uganda</option>
+                  <option>Ethiopia</option>
+                  <option>Tanzania</option>
+                  <option>Rwanda</option>
+                  <option>Burundi</option>
+                  <option>DR Congo</option>
+                  <option>Nigeria</option>
+                  <option>Ghana</option>
+                  <option>South Africa</option>
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                  <option>Canada</option>
+                  <option>Australia</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="prayer-request">Your Prayer Request <span class="required">*</span></label>
+                <textarea id="prayer-request" name="prayer-request" class="form-control" rows="6" placeholder="Please share your prayer request here. God hears and answers prayer! Do not worry about what others think — this is between you and God." required></textarea>
+              </div>
+
+              <!-- AUDIO OPTION -->
+              <div class="audio-tip">
+                <i class="fas fa-info-circle" style="margin-top:2px;flex-shrink:0;"></i>
+                <div>Can't write? Record your prayer request using the audio recorder below.</div>
+              </div>
+              <div class="recorder">
+                <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1rem;"><i class="fas fa-microphone"></i> Record Your Prayer Request (Optional)</p>
+                <button type="button" class="rec-btn" id="rec-btn" onclick="startRecording()">
+                  <i class="fas fa-microphone"></i>
+                </button>
+                <div class="rec-timer" id="rec-timer">00:00</div>
+                <div class="rec-status" id="rec-status">Click the button to start recording</div>
+              </div>
+              <div id="audio-preview" class="hidden mt-2">
+                <p style="font-size:0.88rem;font-weight:600;color:var(--success);">✅ Voice recording attached</p>
+                <audio id="audio-playback" controls></audio>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label" for="submit-choice">How do you want to submit?</label>
+                <select id="submit-choice" class="form-control">
+                  <option value="both">Submit online + Send via WhatsApp</option>
+                  <option value="online">Submit online only</option>
+                  <option value="whatsapp">Send via WhatsApp only</option>
+                </select>
+              </div>
+
+              <div class="submit-options">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-paper-plane"></i> Submit Prayer Request</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- WHATSAPP DIRECT -->
+        <div class="whatsapp-direct">
+          <i class="fab fa-whatsapp" style="font-size:3rem;display:block;margin-bottom:0.75rem;"></i>
+          <h3>Don't Know How to Use the Website?</h3>
+          <p>That's okay! You can send your prayer request directly via WhatsApp. Just click the button below and type your prayer in WhatsApp. Our team will receive it and pray for you!</p>
+          <button onclick="sendPrayerViaWhatsApp()" class="btn btn-primary btn-lg">
+            <i class="fab fa-whatsapp"></i> Send Prayer via WhatsApp
+          </button>
+          <p style="margin-top:1rem;font-size:0.8rem;color:rgba(255,255,255,0.7);">
+            <i class="fas fa-share-alt"></i> You can also share this link with someone who needs prayer:<br>
+            <strong style="color:var(--white);">wa.me/+[ministry number]</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- SIDEBAR INFO -->
+      <div>
+        <div class="card mb-3">
+          <div class="card-body">
+            <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-shield-halved" style="color:var(--gold);"></i> Your Privacy Matters</h4>
+            <p style="font-size:0.92rem;color:var(--text-muted);">All prayer requests are kept strictly confidential. Only our prayer team members have access to your request. We take your trust seriously.</p>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <div class="card-body">
+            <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-clock" style="color:var(--gold);"></i> Prayer Times</h4>
+            <div style="font-size:0.92rem;">
+              <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--gray-200);"><span>Morning Prayer</span><strong>6:00 AM Daily</strong></div>
+              <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--gray-200);"><span>Evening Prayer</span><strong>7:00 PM Daily</strong></div>
+              <div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--gray-200);"><span>Sunday Service</span><strong>9:00 AM</strong></div>
+              <div style="display:flex;justify-content:space-between;padding:0.5rem 0;"><span>Wednesday Bible Study</span><strong>6:00 PM</strong></div>
+            </div>
+          </div>
+        </div>
+        <div class="scripture-card">
+          <p class="scripture-text">"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."</p>
+          <span class="scripture-ref">— Philippians 4:6</span>
+        </div>
+        <div class="card mt-3">
+          <div class="card-body">
+            <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-check-circle" style="color:var(--success);"></i> What Happens Next?</h4>
+            <div class="prayer-point"><i class="fas fa-1"></i><div>Our prayer team receives your request</div></div>
+            <div class="prayer-point"><i class="fas fa-2"></i><div>We begin praying for you immediately</div></div>
+            <div class="prayer-point"><i class="fas fa-3"></i><div>Apostle MJ personally reviews urgent requests</div></div>
+            <div class="prayer-point"><i class="fas fa-4"></i><div>You may receive a follow-up via WhatsApp</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRAYER PROMISES -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">God's Promises</span>
+      <h2>Why Prayer Works</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-3">
+      <div class="testimony-card" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);">
+        <p style="color:rgba(255,255,255,0.85);font-style:italic;">"Ask and it will be given to you; seek and you will find; knock and the door will be opened to you."</p>
+        <div class="author"><div class="avatar" style="background:var(--gold);color:var(--primary);">M</div><div><div class="author-name" style="color:var(--gold);">Matthew 7:7</div><div class="author-location" style="color:rgba(255,255,255,0.5);">The Words of Jesus</div></div></div>
+      </div>
+      <div class="testimony-card" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);">
+        <p style="color:rgba(255,255,255,0.85);font-style:italic;">"The prayer of a righteous person is powerful and effective."</p>
+        <div class="author"><div class="avatar" style="background:var(--gold);color:var(--primary);">J</div><div><div class="author-name" style="color:var(--gold);">James 5:16</div><div class="author-location" style="color:rgba(255,255,255,0.5);">New Testament</div></div></div>
+      </div>
+      <div class="testimony-card" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);">
+        <p style="color:rgba(255,255,255,0.85);font-style:italic;">"Call to me and I will answer you and tell you great and unsearchable things you do not know."</p>
+        <div class="author"><div class="avatar" style="background:var(--gold);color:var(--primary);">J</div><div><div class="author-name" style="color:var(--gold);">Jeremiah 33:3</div><div class="author-location" style="color:rgba(255,255,255,0.5);">Old Testament</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Apostle MJ Ministries</h4>
+        <p>A Spirit-filled ministry dedicated to spreading the Gospel and transforming lives.</p>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="footer-social"><i class="fab fa-youtube"></i></a>
+          <a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a>
+          <a href="https://wa.me/211921444658" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="sermons.html">Sermons</a></li><li><a href="testimony.html">Testimonies</a></li><li><a href="devotions.html">Devotions</a></li><li><a href="charity.html">Charity</a></li></ul></div>
+      <div class="footer-col"><h4>Ministry</h4><ul><li><a href="events.html">Events</a></li><li><a href="livestream.html">Livestream</a></li><li><a href="membership.html">Membership</a></li><li><a href="donations.html">Donate</a></li><li><a href="admin.html">Staff Login</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><p><i class="fab fa-whatsapp" style="color:var(--gold);margin-right:0.5rem;"></i> Prayer via WhatsApp</p><p><i class="fas fa-clock" style="color:var(--gold);margin-right:0.5rem;"></i> Sun Service: 9:00 AM</p><a href="contact.html" class="btn btn-primary btn-sm mt-2">Contact Us</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
+</footer>
+
+<a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa" title="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+  <span class="float-wa-tooltip">Prayer via WhatsApp</span>
+</a>
+<button id="back-top"><i class="fas fa-chevron-up"></i></button>
+<script src="js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+

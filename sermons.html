@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sermons | Apostle MJ Ministries</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .sermon-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; }
+    .sermon-tab { padding:0.6rem 1.25rem; border-radius:50px; border:2px solid var(--gray-200); background:var(--white); cursor:pointer; font-weight:600; font-size:0.88rem; color:var(--text-muted); transition:var(--transition); }
+    .sermon-tab.active, .sermon-tab:hover { background:var(--primary); color:var(--white); border-color:var(--primary); }
+    .sermon-panel { display:none; }
+    .sermon-panel.active { display:block; }
+    .search-bar { display:flex; gap:0.75rem; margin-bottom:2.5rem; }
+    .search-bar input { flex:1; }
+    .video-card { background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); transition:var(--transition); }
+    .video-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+    .video-thumb { position:relative; aspect-ratio:16/9; background:var(--primary); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+    .video-thumb img { width:100%; height:100%; object-fit:cover; }
+    .play-btn { position:absolute; width:60px; height:60px; background:rgba(240,165,0,0.9); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:1.3rem; transition:var(--transition); }
+    .video-thumb:hover .play-btn { transform:scale(1.15); background:var(--gold); }
+    .duration { position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,0.75); color:#fff; font-size:0.78rem; padding:0.2rem 0.5rem; border-radius:4px; }
+    .audio-item { display:flex; align-items:center; gap:1rem; background:var(--white); border-radius:var(--radius-sm); padding:1.25rem 1.5rem; box-shadow:var(--shadow); margin-bottom:0.75rem; transition:var(--transition); }
+    .audio-item:hover { box-shadow:var(--shadow-lg); transform:translateX(4px); }
+    .audio-num { width:44px; height:44px; background:linear-gradient(135deg,var(--primary),var(--primary-mid)); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--white); font-weight:700; flex-shrink:0; }
+    .audio-info { flex:1; }
+    .audio-info h4 { font-size:1rem; color:var(--primary); margin-bottom:0.25rem; }
+    .audio-info p  { font-size:0.8rem; color:var(--text-muted); margin:0; }
+    .pdf-item { display:flex; align-items:center; gap:1rem; background:var(--white); border-radius:var(--radius-sm); padding:1.25rem 1.5rem; box-shadow:var(--shadow); margin-bottom:0.75rem; }
+    .pdf-icon { width:48px; height:48px; background:#fee2e2; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#ef4444; font-size:1.3rem; flex-shrink:0; }
+    .topic-chip { display:inline-block; background:var(--light); color:var(--primary-light); border:1px solid rgba(107,33,168,0.2); font-size:0.8rem; font-weight:600; padding:0.3rem 0.85rem; border-radius:50px; margin:0.25rem; cursor:pointer; transition:var(--transition); }
+    .topic-chip:hover, .topic-chip.active { background:var(--primary); color:var(--white); }
+    @media(max-width:768px){
+      .sermon-tab { font-size:0.78rem!important; padding:0.45rem 0.9rem!important; }
+      .audio-item { flex-wrap:wrap; gap:0.6rem!important; padding:0.85rem!important; }
+      .audio-item .btn { font-size:0.75rem!important; padding:0.35rem 0.65rem!important; }
+      .audio-info h4 { font-size:0.92rem!important; }
+      .pdf-item { flex-wrap:wrap; gap:0.6rem; padding:0.85rem!important; }
+      .search-bar { flex-direction:column!important; }
+      .search-bar .btn { width:100%!important; justify-content:center!important; }
+      .video-card { margin-bottom:0.75rem; }
+      .play-btn { width:48px!important; height:48px!important; font-size:1.1rem!important; }
+    }
+    @media(max-width:480px){
+      .sermon-tab { flex:1 1 calc(50% - 0.25rem)!important; text-align:center; }
+      .audio-num { width:36px!important; height:36px!important; font-size:0.85rem!important; }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand" style="text-decoration:none;"><img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;"><div class="brand-text"><span class="name">Apostle MJ Ministries</span><span class="sub">Spreading the Gospel</span></div></a><ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="prayer.html">Prayer</a></li>
+    <li><a href="sermons.html" class="active">Sermons</a></li><li><a href="testimony.html">Testimony</a></li>
+    <li><a href="devotions.html">Devotions</a></li><li><a href="charity.html">Charity</a></li>
+    <li><a href="media.html">Media</a></li><li><a href="livestream.html">Livestream</a></li>
+    <li><a href="events.html">Events</a></li><li><a href="membership.html">Membership</a></li>
+    <li><a href="contact.html">Contact</a></li><li><a href="donations.html" class="nav-donate">Give</a></li>
+  </ul>
+  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Sermons</div>
+  <h1>Sermons & Bible Teachings</h1>
+  <p>Be transformed by the renewing of your mind through the Word of God.</p>
+</div>
+
+<div class="page-content">
+<section class="section">
+  <div class="container">
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+      <input type="text" class="form-control" id="sermon-search" placeholder="🔍 Search sermons by title, topic, or scripture...">
+      <button class="btn btn-purple" onclick="filterSermons()"><i class="fas fa-search"></i> Search</button>
+    </div>
+
+    <!-- TOPICS -->
+    <div style="margin-bottom:2rem;">
+      <strong style="font-size:0.88rem;color:var(--text-muted);margin-right:0.75rem;">Browse by Topic:</strong>
+      <span class="topic-chip active" onclick="filterByTopic(this, 'all')">All Topics</span>
+      <span class="topic-chip" onclick="filterByTopic(this, 'faith')">Faith</span>
+      <span class="topic-chip" onclick="filterByTopic(this, 'healing')">Healing</span>
+      <span class="topic-chip" onclick="filterByTopic(this, 'prayer')">Prayer</span>
+      <span class="topic-chip" onclick="filterByTopic(this, 'salvation')">Salvation</span>
+      <span class="topic-chip" onclick="filterByTopic(this, 'prosperity')">Prosperity</span>
+      <span class="topic-chip" onclick="filterByTopic(this, 'holy spirit')">Holy Spirit</span>
+      <span class="topic-chip" onclick="filterByTopic(this, 'family')">Family</span>
+      <span class="topic-chip" onclick="filterByTopic(this, 'worship')">Worship</span>
+    </div>
+
+    <!-- TABS -->
+    <div class="sermon-tabs">
+      <button class="sermon-tab active" onclick="showTab('video')"><i class="fas fa-video"></i> Video Sermons</button>
+      <button class="sermon-tab" onclick="showTab('audio')"><i class="fas fa-headphones"></i> Audio Sermons</button>
+      <button class="sermon-tab" onclick="showTab('pdf')"><i class="fas fa-file-pdf"></i> Sermon Notes (PDF)</button>
+      <button class="sermon-tab" onclick="showTab('teachings')"><i class="fas fa-book-bible"></i> Bible Teachings</button>
+    </div>
+
+    <!-- VIDEO SERMONS -->
+    <div id="tab-video" class="sermon-panel active">
+      <div class="grid-3" id="video-grid">
+        <div class="video-card" data-topic="faith">
+          <div class="video-thumb" onclick="playVideo(this, 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+            <img src="WhatsApp Image 2026-06-24 at 09.09.28.jpeg" alt="Sermon">
+            <div class="play-btn"><i class="fas fa-play"></i></div>
+            <span class="duration">45:20</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">📅 Sunday Service &nbsp;|&nbsp; <i class="fas fa-tag"></i> Faith</div>
+            <h4 class="card-title">The Power of Faith That Moves Mountains</h4>
+            <p class="card-text">Discover how faith in God can overcome every impossible situation in your life. A powerful word from Apostle MJ.</p>
+            <div style="display:flex;gap:0.5rem;margin-top:1rem;">
+              <button class="btn btn-sm btn-purple" onclick="playVideo(this.closest('.video-card').querySelector('.video-thumb'), 'https://www.youtube.com/embed/dQw4w9WgXcQ')"><i class="fas fa-play"></i> Watch</button>
+              <a href="#" class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fab fa-youtube"></i> YouTube</a>
+            </div>
+          </div>
+        </div>
+        <div class="video-card" data-topic="healing">
+          <div class="video-thumb" onclick="playVideo(this, 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+            <img src="WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg" alt="Sermon">
+            <div class="play-btn"><i class="fas fa-play"></i></div>
+            <span class="duration">38:15</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">📅 Revival Service &nbsp;|&nbsp; <i class="fas fa-tag"></i> Healing</div>
+            <h4 class="card-title">God Still Heals Today — By His Stripes We Are Healed</h4>
+            <p class="card-text">A powerful teaching on divine healing and the covenant of health God has made with His people.</p>
+            <div style="display:flex;gap:0.5rem;margin-top:1rem;">
+              <button class="btn btn-sm btn-purple" onclick="playVideo(this.closest('.video-card').querySelector('.video-thumb'), 'https://www.youtube.com/embed/dQw4w9WgXcQ')"><i class="fas fa-play"></i> Watch</button>
+              <a href="#" class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fab fa-youtube"></i> YouTube</a>
+            </div>
+          </div>
+        </div>
+        <div class="video-card" data-topic="prayer">
+          <div class="video-thumb" onclick="playVideo(this, 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+            <img src="WhatsApp Image 2026-06-24 at 09.09.26.jpeg" alt="Sermon">
+            <div class="play-btn"><i class="fas fa-play"></i></div>
+            <span class="duration">52:40</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">📅 Wednesday Service &nbsp;|&nbsp; <i class="fas fa-tag"></i> Prayer</div>
+            <h4 class="card-title">How to Pray Effectively — The Secret Place of the Most High</h4>
+            <p class="card-text">Learn the principles of powerful, effective prayer that changes your life and the lives of those around you.</p>
+            <div style="display:flex;gap:0.5rem;margin-top:1rem;">
+              <button class="btn btn-sm btn-purple" onclick="playVideo(this.closest('.video-card').querySelector('.video-thumb'), 'https://www.youtube.com/embed/dQw4w9WgXcQ')"><i class="fas fa-play"></i> Watch</button>
+              <a href="#" class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fab fa-youtube"></i> YouTube</a>
+            </div>
+          </div>
+        </div>
+        <div class="video-card" data-topic="salvation">
+          <div class="video-thumb" onclick="playVideo(this, 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+            <img src="WhatsApp Image 2026-06-24 at 09.09.25.jpeg" alt="Sermon">
+            <div class="play-btn"><i class="fas fa-play"></i></div>
+            <span class="duration">41:05</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">📅 Evangelism Crusade &nbsp;|&nbsp; <i class="fas fa-tag"></i> Salvation</div>
+            <h4 class="card-title">The Way, the Truth, and the Life — Who is Jesus?</h4>
+            <p class="card-text">An evangelistic message on the identity of Jesus Christ and the gift of eternal salvation available to all.</p>
+            <div style="display:flex;gap:0.5rem;margin-top:1rem;">
+              <button class="btn btn-sm btn-purple" onclick="playVideo(this.closest('.video-card').querySelector('.video-thumb'), 'https://www.youtube.com/embed/dQw4w9WgXcQ')"><i class="fas fa-play"></i> Watch</button>
+              <a href="#" class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fab fa-youtube"></i> YouTube</a>
+            </div>
+          </div>
+        </div>
+        <div class="video-card" data-topic="holy spirit">
+          <div class="video-thumb" onclick="playVideo(this, 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+            <img src="WhatsApp Image 2026-06-24 at 09.09.28 (1).jpeg" alt="Sermon">
+            <div class="play-btn"><i class="fas fa-play"></i></div>
+            <span class="duration">55:30</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">📅 Sunday Service &nbsp;|&nbsp; <i class="fas fa-tag"></i> Holy Spirit</div>
+            <h4 class="card-title">Receive the Holy Spirit — Walking in the Spirit Every Day</h4>
+            <p class="card-text">Understanding the person of the Holy Spirit and how to live a Spirit-filled, Spirit-led life daily.</p>
+            <div style="display:flex;gap:0.5rem;margin-top:1rem;">
+              <button class="btn btn-sm btn-purple" onclick="playVideo(this.closest('.video-card').querySelector('.video-thumb'), 'https://www.youtube.com/embed/dQw4w9WgXcQ')"><i class="fas fa-play"></i> Watch</button>
+              <a href="#" class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fab fa-youtube"></i> YouTube</a>
+            </div>
+          </div>
+        </div>
+        <div class="video-card" data-topic="family">
+          <div class="video-thumb" onclick="playVideo(this, 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+            <img src="WhatsApp Image 2026-06-24 at 09.09.26 (1).jpeg" alt="Sermon">
+            <div class="play-btn"><i class="fas fa-play"></i></div>
+            <span class="duration">48:00</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">📅 Family Service &nbsp;|&nbsp; <i class="fas fa-tag"></i> Family</div>
+            <h4 class="card-title">The Christian Home — Building a Family on God's Foundation</h4>
+            <p class="card-text">Biblical principles for building a strong, godly home where love, respect, and faith flourish.</p>
+            <div style="display:flex;gap:0.5rem;margin-top:1rem;">
+              <button class="btn btn-sm btn-purple" onclick="playVideo(this.closest('.video-card').querySelector('.video-thumb'), 'https://www.youtube.com/embed/dQw4w9WgXcQ')"><i class="fas fa-play"></i> Watch</button>
+              <a href="#" class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fab fa-youtube"></i> YouTube</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-3"><a href="#" class="btn btn-purple"><i class="fab fa-youtube"></i> View All on YouTube</a></div>
+    </div>
+
+    <!-- AUDIO SERMONS -->
+    <div id="tab-audio" class="sermon-panel">
+      <div id="audio-grid">
+        <div class="audio-item"><div class="audio-num">1</div><div class="audio-info"><h4>The Power of Faith That Moves Mountains</h4><p>📅 Sunday Service &nbsp;|&nbsp; ⏱ 45:20 &nbsp;|&nbsp; 🏷 Faith</p></div><button class="btn btn-sm btn-purple"><i class="fas fa-play"></i> Play</button><button class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fas fa-download"></i></button></div>
+        <div class="audio-item"><div class="audio-num">2</div><div class="audio-info"><h4>God Still Heals Today — Divine Healing</h4><p>📅 Revival Service &nbsp;|&nbsp; ⏱ 38:15 &nbsp;|&nbsp; 🏷 Healing</p></div><button class="btn btn-sm btn-purple"><i class="fas fa-play"></i> Play</button><button class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fas fa-download"></i></button></div>
+        <div class="audio-item"><div class="audio-num">3</div><div class="audio-info"><h4>How to Pray Effectively</h4><p>📅 Wednesday Service &nbsp;|&nbsp; ⏱ 52:40 &nbsp;|&nbsp; 🏷 Prayer</p></div><button class="btn btn-sm btn-purple"><i class="fas fa-play"></i> Play</button><button class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fas fa-download"></i></button></div>
+        <div class="audio-item"><div class="audio-num">4</div><div class="audio-info"><h4>Who is Jesus? The Way, Truth & Life</h4><p>📅 Evangelism Crusade &nbsp;|&nbsp; ⏱ 41:05 &nbsp;|&nbsp; 🏷 Salvation</p></div><button class="btn btn-sm btn-purple"><i class="fas fa-play"></i> Play</button><button class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fas fa-download"></i></button></div>
+        <div class="audio-item"><div class="audio-num">5</div><div class="audio-info"><h4>Receive the Holy Spirit</h4><p>📅 Sunday Service &nbsp;|&nbsp; ⏱ 55:30 &nbsp;|&nbsp; 🏷 Holy Spirit</p></div><button class="btn btn-sm btn-purple"><i class="fas fa-play"></i> Play</button><button class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fas fa-download"></i></button></div>
+        <div class="audio-item"><div class="audio-num">6</div><div class="audio-info"><h4>The Christian Home — Building on God's Foundation</h4><p>📅 Family Service &nbsp;|&nbsp; ⏱ 48:00 &nbsp;|&nbsp; 🏷 Family</p></div><button class="btn btn-sm btn-purple"><i class="fas fa-play"></i> Play</button><button class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fas fa-download"></i></button></div>
+      </div>
+    </div>
+
+    <!-- PDF NOTES -->
+    <div id="tab-pdf" class="sermon-panel">
+      <div class="pdf-item"><div class="pdf-icon"><i class="fas fa-file-pdf"></i></div><div style="flex:1;"><h4 style="margin-bottom:0.25rem;font-size:1rem;">The Power of Faith — Sermon Notes</h4><p style="font-size:0.82rem;color:var(--text-muted);margin:0;">PDF • 8 pages • Sunday Service</p></div><a href="#" class="btn btn-sm btn-purple"><i class="fas fa-download"></i> Download</a></div>
+      <div class="pdf-item"><div class="pdf-icon"><i class="fas fa-file-pdf"></i></div><div style="flex:1;"><h4 style="margin-bottom:0.25rem;font-size:1rem;">Divine Healing in the Bible — Study Notes</h4><p style="font-size:0.82rem;color:var(--text-muted);margin:0;">PDF • 12 pages • Bible Study</p></div><a href="#" class="btn btn-sm btn-purple"><i class="fas fa-download"></i> Download</a></div>
+      <div class="pdf-item"><div class="pdf-icon"><i class="fas fa-file-pdf"></i></div><div style="flex:1;"><h4 style="margin-bottom:0.25rem;font-size:1rem;">Principles of Effective Prayer — Workbook</h4><p style="font-size:0.82rem;color:var(--text-muted);margin:0;">PDF • 16 pages • Wednesday Bible Study</p></div><a href="#" class="btn btn-sm btn-purple"><i class="fas fa-download"></i> Download</a></div>
+      <div class="pdf-item"><div class="pdf-icon"><i class="fas fa-file-pdf"></i></div><div style="flex:1;"><h4 style="margin-bottom:0.25rem;font-size:1rem;">Salvation & New Life in Christ — Introduction</h4><p style="font-size:0.82rem;color:var(--text-muted);margin:0;">PDF • 6 pages • Evangelism</p></div><a href="#" class="btn btn-sm btn-purple"><i class="fas fa-download"></i> Download</a></div>
+      <div class="pdf-item"><div class="pdf-icon"><i class="fas fa-file-pdf"></i></div><div style="flex:1;"><h4 style="margin-bottom:0.25rem;font-size:1rem;">Understanding the Gifts of the Holy Spirit</h4><p style="font-size:0.82rem;color:var(--text-muted);margin:0;">PDF • 20 pages • Discipleship Course</p></div><a href="#" class="btn btn-sm btn-purple"><i class="fas fa-download"></i> Download</a></div>
+    </div>
+
+    <!-- BIBLE TEACHINGS -->
+    <div id="tab-teachings" class="sermon-panel">
+      <div class="grid-auto">
+        <div class="card"><div class="card-body"><i class="fas fa-book-bible" style="color:var(--gold);font-size:2rem;margin-bottom:0.75rem;display:block;"></i><h4 class="card-title">Book of Genesis — In the Beginning</h4><p class="card-text">A verse-by-verse study through the first book of the Bible — creation, the fall, the flood, and the patriarchs.</p><div style="margin-top:1rem;"><span class="topic-chip">50 Lessons</span> <span class="topic-chip">Ongoing</span></div><a href="#" class="btn btn-sm btn-purple mt-2">Start Study</a></div></div>
+        <div class="card"><div class="card-body"><i class="fas fa-book-bible" style="color:var(--gold);font-size:2rem;margin-bottom:0.75rem;display:block;"></i><h4 class="card-title">The Psalms — Songs of the Heart</h4><p class="card-text">Exploring the full emotional spectrum of faith through Israel's songbook — lament, praise, and everything in between.</p><div style="margin-top:1rem;"><span class="topic-chip">150 Lessons</span> <span class="topic-chip">Worship</span></div><a href="#" class="btn btn-sm btn-purple mt-2">Start Study</a></div></div>
+        <div class="card"><div class="card-body"><i class="fas fa-book-bible" style="color:var(--gold);font-size:2rem;margin-bottom:0.75rem;display:block;"></i><h4 class="card-title">The Gospel of John — Who is Jesus?</h4><p class="card-text">A deep dive into the fourth gospel, exploring the seven signs of Jesus and the seven "I Am" statements.</p><div style="margin-top:1rem;"><span class="topic-chip">21 Lessons</span> <span class="topic-chip">Gospel</span></div><a href="#" class="btn btn-sm btn-purple mt-2">Start Study</a></div></div>
+        <div class="card"><div class="card-body"><i class="fas fa-book-bible" style="color:var(--gold);font-size:2rem;margin-bottom:0.75rem;display:block;"></i><h4 class="card-title">The Sermon on the Mount</h4><p class="card-text">Jesus' most famous teaching — the Beatitudes, the Lord's Prayer, and the principles of Kingdom living.</p><div style="margin-top:1rem;"><span class="topic-chip">8 Lessons</span> <span class="topic-chip">Kingdom Life</span></div><a href="#" class="btn btn-sm btn-purple mt-2">Start Study</a></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col"><h4>Apostle MJ Ministries</h4><p>Spreading the Gospel through preaching, teaching, and outreach.</p></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="prayer.html">Prayer</a></li><li><a href="donations.html">Donate</a></li><li><a href="admin.html">Staff Login</a></li></ul></div>
+      <div class="footer-col"><h4>Ministry</h4><ul><li><a href="livestream.html">Watch Live</a></li><li><a href="events.html">Events</a></li><li><a href="membership.html">Join Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Connect</h4><div class="footer-socials"><a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a><a href="https://wa.me/211921444658" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a></div></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
+</footer>
+
+<a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa"><i class="fab fa-whatsapp"></i><span class="float-wa-tooltip">Prayer via WhatsApp</span></a>
+<button id="back-top"><i class="fas fa-chevron-up"></i></button>
+<script src="js/main.js"></script>
+<script>
+function showTab(name) {
+  document.querySelectorAll('.sermon-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sermon-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+function filterByTopic(el, topic) {
+  document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.video-card').forEach(c => {
+    c.style.display = (topic === 'all' || c.dataset.topic === topic) ? '' : 'none';
+  });
+}
+function playVideo(thumb, url) {
+  const iframe = document.createElement('iframe');
+  iframe.src = url + '?autoplay=1';
+  iframe.allow = 'autoplay; fullscreen';
+  iframe.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0;border:none;';
+  thumb.innerHTML = '';
+  thumb.appendChild(iframe);
+}
+function filterSermons() {
+  const q = document.getElementById('sermon-search').value.toLowerCase();
+  document.querySelectorAll('.video-card').forEach(c => {
+    const text = c.textContent.toLowerCase();
+    c.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donations & Giving | Apostle MJ Ministries</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .amount-btns { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem; }
+    .amount-btn { padding:0.5rem 1.25rem; border:2px solid var(--gray-200); border-radius:50px; background:var(--white); cursor:pointer; font-weight:700; font-size:0.88rem; transition:var(--transition); }
+    .amount-btn:hover, .amount-btn.selected { background:var(--primary); color:var(--white); border-color:var(--primary); }
+    .giving-section { border-radius:var(--radius); padding:2rem; border:2px solid var(--gray-200); margin-bottom:1.5rem; }
+    .giving-section h4 { color:var(--primary); margin-bottom:1.25rem; display:flex; align-items:center; gap:0.5rem; }
+    .giving-section h4 i { color:var(--gold); }
+    .method-card { border:2px solid var(--gray-200); border-radius:var(--radius); padding:1.5rem; margin-bottom:1rem; transition:var(--transition); }
+    .method-card:hover { border-color:var(--gold); }
+    .method-header { display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; cursor:pointer; }
+    .method-header h5 { margin:0; color:var(--primary); }
+    .method-icon { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+    .currency-note { background:var(--light); border-left:4px solid var(--gold); border-radius:4px; padding:0.75rem 1rem; font-size:0.85rem; color:var(--text-muted); margin-top:0.75rem; }
+    @media(max-width:768px){
+      .amount-btns { flex-wrap:wrap!important; gap:0.4rem!important; }
+      .amount-btn { padding:0.45rem 1rem!important; font-size:0.82rem!important; }
+      .giving-section { padding:1.25rem!important; }
+    }
+    @media(max-width:480px){
+      .amount-btns { display:grid!important; grid-template-columns:repeat(3,1fr)!important; }
+      .amount-btn { padding:0.4rem 0.4rem!important; font-size:0.78rem!important; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand" style="text-decoration:none;"><img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;"><div class="brand-text"><span class="name">Apostle MJ Ministries</span><span class="sub">Spreading the Gospel</span></div></a><ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="prayer.html">Prayer</a></li>
+    <li><a href="sermons.html">Sermons</a></li><li><a href="testimony.html">Testimony</a></li>
+    <li><a href="devotions.html">Devotions</a></li><li><a href="charity.html">Charity</a></li>
+    <li><a href="media.html">Media</a></li><li><a href="livestream.html">Livestream</a></li>
+    <li><a href="events.html">Events</a></li><li><a href="membership.html">Membership</a></li>
+    <li><a href="contact.html">Contact</a></li><li><a href="donations.html" class="nav-donate active">Give</a></li>
+  </ul>
+  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Donations & Giving</div>
+  <h1>💝 Give to the Ministry</h1>
+  <p>"Give, and it will be given to you — a good measure, pressed down, shaken together and running over." — Luke 6:38</p>
+</div>
+
+<div class="page-content">
+
+<!-- GIVING CATEGORIES -->
+<section class="section section-light">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">Ways to Give</span>
+      <h2>What Would You Like to Give Towards?</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-4" style="margin-bottom:3rem;">
+      <div class="donation-card">
+        <div class="icon"><i class="fas fa-church"></i></div>
+        <h3>Tithe</h3>
+        <p>Return one-tenth to God as an act of obedience and worship (Malachi 3:10).</p>
+      </div>
+      <div class="donation-card">
+        <div class="icon"><i class="fas fa-gift"></i></div>
+        <h3>Offering</h3>
+        <p>A freewill offering from a cheerful heart to support the ministry (2 Corinthians 9:7).</p>
+      </div>
+      <div class="donation-card">
+        <div class="icon"><i class="fas fa-globe"></i></div>
+        <h3>Missions</h3>
+        <p>Support our outreach efforts to unreached communities with the Gospel.</p>
+      </div>
+      <div class="donation-card">
+        <div class="icon"><i class="fas fa-heart"></i></div>
+        <h3>Charity</h3>
+        <p>Fund our feeding programs, orphan care, and widow support ministries.</p>
+      </div>
+    </div>
+
+    <div class="grid-2" style="gap:3rem;align-items:start;">
+      <!-- GIVING FORM -->
+      <div>
+        <div class="giving-section">
+          <h4><i class="fas fa-hand-holding-heart"></i> Make a Gift</h4>
+          <div class="form-group">
+            <label class="form-label">Select Giving Category</label>
+            <select class="form-control" id="giving-category">
+              <option>Tithe</option>
+              <option>Offering</option>
+              <option>Missions Support</option>
+              <option>Charity Support</option>
+              <option>Building Fund</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Select Amount or Enter Custom</label>
+            <div class="amount-btns">
+              <button class="amount-btn" onclick="selectAmount(this, '$10')">$10</button>
+              <button class="amount-btn" onclick="selectAmount(this, '$20')">$20</button>
+              <button class="amount-btn" onclick="selectAmount(this, '$50')">$50</button>
+              <button class="amount-btn" onclick="selectAmount(this, '$100')">$100</button>
+              <button class="amount-btn" onclick="selectAmount(this, '$200')">$200</button>
+              <button class="amount-btn" onclick="selectAmount(this, '$500')">$500</button>
+            </div>
+            <input type="text" class="form-control" id="custom-amount" placeholder="Or enter custom amount (e.g. $75)">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Currency</label>
+            <select class="form-control" id="currency">
+              <option>USD (US Dollar)</option>
+              <option>KES (Kenyan Shilling)</option>
+              <option>UGX (Ugandan Shilling)</option>
+              <option>SSP (South Sudan Pound)</option>
+              <option>ETB (Ethiopian Birr)</option>
+              <option>GBP (British Pound)</option>
+              <option>EUR (Euro)</option>
+              <option>AUD (Australian Dollar)</option>
+              <option>NGN (Nigerian Naira)</option>
+              <option>ZAR (South African Rand)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Name (Optional)</label>
+            <input type="text" class="form-control" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message / Dedication (Optional)</label>
+            <textarea class="form-control" rows="3" placeholder="Any message for your offering..."></textarea>
+          </div>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem;">Choose your payment method below and follow the instructions. Your gift will be confirmed via WhatsApp.</p>
+          <button onclick="processGift()" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;"><i class="fas fa-heart"></i> Proceed to Payment</button>
+        </div>
+      </div>
+
+      <!-- PAYMENT METHODS -->
+      <div>
+        <h3 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-credit-card" style="color:var(--gold);"></i> Payment Methods</h3>
+
+        <!-- MOBILE MONEY -->
+        <div class="method-card">
+          <div class="method-header">
+            <div class="method-icon" style="background:#fef3c7;color:#92400e;"><i class="fas fa-mobile-alt"></i></div>
+            <div><h5>Mobile Money</h5><p style="font-size:0.82rem;color:var(--text-muted);margin:0;">M-Pesa, MTN MoMo, Airtel Money</p></div>
+          </div>
+          <div class="pay-box">
+            <h4><i class="fas fa-sim-card" style="color:var(--gold);margin-right:0.5rem;"></i> M-Pesa (Kenya)</h4>
+            <div class="pay-row"><span>Paybill / Till Number</span><div><strong>123456</strong><button class="copy-btn" onclick="copyText('123456', this)">Copy</button></div></div>
+            <div class="pay-row"><span>Account Name</span><strong>Apostle MJ Ministries</strong></div>
+          </div>
+          <div class="pay-box" style="margin-top:0.5rem;">
+            <h4><i class="fas fa-sim-card" style="color:var(--gold);margin-right:0.5rem;"></i> MTN Mobile Money</h4>
+            <div class="pay-row"><span>Number</span><div><strong>+256 700 000000</strong><button class="copy-btn" onclick="copyText('+256700000000', this)">Copy</button></div></div>
+            <div class="pay-row"><span>Name</span><strong>Apostle MJ Min.</strong></div>
+          </div>
+          <div class="currency-note"><i class="fas fa-info-circle"></i> After sending, please take a screenshot and send to us via WhatsApp with your name and the giving category.</div>
+        </div>
+
+        <!-- BANK TRANSFER -->
+        <div class="method-card">
+          <div class="method-header">
+            <div class="method-icon" style="background:#dbeafe;color:#1e40af;"><i class="fas fa-university"></i></div>
+            <div><h5>Bank Transfer</h5><p style="font-size:0.82rem;color:var(--text-muted);margin:0;">Local & international wire transfer</p></div>
+          </div>
+          <div class="pay-box">
+            <h4><i class="fas fa-building-columns" style="color:var(--gold);margin-right:0.5rem;"></i> Bank Details</h4>
+            <div class="pay-row"><span>Account Name</span><strong>Apostle MJ Ministries</strong></div>
+            <div class="pay-row"><span>Account Number</span><div><strong>1234567890</strong><button class="copy-btn" onclick="copyText('1234567890', this)">Copy</button></div></div>
+            <div class="pay-row"><span>Bank Name</span><strong>Equity Bank</strong></div>
+            <div class="pay-row"><span>Branch</span><strong>Juba Branch</strong></div>
+            <div class="pay-row"><span>SWIFT Code</span><div><strong>EQBLSSJJ</strong><button class="copy-btn" onclick="copyText('EQBLSSJJ', this)">Copy</button></div></div>
+          </div>
+        </div>
+
+        <!-- INTERNATIONAL -->
+        <div class="method-card">
+          <div class="method-header">
+            <div class="method-icon" style="background:#d1fae5;color:#065f46;"><i class="fas fa-globe"></i></div>
+            <div><h5>International Giving</h5><p style="font-size:0.82rem;color:var(--text-muted);margin:0;">PayPal, WorldRemit, Western Union</p></div>
+          </div>
+          <div class="pay-box">
+            <h4><i class="fab fa-paypal" style="color:#003087;margin-right:0.5rem;"></i> PayPal</h4>
+            <div class="pay-row"><span>PayPal Email</span><div><strong>apostlemjmanyiel@gmail.com</strong><button class="copy-btn" onclick="copyText('apostlemjmanyiel@gmail.com', this)">Copy</button></div></div>
+          </div>
+          <div class="pay-box" style="margin-top:0.5rem;">
+            <h4><i class="fas fa-money-bill-transfer" style="color:var(--gold);margin-right:0.5rem;"></i> WorldRemit / Western Union</h4>
+            <div class="pay-row"><span>Recipient Name</span><strong>Ministry Name</strong></div>
+            <div class="pay-row"><span>Country</span><strong>South Sudan</strong></div>
+            <div class="pay-row"><span>WhatsApp for pickup code</span><strong>Contact us</strong></div>
+          </div>
+        </div>
+
+        <div style="background:linear-gradient(135deg,#25D366,#128C7E);border-radius:var(--radius);padding:1.5rem;text-align:center;color:var(--white);margin-top:1rem;">
+          <i class="fab fa-whatsapp" style="font-size:2rem;display:block;margin-bottom:0.5rem;"></i>
+          <p style="margin-bottom:1rem;font-size:0.92rem;">After giving, send your proof of payment via WhatsApp and we will confirm your gift and pray for you!</p>
+          <button onclick="confirmGift()" class="btn btn-primary"><i class="fab fa-whatsapp"></i> Confirm Gift via WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GIVING SCRIPTURES -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">God's Word on Giving</span>
+      <h2>Why We Give</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-3">
+      <div class="testimony-card" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);"><p style="color:rgba(255,255,255,0.85);font-style:italic;">"Bring the whole tithe into the storehouse... and see if I will not throw open the floodgates of heaven and pour out so much blessing that there will not be room enough to store it."</p><div class="author"><div class="avatar" style="background:var(--gold);color:var(--primary);">M</div><div><div class="author-name" style="color:var(--gold);">Malachi 3:10</div><div class="author-location" style="color:rgba(255,255,255,0.5);">The Promise of Tithing</div></div></div></div>
+      <div class="testimony-card" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);"><p style="color:rgba(255,255,255,0.85);font-style:italic;">"Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver."</p><div class="author"><div class="avatar" style="background:var(--gold);color:var(--primary);">C</div><div><div class="author-name" style="color:var(--gold);">2 Corinthians 9:7</div><div class="author-location" style="color:rgba(255,255,255,0.5);">The Cheerful Giver</div></div></div></div>
+      <div class="testimony-card" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);"><p style="color:rgba(255,255,255,0.85);font-style:italic;">"Give, and it will be given to you. A good measure, pressed down, shaken together and running over, will be poured into your lap."</p><div class="author"><div class="avatar" style="background:var(--gold);color:var(--primary);">L</div><div><div class="author-name" style="color:var(--gold);">Luke 6:38</div><div class="author-location" style="color:rgba(255,255,255,0.5);">Words of Jesus</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="container"><div class="footer-grid"><div class="footer-col"><h4>Apostle MJ Ministries</h4><p>Every seed planted in God's Kingdom bears eternal fruit.</p></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="prayer.html">Prayer</a></li><li><a href="charity.html">Charity</a></li><li><a href="admin.html">Staff Login</a></li></ul></div><div class="footer-col"><h4>Ministry</h4><ul><li><a href="events.html">Events</a></li><li><a href="membership.html">Join Us</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Connect</h4><div class="footer-socials"><a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a><a href="https://wa.me/211921444658" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a></div></div></div></div>
+  <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved. | All gifts are used for Kingdom purposes.</p></div></div>
+</footer>
+
+<a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa"><i class="fab fa-whatsapp"></i><span class="float-wa-tooltip">Prayer via WhatsApp</span></a>
+<button id="back-top"><i class="fas fa-chevron-up"></i></button>
+<script src="js/main.js"></script>
+<script>
+function selectAmount(btn, amount) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('custom-amount').value = amount;
+}
+function processGift() {
+  const cat = document.getElementById('giving-category').value;
+  const amt = document.getElementById('custom-amount').value;
+  const cur = document.getElementById('currency').value;
+  if (!amt) { showToast('Please select or enter an amount first.', true); return; }
+  showToast(`Thank you! Choose a payment method below and send ${amt} ${cur} for ${cat}. Then confirm via WhatsApp.`);
+  document.querySelector('.method-card').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function confirmGift() {
+  const cat = document.getElementById('giving-category').value;
+  const amt = document.getElementById('custom-amount').value || 'an offering';
+  const msg = `*💝 GIVING CONFIRMATION — ${MINISTRY_NAME}*\n\nPraise God! I have sent a ${cat} of ${amt}.\n\nPlease confirm receipt. I am attaching proof of payment.\n\n_God bless this ministry!_`;
+  openWhatsApp(msg);
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

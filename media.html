@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Center | Apostle MJ Ministries</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .media-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; }
+    .media-tab { padding:0.6rem 1.25rem; border-radius:50px; border:2px solid var(--gray-200); background:var(--white); cursor:pointer; font-weight:600; font-size:0.88rem; color:var(--text-muted); transition:var(--transition); }
+    .media-tab.active, .media-tab:hover { background:var(--primary); color:var(--white); border-color:var(--primary); }
+    .media-panel { display:none; }
+    .media-panel.active { display:block; }
+    .news-item { display:flex; gap:1.25rem; padding:1.5rem 0; border-bottom:1px solid var(--gray-200); }
+    .news-img { width:100px; height:80px; object-fit:cover; border-radius:var(--radius-sm); flex-shrink:0; }
+    .news-date { font-size:0.78rem; color:var(--text-muted); margin-bottom:0.3rem; }
+    .news-title { font-weight:700; color:var(--primary); margin-bottom:0.3rem; font-size:0.95rem; }
+    .news-desc { font-size:0.85rem; color:var(--text-muted); }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand" style="text-decoration:none;"><img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;"><div class="brand-text"><span class="name">Apostle MJ Ministries</span><span class="sub">Spreading the Gospel</span></div></a><ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="prayer.html">Prayer</a></li>
+    <li><a href="sermons.html">Sermons</a></li><li><a href="testimony.html">Testimony</a></li>
+    <li><a href="devotions.html">Devotions</a></li><li><a href="charity.html">Charity</a></li>
+    <li><a href="media.html" class="active">Media</a></li><li><a href="livestream.html">Livestream</a></li>
+    <li><a href="events.html">Events</a></li><li><a href="membership.html">Membership</a></li>
+    <li><a href="contact.html">Contact</a></li><li><a href="donations.html" class="nav-donate">Give</a></li>
+  </ul>
+  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Media Center</div>
+  <h1>📸 Media Center</h1>
+  <p>Photos, videos, and news from Apostle MJ Ministries — capturing God's work in our community.</p>
+</div>
+
+<div class="page-content">
+<section class="section">
+  <div class="container">
+    <div class="media-tabs">
+      <button class="media-tab active" onclick="showMedia('photos')"><i class="fas fa-images"></i> Photo Gallery</button>
+      <button class="media-tab" onclick="showMedia('videos')"><i class="fas fa-video"></i> Video Gallery</button>
+      <button class="media-tab" onclick="showMedia('news')"><i class="fas fa-newspaper"></i> Ministry News</button>
+      <button class="media-tab" onclick="showMedia('events')"><i class="fas fa-calendar-check"></i> Event Reports</button>
+    </div>
+
+    <!-- PHOTO GALLERY -->
+    <div id="media-photos" class="media-panel active">
+      <div class="section-header" style="text-align:left;margin-bottom:1.5rem;"><h3 style="color:var(--primary);">Church Service Photos</h3></div>
+      <div class="gallery">
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.25.jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.25.jpeg" alt="Service" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26.jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.26.jpeg" alt="Service" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26 (1).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.26 (1).jpeg" alt="Service" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26 (2).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.26 (2).jpeg" alt="Service" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26 (3).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.26 (3).jpeg" alt="Service" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26 (4).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.26 (4).jpeg" alt="Service" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.27.jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.27.jpeg" alt="Apostle MJ" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.27 (1).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.27 (1).jpeg" alt="Ministry" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg" alt="Apostle MJ Preaching" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.27 (3).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.27 (3).jpeg" alt="Ministry" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.28.jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.28.jpeg" alt="Apostle MJ" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.28 (1).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.28 (1).jpeg" alt="Service" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.28 (2).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.28 (2).jpeg" alt="Service" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.28 (3).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.28 (3).jpeg" alt="Service" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.28 (4).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.28 (4).jpeg" alt="Service" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.29.jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.29.jpeg" alt="Ministry" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+        <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.29 (1).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.29 (1).jpeg" alt="Ministry" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+      </div>
+    </div>
+
+    <!-- VIDEO GALLERY -->
+    <div id="media-videos" class="media-panel">
+      <div class="grid-3">
+        <div class="card">
+          <div style="background:var(--primary);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="playYouTube(this,'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+            <div style="text-align:center;color:var(--white);"><i class="fab fa-youtube" style="font-size:3rem;color:#ff0000;display:block;margin-bottom:0.5rem;"></i><div style="font-size:0.85rem;">Sunday Service Highlights</div></div>
+          </div>
+          <div class="card-body"><h4 class="card-title">Sunday Service — The God Who Answers</h4><p class="card-text">A powerful Sunday service recap including worship, prayer, and a word from Apostle MJ.</p></div>
+        </div>
+        <div class="card">
+          <div style="background:var(--primary-mid);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="playYouTube(this,'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+            <div style="text-align:center;color:var(--white);"><i class="fab fa-youtube" style="font-size:3rem;color:#ff0000;display:block;margin-bottom:0.5rem;"></i><div style="font-size:0.85rem;">Outreach Event Video</div></div>
+          </div>
+          <div class="card-body"><h4 class="card-title">Village Outreach — Souls Won for Christ</h4><p class="card-text">A moving video documenting our recent outreach to a rural village where over 50 people gave their lives to Christ.</p></div>
+        </div>
+        <div class="card">
+          <div style="background:#1a365d;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="playYouTube(this,'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+            <div style="text-align:center;color:var(--white);"><i class="fab fa-youtube" style="font-size:3rem;color:#ff0000;display:block;margin-bottom:0.5rem;"></i><div style="font-size:0.85rem;">Charity Program</div></div>
+          </div>
+          <div class="card-body"><h4 class="card-title">Feeding Program — Showing God's Love</h4><p class="card-text">See our weekly feeding program in action — distributing food and sharing the love of Christ with hungry families.</p></div>
+        </div>
+      </div>
+      <div class="text-center mt-3"><a href="#" class="btn btn-purple"><i class="fab fa-youtube"></i> Subscribe to Our YouTube Channel</a></div>
+    </div>
+
+    <!-- NEWS -->
+    <div id="media-news" class="media-panel">
+      <div class="news-item">
+        <img src="WhatsApp Image 2026-06-24 at 09.09.28.jpeg" class="news-img" alt="News">
+        <div><div class="news-date">📅 June 2026</div><div class="news-title">Over 50 Souls Saved in Village Outreach Mission</div><div class="news-desc">Apostle MJ led a powerful evangelism mission to a remote village last weekend, where the Holy Spirit moved mightily and dozens gave their lives to Christ.</div></div>
+      </div>
+      <div class="news-item">
+        <img src="WhatsApp Image 2026-06-24 at 09.09.25.jpeg" class="news-img" alt="News">
+        <div><div class="news-date">📅 May 2026</div><div class="news-title">New Sunday Service Location Opens with 100+ in Attendance</div><div class="news-desc">By God's grace, our growing congregation moved into a larger facility. The opening service was marked by powerful worship, prayer, and salvation.</div></div>
+      </div>
+      <div class="news-item">
+        <img src="WhatsApp Image 2026-06-24 at 09.09.26.jpeg" class="news-img" alt="News">
+        <div><div class="news-date">📅 April 2026</div><div class="news-title">Charity Drive Raises Funds to Support 30 Orphaned Children</div><div class="news-desc">Thanks to the generous giving of our congregation and online partners, we raised enough to support 30 orphaned children with school fees and food for 3 months.</div></div>
+      </div>
+      <div class="news-item">
+        <img src="WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg" class="news-img" alt="News">
+        <div><div class="news-date">📅 March 2026</div><div class="news-title">Annual Revival Meeting Sees Hundreds Touched by God</div><div class="news-desc">The annual revival meeting was a powerful 3-day event of worship, healing, deliverance, and salvation. Many attendees reported miraculous healings.</div></div>
+      </div>
+    </div>
+
+    <!-- EVENT REPORTS -->
+    <div id="media-events" class="media-panel">
+      <div class="grid-2" style="gap:2rem;">
+        <div class="card">
+          <img src="WhatsApp Image 2026-06-24 at 09.09.26.jpeg" class="card-img" alt="Event">
+          <div class="card-body">
+            <div class="card-meta">📅 June 2026 &nbsp;|&nbsp; 👥 150+ Attendees</div>
+            <h4 class="card-title">Youth Revival & Evangelism Crusade</h4>
+            <p class="card-text">A three-day youth revival that ignited passion for God in the next generation. Multiple salvations and healings were reported.</p>
+            <a href="#" class="btn btn-sm btn-purple">Read Full Report</a>
+          </div>
+        </div>
+        <div class="card">
+          <img src="WhatsApp Image 2026-06-24 at 09.09.25.jpeg" class="card-img" alt="Event">
+          <div class="card-body">
+            <div class="card-meta">📅 April 2026 &nbsp;|&nbsp; 👥 80+ Families</div>
+            <h4 class="card-title">Community Feeding Program — Easter Special</h4>
+            <p class="card-text">Special Easter charity event where we distributed food packages to over 80 families in the community, celebrating the resurrection of Jesus.</p>
+            <a href="#" class="btn btn-sm btn-purple">Read Full Report</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox()"><button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button><img src="" alt=""></div>
+<footer>
+  <div class="container"><div class="footer-grid"><div class="footer-col"><h4>Apostle MJ Ministries</h4><p>Documenting God's work and sharing it with the world.</p></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="prayer.html">Prayer</a></li><li><a href="donations.html">Donate</a></li><li><a href="admin.html">Staff Login</a></li></ul></div><div class="footer-col"><h4>Ministry</h4><ul><li><a href="events.html">Events</a></li><li><a href="membership.html">Join Us</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Connect</h4><div class="footer-socials"><a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a><a href="https://wa.me/211921444658" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a></div></div></div></div>
+  <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
+</footer>
+<a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa"><i class="fab fa-whatsapp"></i><span class="float-wa-tooltip">Prayer via WhatsApp</span></a>
+<button id="back-top"><i class="fas fa-chevron-up"></i></button>
+<script src="js/main.js"></script>
+<script>
+function showMedia(name) {
+  document.querySelectorAll('.media-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.media-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('media-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+function playYouTube(container, url) {
+  container.innerHTML = `<iframe src="${url}?autoplay=1" allow="autoplay;fullscreen" style="width:100%;height:100%;position:absolute;top:0;left:0;border:none;" allowfullscreen></iframe>`;
+  container.style.position = 'relative';
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

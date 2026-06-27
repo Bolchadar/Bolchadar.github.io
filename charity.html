@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charity & Outreach | Apostle MJ Ministries</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .program-card { border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); transition:var(--transition); background:var(--white); }
+    .program-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+    .program-header { padding:2rem; color:var(--white); position:relative; overflow:hidden; }
+    .program-header h3 { color:var(--white); margin-bottom:0.5rem; }
+    .program-header p { color:rgba(255,255,255,0.85); font-size:0.9rem; margin:0; }
+    .program-header .icon { font-size:2.5rem; margin-bottom:1rem; display:block; }
+    .program-body { padding:1.5rem; }
+    .impact-number { font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:800; color:var(--gold); display:block; }
+    .need-card { border:2px solid var(--gray-200); border-radius:var(--radius); padding:2rem; text-align:center; transition:var(--transition); }
+    .need-card:hover { border-color:var(--gold); box-shadow:var(--shadow); }
+    .need-icon { font-size:2.5rem; color:var(--primary-light); margin-bottom:1rem; display:block; }
+    .progress-bar { height:8px; background:var(--gray-200); border-radius:4px; overflow:hidden; margin-top:0.5rem; }
+    .progress-fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-dark)); border-radius:4px; }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand" style="text-decoration:none;"><img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;"><div class="brand-text"><span class="name">Apostle MJ Ministries</span><span class="sub">Spreading the Gospel</span></div></a><ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="prayer.html">Prayer</a></li>
+    <li><a href="sermons.html">Sermons</a></li><li><a href="testimony.html">Testimony</a></li>
+    <li><a href="devotions.html">Devotions</a></li><li><a href="charity.html" class="active">Charity</a></li>
+    <li><a href="media.html">Media</a></li><li><a href="livestream.html">Livestream</a></li>
+    <li><a href="events.html">Events</a></li><li><a href="membership.html">Membership</a></li>
+    <li><a href="contact.html">Contact</a></li><li><a href="donations.html" class="nav-donate">Give</a></li>
+  </ul>
+  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Charity & Outreach</div>
+  <h1>❤️ Charity & Outreach</h1>
+  <p>Showing the love of Christ in tangible ways — feeding the hungry, supporting orphans and widows, and transforming communities.</p>
+</div>
+
+<div class="page-content">
+
+<!-- PROGRAMS -->
+<section class="section section-light">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">Our Programs</span>
+      <h2>How We Serve the Community</h2>
+      <p>Faith without works is dead. We demonstrate God's love through practical acts of compassion.</p>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-2">
+      <div class="program-card">
+        <div class="program-header" style="background:linear-gradient(135deg,#e53e3e,#c53030);">
+          <span class="icon">🍚</span>
+          <h3>Feeding Program</h3>
+          <p>Providing nutritious meals to hungry families in our community every week.</p>
+        </div>
+        <div class="program-body">
+          <div style="display:flex;gap:2rem;margin-bottom:1.25rem;">
+            <div><span class="impact-number">200+</span><div style="font-size:0.82rem;color:var(--text-muted);">Meals Per Week</div></div>
+            <div><span class="impact-number">50+</span><div style="font-size:0.82rem;color:var(--text-muted);">Families Helped</div></div>
+          </div>
+          <p style="font-size:0.92rem;color:var(--text-muted);">Every Saturday, our team prepares and distributes food packages to vulnerable families. No one should go hungry while we can help.</p>
+          <a href="donations.html" class="btn btn-primary btn-sm mt-2"><i class="fas fa-heart"></i> Support This Program</a>
+        </div>
+      </div>
+      <div class="program-card">
+        <div class="program-header" style="background:linear-gradient(135deg,#2b6cb0,#1a365d);">
+          <span class="icon">👶</span>
+          <h3>Orphan Support</h3>
+          <p>Providing care, education, and love to orphaned children in our community.</p>
+        </div>
+        <div class="program-body">
+          <div style="display:flex;gap:2rem;margin-bottom:1.25rem;">
+            <div><span class="impact-number">30+</span><div style="font-size:0.82rem;color:var(--text-muted);">Children Supported</div></div>
+            <div><span class="impact-number">5</span><div style="font-size:0.82rem;color:var(--text-muted);">Foster Families</div></div>
+          </div>
+          <p style="font-size:0.92rem;color:var(--text-muted);">We partner with families to provide a loving home, school fees, uniforms, and emotional support to orphaned and vulnerable children.</p>
+          <a href="donations.html" class="btn btn-primary btn-sm mt-2"><i class="fas fa-heart"></i> Sponsor a Child</a>
+        </div>
+      </div>
+      <div class="program-card">
+        <div class="program-header" style="background:linear-gradient(135deg,#805ad5,#553c9a);">
+          <span class="icon">👩</span>
+          <h3>Widow Support</h3>
+          <p>Standing with widows, providing practical help and spiritual support.</p>
+        </div>
+        <div class="program-body">
+          <div style="display:flex;gap:2rem;margin-bottom:1.25rem;">
+            <div><span class="impact-number">25+</span><div style="font-size:0.82rem;color:var(--text-muted);">Widows Supported</div></div>
+            <div><span class="impact-number">Monthly</span><div style="font-size:0.82rem;color:var(--text-muted);">Support Given</div></div>
+          </div>
+          <p style="font-size:0.92rem;color:var(--text-muted);">The Bible commands us to care for widows (James 1:27). We provide food, prayer, counseling, and financial assistance to widows in need.</p>
+          <a href="donations.html" class="btn btn-primary btn-sm mt-2"><i class="fas fa-heart"></i> Support a Widow</a>
+        </div>
+      </div>
+      <div class="program-card">
+        <div class="program-header" style="background:linear-gradient(135deg,#38a169,#276749);">
+          <span class="icon">🌍</span>
+          <h3>Mission Outreach</h3>
+          <p>Taking the Gospel to unreached villages and communities.</p>
+        </div>
+        <div class="program-body">
+          <div style="display:flex;gap:2rem;margin-bottom:1.25rem;">
+            <div><span class="impact-number">15+</span><div style="font-size:0.82rem;color:var(--text-muted);">Villages Reached</div></div>
+            <div><span class="impact-number">300+</span><div style="font-size:0.82rem;color:var(--text-muted);">Souls Saved</div></div>
+          </div>
+          <p style="font-size:0.92rem;color:var(--text-muted);">Regular outreach missions to villages with no established church — preaching the Gospel, praying for the sick, and establishing prayer groups.</p>
+          <a href="donations.html" class="btn btn-primary btn-sm mt-2"><i class="fas fa-heart"></i> Support Outreach</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT STATS -->
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">God's Work Through Us</span>
+      <h2>Our Impact in Numbers</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-card"><span class="number">500+</span><span class="label">Meals Distributed</span></div>
+      <div class="stat-card"><span class="number">30+</span><span class="label">Children Supported</span></div>
+      <div class="stat-card"><span class="number">25+</span><span class="label">Widows Helped</span></div>
+      <div class="stat-card"><span class="number">15+</span><span class="label">Villages Reached</span></div>
+      <div class="stat-card"><span class="number">300+</span><span class="label">Salvations</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO GALLERY -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">On the Ground</span>
+      <h2>Outreach in Action</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="gallery">
+      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.25.jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.25.jpeg" alt="Outreach" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26.jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.26.jpeg" alt="Outreach" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26 (1).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.26 (1).jpeg" alt="Outreach" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26 (2).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.26 (2).jpeg" alt="Outreach" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.29.jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.29.jpeg" alt="Outreach" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.29 (1).jpeg')"><img src="WhatsApp Image 2026-06-24 at 09.09.29 (1).jpeg" alt="Outreach" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section class="section section-light">
+  <div class="container">
+    <div class="section-header">
+      <span class="label">Partner With Us</span>
+      <h2>Support Our Charity Work</h2>
+      <p>Every gift, no matter the size, makes a real difference in someone's life.</p>
+      <div class="divider"></div>
+    </div>
+    <div class="grid-3">
+      <div class="need-card"><span class="need-icon">🍞</span><h4>Feed a Family</h4><p>$20 provides a week of food for one family in need.</p><div class="progress-bar"><div class="progress-fill" style="width:75%;"></div></div><div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem;"><span>$750 raised</span><span>Goal: $1000</span></div><a href="donations.html" class="btn btn-primary btn-sm mt-2">Donate $20</a></div>
+      <div class="need-card"><span class="need-icon">📚</span><h4>Educate a Child</h4><p>$50 pays school fees for an orphaned child for one month.</p><div class="progress-bar"><div class="progress-fill" style="width:60%;"></div></div><div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem;"><span>$600 raised</span><span>Goal: $1000</span></div><a href="donations.html" class="btn btn-primary btn-sm mt-2">Donate $50</a></div>
+      <div class="need-card"><span class="need-icon">🌍</span><h4>Fund an Outreach</h4><p>$100 funds one village outreach mission with the Gospel.</p><div class="progress-bar"><div class="progress-fill" style="width:40%;"></div></div><div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem;"><span>$400 raised</span><span>Goal: $1000</span></div><a href="donations.html" class="btn btn-primary btn-sm mt-2">Donate $100</a></div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox()"><button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button><img src="" alt=""></div>
+<footer>
+  <div class="container"><div class="footer-grid"><div class="footer-col"><h4>Apostle MJ Ministries</h4><p>Showing God's love through compassion and service.</p></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="prayer.html">Prayer</a></li><li><a href="donations.html">Donate</a></li><li><a href="admin.html">Staff Login</a></li></ul></div><div class="footer-col"><h4>Ministry</h4><ul><li><a href="events.html">Events</a></li><li><a href="membership.html">Join Us</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Connect</h4><div class="footer-socials"><a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a><a href="https://wa.me/211921444658" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a></div></div></div></div>
+  <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
+</footer>
+<a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa"><i class="fab fa-whatsapp"></i><span class="float-wa-tooltip">Prayer via WhatsApp</span></a>
+<button id="back-top"><i class="fas fa-chevron-up"></i></button>
+<script src="js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
