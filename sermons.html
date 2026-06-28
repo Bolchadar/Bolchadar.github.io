@@ -1,142 +1,142 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sermons | Apostle MJ Ministries</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    .sermon-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; }
-    .sermon-tab { padding:0.6rem 1.25rem; border-radius:50px; border:2px solid var(--gray-200); background:var(--white); cursor:pointer; font-weight:600; font-size:0.88rem; color:var(--text-muted); transition:var(--transition); }
-    .sermon-tab.active, .sermon-tab:hover { background:var(--primary); color:var(--white); border-color:var(--primary); }
-    .sermon-panel { display:none; }
-    .sermon-panel.active { display:block; }
-    .search-bar { display:flex; gap:0.75rem; margin-bottom:2.5rem; }
-    .search-bar input { flex:1; }
-    .video-card { background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); transition:var(--transition); }
-    .video-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
-    .video-thumb { position:relative; aspect-ratio:16/9; background:var(--primary); display:flex; align-items:center; justify-content:center; cursor:pointer; }
-    .video-thumb img { width:100%; height:100%; object-fit:cover; }
-    .play-btn { position:absolute; width:60px; height:60px; background:rgba(240,165,0,0.9); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:1.3rem; transition:var(--transition); }
-    .video-thumb:hover .play-btn { transform:scale(1.15); background:var(--gold); }
-    .duration { position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,0.75); color:#fff; font-size:0.78rem; padding:0.2rem 0.5rem; border-radius:4px; }
-    .audio-item { display:flex; align-items:center; gap:1rem; background:var(--white); border-radius:var(--radius-sm); padding:1.25rem 1.5rem; box-shadow:var(--shadow); margin-bottom:0.75rem; transition:var(--transition); }
-    .audio-item:hover { box-shadow:var(--shadow-lg); transform:translateX(4px); }
-    .audio-num { width:44px; height:44px; background:linear-gradient(135deg,var(--primary),var(--primary-mid)); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--white); font-weight:700; flex-shrink:0; }
-    .audio-info { flex:1; }
-    .audio-info h4 { font-size:1rem; color:var(--primary); margin-bottom:0.25rem; }
-    .audio-info p  { font-size:0.8rem; color:var(--text-muted); margin:0; }
-    .pdf-item { display:flex; align-items:center; gap:1rem; background:var(--white); border-radius:var(--radius-sm); padding:1.25rem 1.5rem; box-shadow:var(--shadow); margin-bottom:0.75rem; }
-    .pdf-icon { width:48px; height:48px; background:#fee2e2; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#ef4444; font-size:1.3rem; flex-shrink:0; }
-    .topic-chip { display:inline-block; background:var(--light); color:var(--primary-light); border:1px solid rgba(107,33,168,0.2); font-size:0.8rem; font-weight:600; padding:0.3rem 0.85rem; border-radius:50px; margin:0.25rem; cursor:pointer; transition:var(--transition); }
-    .topic-chip:hover, .topic-chip.active { background:var(--primary); color:var(--white); }
-    @media(max-width:768px){
-      .sermon-tab { font-size:0.78rem!important; padding:0.45rem 0.9rem!important; }
-      .audio-item { flex-wrap:wrap; gap:0.6rem!important; padding:0.85rem!important; }
-      .audio-item .btn { font-size:0.75rem!important; padding:0.35rem 0.65rem!important; }
-      .audio-info h4 { font-size:0.92rem!important; }
-      .pdf-item { flex-wrap:wrap; gap:0.6rem; padding:0.85rem!important; }
-      .search-bar { flex-direction:column!important; }
-      .search-bar .btn { width:100%!important; justify-content:center!important; }
-      .video-card { margin-bottom:0.75rem; }
-      .play-btn { width:48px!important; height:48px!important; font-size:1.1rem!important; }
-    }
-    @media(max-width:480px){
-      .sermon-tab { flex:1 1 calc(50% - 0.25rem)!important; text-align:center; }
-      .audio-num { width:36px!important; height:36px!important; font-size:0.85rem!important; }
-    }
-  </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Sermons | Apostle MJ Ministries</title>
+ <link rel="stylesheet" href="css/style.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ <style>
+ .sermon-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; }
+ .sermon-tab { padding:0.6rem 1.25rem; border-radius:50px; border:2px solid var(--gray-200); background:var(--white); cursor:pointer; font-weight:600; font-size:0.88rem; color:var(--text-muted); transition:var(--transition); }
+ .sermon-tab.active, .sermon-tab:hover { background:var(--primary); color:var(--white); border-color:var(--primary); }
+ .sermon-panel { display:none; }
+ .sermon-panel.active { display:block; }
+ .search-bar { display:flex; gap:0.75rem; margin-bottom:2.5rem; }
+ .search-bar input { flex:1; }
+ .video-card { background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); transition:var(--transition); }
+ .video-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+ .video-thumb { position:relative; aspect-ratio:16/9; background:var(--primary); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+ .video-thumb img { width:100%; height:100%; object-fit:cover; }
+ .play-btn { position:absolute; width:60px; height:60px; background:rgba(240,165,0,0.9); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:1.3rem; transition:var(--transition); }
+ .video-thumb:hover .play-btn { transform:scale(1.15); background:var(--gold); }
+ .duration { position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,0.75); color:#fff; font-size:0.78rem; padding:0.2rem 0.5rem; border-radius:4px; }
+ .audio-item { display:flex; align-items:center; gap:1rem; background:var(--white); border-radius:var(--radius-sm); padding:1.25rem 1.5rem; box-shadow:var(--shadow); margin-bottom:0.75rem; transition:var(--transition); }
+ .audio-item:hover { box-shadow:var(--shadow-lg); transform:translateX(4px); }
+ .audio-num { width:44px; height:44px; background:linear-gradient(135deg,var(--primary),var(--primary-mid)); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--white); font-weight:700; flex-shrink:0; }
+ .audio-info { flex:1; }
+ .audio-info h4 { font-size:1rem; color:var(--primary); margin-bottom:0.25rem; }
+ .audio-info p { font-size:0.8rem; color:var(--text-muted); margin:0; }
+ .pdf-item { display:flex; align-items:center; gap:1rem; background:var(--white); border-radius:var(--radius-sm); padding:1.25rem 1.5rem; box-shadow:var(--shadow); margin-bottom:0.75rem; }
+ .pdf-icon { width:48px; height:48px; background:#fee2e2; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#ef4444; font-size:1.3rem; flex-shrink:0; }
+ .topic-chip { display:inline-block; background:var(--light); color:var(--primary-light); border:1px solid rgba(107,33,168,0.2); font-size:0.8rem; font-weight:600; padding:0.3rem 0.85rem; border-radius:50px; margin:0.25rem; cursor:pointer; transition:var(--transition); }
+ .topic-chip:hover, .topic-chip.active { background:var(--primary); color:var(--white); }
+ @media(max-width:768px){
+ .sermon-tab { font-size:0.78rem!important; padding:0.45rem 0.9rem!important; }
+ .audio-item { flex-wrap:wrap; gap:0.6rem!important; padding:0.85rem!important; }
+ .audio-item .btn { font-size:0.75rem!important; padding:0.35rem 0.65rem!important; }
+ .audio-info h4 { font-size:0.92rem!important; }
+ .pdf-item { flex-wrap:wrap; gap:0.6rem; padding:0.85rem!important; }
+ .search-bar { flex-direction:column!important; }
+ .search-bar .btn { width:100%!important; justify-content:center!important; }
+ .video-card { margin-bottom:0.75rem; }
+ .play-btn { width:48px!important; height:48px!important; font-size:1.1rem!important; }
+ }
+ @media(max-width:480px){
+ .sermon-tab { flex:1 1 calc(50% - 0.25rem)!important; text-align:center; }
+ .audio-num { width:36px!important; height:36px!important; font-size:0.85rem!important; }
+ }
+ </style>
 </head>
 <body>
 <nav class="navbar">
-  <a href="index.html" class="navbar-brand" style="text-decoration:none;"><img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;"><div class="brand-text"><span class="name">Apostle MJ Ministries</span><span class="sub">Spreading the Gospel</span></div></a><ul class="nav-links" id="nav-links">
-    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="prayer.html">Prayer</a></li>
-    <li><a href="sermons.html" class="active">Sermons</a></li><li><a href="testimony.html">Testimony</a></li>
-    <li><a href="devotions.html">Devotions</a></li><li><a href="charity.html">Charity</a></li>
-    <li><a href="media.html">Media</a></li><li><a href="livestream.html">Livestream</a></li>
-    <li><a href="events.html">Events</a></li><li><a href="membership.html">Membership</a></li>
-    <li><a href="contact.html">Contact</a></li><li><a href="donations.html" class="nav-donate">Give</a></li>
-  </ul>
-  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
+ <a href="index.html" class="navbar-brand" style="text-decoration:none;"><img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;"><div class="brand-text"><span class="name">Apostle MJ Ministries</span><span class="sub">Spreading the Gospel</span></div></a><ul class="nav-links" id="nav-links">
+ <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="prayer.html">Prayer</a></li>
+ <li><a href="sermons.html" class="active">Sermons</a></li><li><a href="testimony.html">Testimony</a></li>
+ <li><a href="devotions.html">Devotions</a></li><li><a href="charity.html">Charity</a></li>
+ <li><a href="media.html">Media</a></li><li><a href="livestream.html">Livestream</a></li>
+ <li><a href="events.html">Events</a></li><li><a href="membership.html">Membership</a></li>
+ <li><a href="contact.html">Contact</a></li><li><a href="donations.html" class="nav-donate">Give</a></li>
+ </ul>
+ <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
 </nav>
 
 <div class="page-hero">
-  <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Sermons</div>
-  <h1>Sermons & Bible Teachings</h1>
-  <p>Be transformed by the renewing of your mind through the Word of God.</p>
+ <div class="breadcrumb"><a href="index.html">Home</a>&rsaquo; Sermons</div>
+ <h1>Sermons & Bible Teachings</h1>
+ <p>Be transformed by the renewing of your mind through the Word of God.</p>
 </div>
 
 <div class="page-content">
 <section class="section">
-  <div class="container">
+ <div class="container">
 
-    <!-- SEARCH -->
-    <div class="search-bar">
-      <input type="text" class="form-control" id="sermon-search" placeholder="🔍 Search sermons by title, topic, or scripture...">
-      <button class="btn btn-purple" onclick="filterSermons()"><i class="fas fa-search"></i> Search</button>
-    </div>
+ <!-- SEARCH -->
+ <div class="search-bar">
+ <input type="text" class="form-control" id="sermon-search" placeholder=" Search sermons by title, topic, or scripture...">
+ <button class="btn btn-purple" onclick="filterSermons()"><i class="fas fa-search"></i>Search</button>
+ </div>
 
-    <!-- TOPICS -->
-    <div style="margin-bottom:2rem;">
-      <strong style="font-size:0.88rem;color:var(--text-muted);margin-right:0.75rem;">Browse by Topic:</strong>
-      <span class="topic-chip active" onclick="filterByTopic(this, 'all')">All Topics</span>
-      <span class="topic-chip" onclick="filterByTopic(this, 'faith')">Faith</span>
-      <span class="topic-chip" onclick="filterByTopic(this, 'healing')">Healing</span>
-      <span class="topic-chip" onclick="filterByTopic(this, 'prayer')">Prayer</span>
-      <span class="topic-chip" onclick="filterByTopic(this, 'salvation')">Salvation</span>
-      <span class="topic-chip" onclick="filterByTopic(this, 'prosperity')">Prosperity</span>
-      <span class="topic-chip" onclick="filterByTopic(this, 'holy spirit')">Holy Spirit</span>
-      <span class="topic-chip" onclick="filterByTopic(this, 'family')">Family</span>
-      <span class="topic-chip" onclick="filterByTopic(this, 'worship')">Worship</span>
-    </div>
+ <!-- TOPICS -->
+ <div style="margin-bottom:2rem;">
+ <strong style="font-size:0.88rem;color:var(--text-muted);margin-right:0.75rem;">Browse by Topic:</strong>
+ <span class="topic-chip active" onclick="filterByTopic(this, 'all')">All Topics</span>
+ <span class="topic-chip" onclick="filterByTopic(this, 'faith')">Faith</span>
+ <span class="topic-chip" onclick="filterByTopic(this, 'healing')">Healing</span>
+ <span class="topic-chip" onclick="filterByTopic(this, 'prayer')">Prayer</span>
+ <span class="topic-chip" onclick="filterByTopic(this, 'salvation')">Salvation</span>
+ <span class="topic-chip" onclick="filterByTopic(this, 'prosperity')">Prosperity</span>
+ <span class="topic-chip" onclick="filterByTopic(this, 'holy spirit')">Holy Spirit</span>
+ <span class="topic-chip" onclick="filterByTopic(this, 'family')">Family</span>
+ <span class="topic-chip" onclick="filterByTopic(this, 'worship')">Worship</span>
+ </div>
 
-    <!-- TABS -->
-    <div class="sermon-tabs">
-      <button class="sermon-tab active" onclick="showTab('video')"><i class="fas fa-video"></i> Video Sermons</button>
-      <button class="sermon-tab" onclick="showTab('audio')"><i class="fas fa-headphones"></i> Audio Sermons</button>
-      <button class="sermon-tab" onclick="showTab('pdf')"><i class="fas fa-file-pdf"></i> Sermon Notes (PDF)</button>
-      <button class="sermon-tab" onclick="showTab('teachings')"><i class="fas fa-book-bible"></i> Bible Teachings</button>
-    </div>
+ <!-- TABS -->
+ <div class="sermon-tabs">
+ <button class="sermon-tab active" onclick="showTab('video')"><i class="fas fa-video"></i>Video Sermons</button>
+ <button class="sermon-tab" onclick="showTab('audio')"><i class="fas fa-headphones"></i>Audio Sermons</button>
+ <button class="sermon-tab" onclick="showTab('pdf')"><i class="fas fa-file-pdf"></i>Sermon Notes (PDF)</button>
+ <button class="sermon-tab" onclick="showTab('teachings')"><i class="fas fa-book-bible"></i>Bible Teachings</button>
+ </div>
 
-    <!-- VIDEO SERMONS -->
-    <div id="tab-video" class="sermon-panel active">
-      <div class="grid-3" id="video-grid">
-        <p id="sermons-empty" style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:3rem 0;">No sermons uploaded yet. Check back soon!</p>
-      </div>
-    </div>
+ <!-- VIDEO SERMONS -->
+ <div id="tab-video" class="sermon-panel active">
+ <div class="grid-3" id="video-grid">
+ <p id="sermons-empty" style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:3rem 0;">No sermons uploaded yet. Check back soon!</p>
+ </div>
+ </div>
 
-    <!-- AUDIO SERMONS -->
-    <div id="tab-audio" class="sermon-panel">
-      <div id="audio-grid">
-        <p style="text-align:center;color:var(--text-muted);padding:3rem 0;">No audio sermons uploaded yet. Check back soon!</p>
-      </div>
-    </div>
+ <!-- AUDIO SERMONS -->
+ <div id="tab-audio" class="sermon-panel">
+ <div id="audio-grid">
+ <p style="text-align:center;color:var(--text-muted);padding:3rem 0;">No audio sermons uploaded yet. Check back soon!</p>
+ </div>
+ </div>
 
-    <!-- PDF NOTES -->
-    <div id="tab-pdf" class="sermon-panel">
-      <p style="text-align:center;color:var(--text-muted);padding:3rem 0;">No sermon notes available yet. Check back soon!</p>
-    </div>
+ <!-- PDF NOTES -->
+ <div id="tab-pdf" class="sermon-panel">
+ <p style="text-align:center;color:var(--text-muted);padding:3rem 0;">No sermon notes available yet. Check back soon!</p>
+ </div>
 
-    <!-- BIBLE TEACHINGS -->
-    <div id="tab-teachings" class="sermon-panel">
-      <p style="text-align:center;color:var(--text-muted);padding:3rem 0;">No teaching series available yet. Check back soon!</p>
-    </div>
+ <!-- BIBLE TEACHINGS -->
+ <div id="tab-teachings" class="sermon-panel">
+ <p style="text-align:center;color:var(--text-muted);padding:3rem 0;">No teaching series available yet. Check back soon!</p>
+ </div>
 
-  </div>
+ </div>
 </section>
 </div>
 
 <footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-col"><h4>Apostle MJ Ministries</h4><p>Spreading the Gospel through preaching, teaching, and outreach.</p></div>
-      <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="prayer.html">Prayer</a></li><li><a href="donations.html">Donate</a></li><li><a href="admin.html">Staff Login</a></li></ul></div>
-      <div class="footer-col"><h4>Ministry</h4><ul><li><a href="livestream.html">Watch Live</a></li><li><a href="events.html">Events</a></li><li><a href="membership.html">Join Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+ <div class="container">
+ <div class="footer-grid">
+ <div class="footer-col"><h4>Apostle MJ Ministries</h4><p>Spreading the Gospel through preaching, teaching, and outreach.</p></div>
+ <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="prayer.html">Prayer</a></li><li><a href="donations.html">Donate</a></li><li><a href="admin.html">Staff Login</a></li></ul></div>
+ <div class="footer-col"><h4>Ministry</h4><ul><li><a href="livestream.html">Watch Live</a></li><li><a href="events.html">Events</a></li><li><a href="membership.html">Join Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
       <div class="footer-col"><h4>Connect</h4><div class="footer-socials"><a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a><a href="https://wa.me/211921444658" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a></div></div>
-    </div>
-  </div>
-  <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
+ </div>
+ </div>
+ <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
 </footer>
 
 <a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa"><i class="fab fa-whatsapp"></i><span class="float-wa-tooltip">Prayer via WhatsApp</span></a>
@@ -144,95 +144,95 @@
 <script src="js/main.js"></script>
 <script>
 function showTab(name) {
-  document.querySelectorAll('.sermon-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sermon-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  event.target.classList.add('active');
+ document.querySelectorAll('.sermon-panel').forEach(p =>p.classList.remove('active'));
+ document.querySelectorAll('.sermon-tab').forEach(t =>t.classList.remove('active'));
+ document.getElementById('tab-' + name).classList.add('active');
+ event.target.classList.add('active');
 }
 function filterByTopic(el, topic) {
-  document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.video-card').forEach(c => {
-    c.style.display = (topic === 'all' || c.dataset.topic === topic) ? '' : 'none';
-  });
+ document.querySelectorAll('.topic-chip').forEach(c =>c.classList.remove('active'));
+ el.classList.add('active');
+ document.querySelectorAll('.video-card').forEach(c =>{
+ c.style.display = (topic === 'all' || c.dataset.topic === topic) ? '' : 'none';
+ });
 }
 function playVideo(thumb, url) {
-  const iframe = document.createElement('iframe');
-  iframe.src = url + '?autoplay=1';
-  iframe.allow = 'autoplay; fullscreen';
-  iframe.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0;border:none;';
-  thumb.innerHTML = '';
-  thumb.appendChild(iframe);
+ const iframe = document.createElement('iframe');
+ iframe.src = url + '?autoplay=1';
+ iframe.allow = 'autoplay; fullscreen';
+ iframe.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0;border:none;';
+ thumb.innerHTML = '';
+ thumb.appendChild(iframe);
 }
 function filterSermons() {
-  const q = document.getElementById('sermon-search').value.toLowerCase();
-  document.querySelectorAll('.video-card').forEach(c => {
-    c.style.display = c.textContent.toLowerCase().includes(q) ? '' : 'none';
-  });
+ const q = document.getElementById('sermon-search').value.toLowerCase();
+ document.querySelectorAll('.video-card').forEach(c =>{
+ c.style.display = c.textContent.toLowerCase().includes(q) ? '' : 'none';
+ });
 }
 
 function playVideo(thumb, url) {
-  const iframe = document.createElement('iframe');
-  iframe.src = url + '?autoplay=1';
-  iframe.allow = 'autoplay; fullscreen';
-  iframe.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0;border:none;';
-  thumb.innerHTML = '';
-  thumb.appendChild(iframe);
+ const iframe = document.createElement('iframe');
+ iframe.src = url + '?autoplay=1';
+ iframe.allow = 'autoplay; fullscreen';
+ iframe.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0;border:none;';
+ thumb.innerHTML = '';
+ thumb.appendChild(iframe);
 }
 
 function toYouTubeEmbed(url) {
-  if (!url) return '';
-  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?\/\s]+)/);
-  return m ? 'https://www.youtube.com/embed/' + m[1] : url;
+ if (!url) return '';
+ const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?\/\s]+)/);
+ return m ? 'https://www.youtube.com/embed/' + m[1] : url;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const sermons = JSON.parse(localStorage.getItem('mj_sermons') || '[]');
-  sermons.sort((a,b) => (b.date||'').localeCompare(a.date||'') || b.id - a.id);
-  const grid = document.getElementById('video-grid');
-  const audioGrid = document.getElementById('audio-grid');
-  if (sermons.length) {
-    const empty = document.getElementById('sermons-empty');
-    if (empty) empty.remove();
-    sermons.forEach(s => {
-      const dateLabel = s.date ? new Date(s.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
-      const embedUrl = toYouTubeEmbed(s.url);
-      // Video card
-      if (s.url) {
-        const card = document.createElement('div');
-        card.className = 'video-card';
-        card.dataset.topic = (s.topic||'').toLowerCase();
-        card.innerHTML = `
-          <div class="video-thumb" onclick="playVideo(this,'${escapeHtml(embedUrl)}')">
-            <div style="width:100%;height:100%;background:var(--primary);display:flex;align-items:center;justify-content:center;">
-              <i class="fab fa-youtube" style="font-size:3rem;color:#ff0000;"></i>
-            </div>
-            <div class="play-btn"><i class="fas fa-play"></i></div>
-          </div>
-          <div class="card-body">
-            <div class="card-meta">📅 ${escapeHtml(dateLabel)} &nbsp;|&nbsp; <i class="fas fa-tag"></i> ${escapeHtml(s.topic||'General')}</div>
-            <h4 class="card-title">${escapeHtml(s.title)}</h4>
-            <p class="card-text">${escapeHtml(s.desc||'')}</p>
-            <div style="display:flex;gap:0.5rem;margin-top:1rem;">
-              <button class="btn btn-sm btn-purple" onclick="playVideo(this.closest('.video-card').querySelector('.video-thumb'),'${escapeHtml(embedUrl)}')"><i class="fas fa-play"></i> Watch</button>
-              <a href="${escapeHtml(s.url)}" target="_blank" class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fab fa-youtube"></i> YouTube</a>
-            </div>
-          </div>`;
-        grid.appendChild(card);
-      }
-      // Audio list item
-      const num = audioGrid.querySelectorAll('.audio-item').length + 1;
-      const audioEmpty = audioGrid.querySelector('p');
-      if (audioEmpty) audioEmpty.remove();
-      const item = document.createElement('div');
-      item.className = 'audio-item';
-      item.innerHTML = `<div class="audio-num">${num}</div>
-        <div class="audio-info"><h4>${escapeHtml(s.title)}</h4>
-        <p>📅 ${escapeHtml(dateLabel)} &nbsp;|&nbsp; 🏷 ${escapeHtml(s.topic||'General')} &nbsp;|&nbsp; 🎤 ${escapeHtml(s.speaker||'Apostle MJ')}</p></div>
-        ${s.url ? `<a href="${escapeHtml(s.url)}" target="_blank" class="btn btn-sm btn-purple"><i class="fas fa-play"></i> Watch</a>` : ''}`;
-      audioGrid.appendChild(item);
-    });
-  }
+document.addEventListener('DOMContentLoaded', () =>{
+ const sermons = JSON.parse(localStorage.getItem('mj_sermons') || '[]');
+ sermons.sort((a,b) =>(b.date||'').localeCompare(a.date||'') || b.id - a.id);
+ const grid = document.getElementById('video-grid');
+ const audioGrid = document.getElementById('audio-grid');
+ if (sermons.length) {
+ const empty = document.getElementById('sermons-empty');
+ if (empty) empty.remove();
+ sermons.forEach(s =>{
+ const dateLabel = s.date ? new Date(s.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+ const embedUrl = toYouTubeEmbed(s.url);
+ // Video card
+ if (s.url) {
+ const card = document.createElement('div');
+ card.className = 'video-card';
+ card.dataset.topic = (s.topic||'').toLowerCase();
+ card.innerHTML = `
+ <div class="video-thumb" onclick="playVideo(this,'${escapeHtml(embedUrl)}')">
+ <div style="width:100%;height:100%;background:var(--primary);display:flex;align-items:center;justify-content:center;">
+ <i class="fab fa-youtube" style="font-size:3rem;color:#ff0000;"></i>
+ </div>
+ <div class="play-btn"><i class="fas fa-play"></i></div>
+ </div>
+ <div class="card-body">
+ <div class="card-meta">${escapeHtml(dateLabel)} &nbsp;|&nbsp; <i class="fas fa-tag"></i>${escapeHtml(s.topic||'General')}</div>
+ <h4 class="card-title">${escapeHtml(s.title)}</h4>
+ <p class="card-text">${escapeHtml(s.desc||'')}</p>
+ <div style="display:flex;gap:0.5rem;margin-top:1rem;">
+ <button class="btn btn-sm btn-purple" onclick="playVideo(this.closest('.video-card').querySelector('.video-thumb'),'${escapeHtml(embedUrl)}')"><i class="fas fa-play"></i>Watch</button>
+ <a href="${escapeHtml(s.url)}" target="_blank" class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fab fa-youtube"></i>YouTube</a>
+ </div>
+ </div>`;
+ grid.appendChild(card);
+ }
+ // Audio list item
+ const num = audioGrid.querySelectorAll('.audio-item').length + 1;
+ const audioEmpty = audioGrid.querySelector('p');
+ if (audioEmpty) audioEmpty.remove();
+ const item = document.createElement('div');
+ item.className = 'audio-item';
+ item.innerHTML = `<div class="audio-num">${num}</div>
+ <div class="audio-info"><h4>${escapeHtml(s.title)}</h4>
+ <p>${escapeHtml(dateLabel)} &nbsp;|&nbsp; ${escapeHtml(s.topic||'General')} &nbsp;|&nbsp; ${escapeHtml(s.speaker||'Apostle MJ')}</p></div>
+ ${s.url ? `<a href="${escapeHtml(s.url)}" target="_blank" class="btn btn-sm btn-purple"><i class="fas fa-play"></i>Watch</a>` : ''}`;
+ audioGrid.appendChild(item);
+ });
+ }
 });
 </script>
 </body>

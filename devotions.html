@@ -1,151 +1,151 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily Devotions | Apostle MJ Ministries</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    .reading-plan { counter-reset: plan; }
-    .plan-item { display:flex; gap:1rem; padding:1rem; border-radius:var(--radius-sm); transition:var(--transition); border-bottom:1px solid var(--gray-200); }
-    .plan-item:hover { background:var(--light); }
-    .plan-num { width:32px; height:32px; border-radius:50%; background:var(--primary); color:var(--white); display:flex; align-items:center; justify-content:center; font-size:0.82rem; font-weight:700; flex-shrink:0; }
-    .plan-num.done { background:var(--success); }
-    .plan-check { width:20px; height:20px; border:2px solid var(--gray-200); border-radius:4px; cursor:pointer; transition:var(--transition); flex-shrink:0; margin-top:6px; }
-    .plan-check.checked { background:var(--success); border-color:var(--success); }
-  </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Daily Devotions | Apostle MJ Ministries</title>
+ <link rel="stylesheet" href="css/style.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ <style>
+ .reading-plan { counter-reset: plan; }
+ .plan-item { display:flex; gap:1rem; padding:1rem; border-radius:var(--radius-sm); transition:var(--transition); border-bottom:1px solid var(--gray-200); }
+ .plan-item:hover { background:var(--light); }
+ .plan-num { width:32px; height:32px; border-radius:50%; background:var(--primary); color:var(--white); display:flex; align-items:center; justify-content:center; font-size:0.82rem; font-weight:700; flex-shrink:0; }
+ .plan-num.done { background:var(--success); }
+ .plan-check { width:20px; height:20px; border:2px solid var(--gray-200); border-radius:4px; cursor:pointer; transition:var(--transition); flex-shrink:0; margin-top:6px; }
+ .plan-check.checked { background:var(--success); border-color:var(--success); }
+ </style>
 </head>
 <body>
 <nav class="navbar">
-  <a href="index.html" class="navbar-brand" style="text-decoration:none;"><img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;"><div class="brand-text"><span class="name">Apostle MJ Ministries</span><span class="sub">Spreading the Gospel</span></div></a><ul class="nav-links" id="nav-links">
-    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="prayer.html">Prayer</a></li>
-    <li><a href="sermons.html">Sermons</a></li><li><a href="testimony.html">Testimony</a></li>
-    <li><a href="devotions.html" class="active">Devotions</a></li><li><a href="charity.html">Charity</a></li>
-    <li><a href="media.html">Media</a></li><li><a href="livestream.html">Livestream</a></li>
-    <li><a href="events.html">Events</a></li><li><a href="membership.html">Membership</a></li>
-    <li><a href="contact.html">Contact</a></li><li><a href="donations.html" class="nav-donate">Give</a></li>
-  </ul>
-  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
+ <a href="index.html" class="navbar-brand" style="text-decoration:none;"><img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;"><div class="brand-text"><span class="name">Apostle MJ Ministries</span><span class="sub">Spreading the Gospel</span></div></a><ul class="nav-links" id="nav-links">
+ <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="prayer.html">Prayer</a></li>
+ <li><a href="sermons.html">Sermons</a></li><li><a href="testimony.html">Testimony</a></li>
+ <li><a href="devotions.html" class="active">Devotions</a></li><li><a href="charity.html">Charity</a></li>
+ <li><a href="media.html">Media</a></li><li><a href="livestream.html">Livestream</a></li>
+ <li><a href="events.html">Events</a></li><li><a href="membership.html">Membership</a></li>
+ <li><a href="contact.html">Contact</a></li><li><a href="donations.html" class="nav-donate">Give</a></li>
+ </ul>
+ <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
 </nav>
 
 <div class="page-hero">
-  <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Daily Devotions</div>
-  <h1>📖 Daily Devotions</h1>
-  <p>Start every day in the Word of God. Let His truth renew your mind and strengthen your faith.</p>
+ <div class="breadcrumb"><a href="index.html">Home</a>&rsaquo; Daily Devotions</div>
+ <h1>Daily Devotions</h1>
+ <p>Start every day in the Word of God. Let His truth renew your mind and strengthen your faith.</p>
 </div>
 
 <div class="page-content">
 
 <!-- TODAY'S DEVOTIONAL -->
 <section class="section section-light">
-  <div class="container">
-    <div class="section-header">
-      <span class="label" id="today-date"></span>
-      <h2>Today's Devotional</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="devotion-card" id="today-devotion-card" style="max-width:780px;margin:0 auto;">
-      <div class="devotion-header">
-        <div class="label" style="color:var(--gold-light);margin-bottom:0.5rem;">Featured Message</div>
-        <h3>Walking in God's Purpose — You Were Created for More</h3>
-        <div class="verse" style="margin-top:0.75rem;">
-          <i class="fas fa-bible"></i> &nbsp;
-          <em>"For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do."</em> — Ephesians 2:10
-        </div>
-      </div>
-      <div class="devotion-body">
-        <p>You are not an accident. You are not a mistake. Before the foundation of the world, God had a plan and a purpose specifically for you. The verse today reminds us that we are His <em>masterpiece</em> — crafted with intention, love, and divine design.</p>
-        <p>Many people spend their lives wondering why they are here. They search for meaning in careers, relationships, and achievements. But the truth of God's Word declares something greater: you were made to walk in the works that God prepared for you before time began.</p>
-        <p>This means that no matter what you have been through — the failures, the losses, the disappointments — God has not abandoned His purpose for your life. He is still working, still weaving, still preparing the path that leads to your divine destiny.</p>
-        <p><strong>Today, be encouraged.</strong> Step boldly into what God has placed in your heart. Trust His timing. Walk in faith. Your best days are not behind you — they are ahead, in the hands of the One who created you for His glory.</p>
+ <div class="container">
+ <div class="section-header">
+ <span class="label" id="today-date"></span>
+ <h2>Today's Devotional</h2>
+ <div class="divider"></div>
+ </div>
+ <div class="devotion-card" id="today-devotion-card" style="max-width:780px;margin:0 auto;">
+ <div class="devotion-header">
+ <div class="label" style="color:var(--gold-light);margin-bottom:0.5rem;">Featured Message</div>
+ <h3>Walking in God's Purpose — You Were Created for More</h3>
+ <div class="verse" style="margin-top:0.75rem;">
+ <i class="fas fa-bible"></i>&nbsp;
+ <em>"For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do."</em>— Ephesians 2:10
+ </div>
+ </div>
+ <div class="devotion-body">
+ <p>You are not an accident. You are not a mistake. Before the foundation of the world, God had a plan and a purpose specifically for you. The verse today reminds us that we are His <em>masterpiece</em>— crafted with intention, love, and divine design.</p>
+ <p>Many people spend their lives wondering why they are here. They search for meaning in careers, relationships, and achievements. But the truth of God's Word declares something greater: you were made to walk in the works that God prepared for you before time began.</p>
+ <p>This means that no matter what you have been through — the failures, the losses, the disappointments — God has not abandoned His purpose for your life. He is still working, still weaving, still preparing the path that leads to your divine destiny.</p>
+ <p><strong>Today, be encouraged.</strong>Step boldly into what God has placed in your heart. Trust His timing. Walk in faith. Your best days are not behind you — they are ahead, in the hands of the One who created you for His glory.</p>
 
-        <div class="prayer-points mt-3">
-          <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i> Today's Prayer Points</h4>
-          <div class="prayer-point"><i class="fas fa-pray"></i><div>Thank God for creating you with purpose and intentionality.</div></div>
-          <div class="prayer-point"><i class="fas fa-pray"></i><div>Ask God to reveal the specific works He has prepared for you.</div></div>
-          <div class="prayer-point"><i class="fas fa-pray"></i><div>Pray for boldness to step into your God-given calling, despite fear or doubt.</div></div>
-          <div class="prayer-point"><i class="fas fa-pray"></i><div>Intercede for someone else who needs to discover their purpose in God.</div></div>
-        </div>
+ <div class="prayer-points mt-3">
+ <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i>Today's Prayer Points</h4>
+ <div class="prayer-point"><i class="fas fa-pray"></i><div>Thank God for creating you with purpose and intentionality.</div></div>
+ <div class="prayer-point"><i class="fas fa-pray"></i><div>Ask God to reveal the specific works He has prepared for you.</div></div>
+ <div class="prayer-point"><i class="fas fa-pray"></i><div>Pray for boldness to step into your God-given calling, despite fear or doubt.</div></div>
+ <div class="prayer-point"><i class="fas fa-pray"></i><div>Intercede for someone else who needs to discover their purpose in God.</div></div>
+ </div>
 
-        <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;">
-          <a href="prayer.html" class="btn btn-primary"><i class="fas fa-hands-praying"></i> Submit Prayer Request</a>
-          <button onclick="shareDevotional()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Share via WhatsApp</button>
-        </div>
-      </div>
-    </div>
-  </div>
+ <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;">
+ <a href="prayer.html" class="btn btn-primary"><i class="fas fa-hands-praying"></i>Submit Prayer Request</a>
+ <button onclick="shareDevotional()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
+ </div>
+ </div>
+ </div>
+ </div>
 </section>
 
 <!-- ARCHIVE -->
 <section class="section">
-  <div class="container">
-    <div class="section-header">
-      <span class="label">Previous Devotionals</span>
-      <h2>Devotional Archive</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="grid-3" id="devotion-archive">
-      <p id="archive-empty" style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:2rem 0;">No previous devotionals yet.</p>
-    </div>
-  </div>
+ <div class="container">
+ <div class="section-header">
+ <span class="label">Previous Devotionals</span>
+ <h2>Devotional Archive</h2>
+ <div class="divider"></div>
+ </div>
+ <div class="grid-3" id="devotion-archive">
+ <p id="archive-empty" style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:2rem 0;">No previous devotionals yet.</p>
+ </div>
+ </div>
 </section>
 
 <!-- BIBLE READING PLAN -->
 <section class="section section-gray">
-  <div class="container">
-    <div class="section-header">
-      <span class="label">Read Through the Bible</span>
-      <h2>Bible Reading Plan</h2>
-      <p>Read through the New Testament in 90 days. Check off each chapter as you complete it.</p>
-      <div class="divider"></div>
-    </div>
-    <div class="grid-2" style="gap:2rem;">
-      <div class="card">
-        <div class="card-body">
-          <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-book-bible" style="color:var(--gold);"></i> Week 1 — The Gospels</h4>
-          <div class="reading-plan">
-            <div class="plan-item"><div class="plan-num">1</div><div style="flex:1;"><strong>Matthew 1-3</strong><div style="font-size:0.82rem;color:var(--text-muted);">The Birth of Jesus, John the Baptist</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
-            <div class="plan-item"><div class="plan-num">2</div><div style="flex:1;"><strong>Matthew 4-7</strong><div style="font-size:0.82rem;color:var(--text-muted);">Temptation of Jesus, Sermon on the Mount</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
-            <div class="plan-item"><div class="plan-num">3</div><div style="flex:1;"><strong>Matthew 8-10</strong><div style="font-size:0.82rem;color:var(--text-muted);">Miracles, Calling of the Twelve</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
-            <div class="plan-item"><div class="plan-num">4</div><div style="flex:1;"><strong>Matthew 11-13</strong><div style="font-size:0.82rem;color:var(--text-muted);">John the Baptist, Parables of the Kingdom</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
-            <div class="plan-item"><div class="plan-num">5</div><div style="flex:1;"><strong>Matthew 14-17</strong><div style="font-size:0.82rem;color:var(--text-muted);">Feeding 5000, Transfiguration</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
-            <div class="plan-item"><div class="plan-num">6</div><div style="flex:1;"><strong>Matthew 18-20</strong><div style="font-size:0.82rem;color:var(--text-muted);">Forgiveness, Marriage, Children</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
-            <div class="plan-item"><div class="plan-num">7</div><div style="flex:1;"><strong>Matthew 21-23</strong><div style="font-size:0.82rem;color:var(--text-muted);">Triumphal Entry, Temple Cleansing</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <!-- SCRIPTURE OF THE DAY -->
-        <div class="scripture-card mb-3">
-          <div class="hero-badge" style="margin-bottom:1rem;font-size:0.75rem;"><i class="fas fa-star"></i> Scripture of the Day</div>
-          <p class="scripture-text" id="scripture-text">"Your word is a lamp to my feet and a light to my path."</p>
-          <span class="scripture-ref" id="scripture-ref">— Psalm 119:105</span>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-bell" style="color:var(--gold);"></i> Get Daily Devotionals</h4>
-            <p style="font-size:0.92rem;color:var(--text-muted);">Receive our daily devotional message directly on WhatsApp each morning!</p>
-            <button onclick="subscribeDevotional()" class="btn btn-whatsapp" style="width:100%;justify-content:center;"><i class="fab fa-whatsapp"></i> Subscribe on WhatsApp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+ <div class="container">
+ <div class="section-header">
+ <span class="label">Read Through the Bible</span>
+ <h2>Bible Reading Plan</h2>
+ <p>Read through the New Testament in 90 days. Check off each chapter as you complete it.</p>
+ <div class="divider"></div>
+ </div>
+ <div class="grid-2" style="gap:2rem;">
+ <div class="card">
+ <div class="card-body">
+ <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-book-bible" style="color:var(--gold);"></i>Week 1 — The Gospels</h4>
+ <div class="reading-plan">
+ <div class="plan-item"><div class="plan-num">1</div><div style="flex:1;"><strong>Matthew 1-3</strong><div style="font-size:0.82rem;color:var(--text-muted);">The Birth of Jesus, John the Baptist</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
+ <div class="plan-item"><div class="plan-num">2</div><div style="flex:1;"><strong>Matthew 4-7</strong><div style="font-size:0.82rem;color:var(--text-muted);">Temptation of Jesus, Sermon on the Mount</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
+ <div class="plan-item"><div class="plan-num">3</div><div style="flex:1;"><strong>Matthew 8-10</strong><div style="font-size:0.82rem;color:var(--text-muted);">Miracles, Calling of the Twelve</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
+ <div class="plan-item"><div class="plan-num">4</div><div style="flex:1;"><strong>Matthew 11-13</strong><div style="font-size:0.82rem;color:var(--text-muted);">John the Baptist, Parables of the Kingdom</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
+ <div class="plan-item"><div class="plan-num">5</div><div style="flex:1;"><strong>Matthew 14-17</strong><div style="font-size:0.82rem;color:var(--text-muted);">Feeding 5000, Transfiguration</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
+ <div class="plan-item"><div class="plan-num">6</div><div style="flex:1;"><strong>Matthew 18-20</strong><div style="font-size:0.82rem;color:var(--text-muted);">Forgiveness, Marriage, Children</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
+ <div class="plan-item"><div class="plan-num">7</div><div style="flex:1;"><strong>Matthew 21-23</strong><div style="font-size:0.82rem;color:var(--text-muted);">Triumphal Entry, Temple Cleansing</div></div><div class="plan-check" onclick="toggleCheck(this)"></div></div>
+ </div>
+ </div>
+ </div>
+ <div>
+ <!-- SCRIPTURE OF THE DAY -->
+ <div class="scripture-card mb-3">
+ <div class="hero-badge" style="margin-bottom:1rem;font-size:0.75rem;"><i class="fas fa-star"></i>Scripture of the Day</div>
+ <p class="scripture-text" id="scripture-text">"Your word is a lamp to my feet and a light to my path."</p>
+ <span class="scripture-ref" id="scripture-ref">— Psalm 119:105</span>
+ </div>
+ <div class="card">
+ <div class="card-body">
+ <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-bell" style="color:var(--gold);"></i>Get Daily Devotionals</h4>
+ <p style="font-size:0.92rem;color:var(--text-muted);">Receive our daily devotional message directly on WhatsApp each morning!</p>
+ <button onclick="subscribeDevotional()" class="btn btn-whatsapp" style="width:100%;justify-content:center;"><i class="fab fa-whatsapp"></i>Subscribe on WhatsApp</button>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
 </section>
 
 </div>
 
 <footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-col"><h4>Apostle MJ Ministries</h4><p>Growing in faith, love, and the Word of God daily.</p></div>
-      <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="prayer.html">Prayer</a></li><li><a href="sermons.html">Sermons</a></li><li><a href="donations.html">Donate</a></li></ul></div>
-      <div class="footer-col"><h4>Ministry</h4><ul><li><a href="events.html">Events</a></li><li><a href="membership.html">Join Us</a></li><li><a href="admin.html">Staff Login</a></li></ul></div>
+ <div class="container">
+ <div class="footer-grid">
+ <div class="footer-col"><h4>Apostle MJ Ministries</h4><p>Growing in faith, love, and the Word of God daily.</p></div>
+ <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="prayer.html">Prayer</a></li><li><a href="sermons.html">Sermons</a></li><li><a href="donations.html">Donate</a></li></ul></div>
+ <div class="footer-col"><h4>Ministry</h4><ul><li><a href="events.html">Events</a></li><li><a href="membership.html">Join Us</a></li><li><a href="admin.html">Staff Login</a></li></ul></div>
       <div class="footer-col"><h4>Connect</h4><div class="footer-socials"><a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a><a href="https://wa.me/211921444658" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a></div></div>
-    </div>
-  </div>
-  <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
+ </div>
+ </div>
+ <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
 </footer>
 
 <a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa"><i class="fab fa-whatsapp"></i><span class="float-wa-tooltip">Prayer via WhatsApp</span></a>
@@ -155,73 +155,73 @@
 document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-GB', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
 
 (function loadPublishedDevotionals() {
-  const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
-  if (!devs.length) return;
+ const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
+ if (!devs.length) return;
 
-  // Sort newest first
-  devs.sort((a, b) => (b.date || '').localeCompare(a.date || '') || b.id - a.id);
-  const latest = devs[0];
+ // Sort newest first
+ devs.sort((a, b) =>(b.date || '').localeCompare(a.date || '') || b.id - a.id);
+ const latest = devs[0];
 
-  // Build prayer points HTML
-  const prayerLines = (latest.prayers || '').split('\n').filter(l => l.trim());
-  const prayerHtml = prayerLines.length
-    ? `<div class="prayer-points mt-3">
-        <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i> Today's Prayer Points</h4>
-        ${prayerLines.map(l => `<div class="prayer-point"><i class="fas fa-pray"></i><div>${escapeHtml(l)}</div></div>`).join('')}
-       </div>` : '';
+ // Build prayer points HTML
+ const prayerLines = (latest.prayers || '').split('\n').filter(l =>l.trim());
+ const prayerHtml = prayerLines.length
+ ? `<div class="prayer-points mt-3">
+ <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i>Today's Prayer Points</h4>
+ ${prayerLines.map(l =>`<div class="prayer-point"><i class="fas fa-pray"></i><div>${escapeHtml(l)}</div></div>`).join('')}
+ </div>` : '';
 
-  // Build message paragraphs
-  const msgHtml = (latest.message || '').split('\n\n').filter(p => p.trim())
-    .map(p => `<p>${escapeHtml(p.trim())}</p>`).join('');
+ // Build message paragraphs
+ const msgHtml = (latest.message || '').split('\n\n').filter(p =>p.trim())
+ .map(p =>`<p>${escapeHtml(p.trim())}</p>`).join('');
 
-  document.getElementById('today-devotion-card').innerHTML = `
-    <div class="devotion-header">
-      <div class="label" style="color:var(--gold-light);margin-bottom:0.5rem;">Featured Message</div>
-      <h3>${escapeHtml(latest.topic)}</h3>
-      ${latest.verse ? `<div class="verse" style="margin-top:0.75rem;">
-        <i class="fas fa-bible"></i> &nbsp;
-        <em>"${escapeHtml(latest.verse)}"</em>${latest.ref ? ` — ${escapeHtml(latest.ref)}` : ''}
-      </div>` : ''}
-    </div>
-    <div class="devotion-body">
-      ${msgHtml}
-      ${prayerHtml}
-      <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;">
-        <a href="prayer.html" class="btn btn-primary"><i class="fas fa-hands-praying"></i> Submit Prayer Request</a>
-        <button onclick="shareDevotional()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Share via WhatsApp</button>
-      </div>
-    </div>`;
+ document.getElementById('today-devotion-card').innerHTML = `
+ <div class="devotion-header">
+ <div class="label" style="color:var(--gold-light);margin-bottom:0.5rem;">Featured Message</div>
+ <h3>${escapeHtml(latest.topic)}</h3>
+ ${latest.verse ? `<div class="verse" style="margin-top:0.75rem;">
+ <i class="fas fa-bible"></i>&nbsp;
+ <em>"${escapeHtml(latest.verse)}"</em>${latest.ref ? ` — ${escapeHtml(latest.ref)}` : ''}
+ </div>` : ''}
+ </div>
+ <div class="devotion-body">
+ ${msgHtml}
+ ${prayerHtml}
+ <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;">
+ <a href="prayer.html" class="btn btn-primary"><i class="fas fa-hands-praying"></i>Submit Prayer Request</a>
+ <button onclick="shareDevotional()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
+ </div>
+ </div>`;
 
-  // Update archive with older devotionals
-  const archive = document.getElementById('devotion-archive');
-  const archiveEmpty = document.getElementById('archive-empty');
-  if (devs.length > 1) {
-    if (archiveEmpty) archiveEmpty.remove();
-    archive.innerHTML = devs.slice(1, 7).map(d => {
-      const dateLabel = d.date ? new Date(d.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) : '';
-      return `<div class="card">
-        <div class="card-body">
-          <div class="card-meta">📅 ${escapeHtml(dateLabel)}</div>
-          <h4 class="card-title">${escapeHtml(d.topic)}</h4>
-          <p class="card-text">${d.ref ? escapeHtml(d.ref) + ' — ' : ''}${escapeHtml((d.message || '').substring(0, 100))}...</p>
-        </div>
-      </div>`;
-    }).join('');
-  }
+ // Update archive with older devotionals
+ const archive = document.getElementById('devotion-archive');
+ const archiveEmpty = document.getElementById('archive-empty');
+ if (devs.length >1) {
+ if (archiveEmpty) archiveEmpty.remove();
+ archive.innerHTML = devs.slice(1, 7).map(d =>{
+ const dateLabel = d.date ? new Date(d.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) : '';
+ return `<div class="card">
+ <div class="card-body">
+ <div class="card-meta">${escapeHtml(dateLabel)}</div>
+ <h4 class="card-title">${escapeHtml(d.topic)}</h4>
+ <p class="card-text">${d.ref ? escapeHtml(d.ref) + ' — ' : ''}${escapeHtml((d.message || '').substring(0, 100))}...</p>
+ </div>
+ </div>`;
+ }).join('');
+ }
 })();
 
 function toggleCheck(el) {
-  el.classList.toggle('checked');
-  if (el.classList.contains('checked')) el.innerHTML = '<i class="fas fa-check" style="color:#fff;font-size:0.7rem;"></i>';
-  else el.innerHTML = '';
+ el.classList.toggle('checked');
+ if (el.classList.contains('checked')) el.innerHTML = '<i class="fas fa-check" style="color:#fff;font-size:0.7rem;"></i>';
+ else el.innerHTML = '';
 }
 function shareDevotional() {
-  const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
-  const d = devs.length ? devs.sort((a,b) => b.id - a.id)[0] : null;
-  const topic = d ? d.topic : 'Walking in God\'s Purpose';
-  const ref = d ? d.ref : 'Ephesians 2:10';
-  const verse = d ? d.verse.substring(0,120) : 'For we are God\'s handiwork, created in Christ Jesus to do good works.';
-  const preview = d ? d.message.substring(0,300) : 'You are not an accident. God created you with purpose and intention.';
+ const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
+ const d = devs.length ? devs.sort((a,b) =>b.id - a.id)[0] : null;
+ const topic = d ? d.topic : 'Walking in God\'s Purpose';
+ const ref = d ? d.ref : 'Ephesians 2:10';
+ const verse = d ? d.verse.substring(0,120) : 'For we are God\'s handiwork, created in Christ Jesus to do good works.';
+ const preview = d ? d.message.substring(0,300) : 'You are not an accident. God created you with purpose and intention.';
   const msg = `*📖 Daily Devotional — ${MINISTRY_NAME}*\n\n*Topic:* ${topic}\n*Scripture:* ${ref}\n\n_"${verse}..."_\n\n${preview}...\n\n🙏 Visit our website to read the full devotional.\n_— Apostle MJ Ministries_`;
   openWhatsApp(msg);
 }

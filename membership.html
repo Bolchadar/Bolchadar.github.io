@@ -1,215 +1,215 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Membership | Apostle MJ Ministries</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    .membership-card { background:linear-gradient(135deg,var(--primary),var(--primary-mid)); color:var(--white); border-radius:var(--radius); padding:2.5rem; position:relative; overflow:hidden; }
-    .membership-card::before { content:'✞'; position:absolute; right:-20px; top:-20px; font-size:10rem; color:rgba(255,255,255,0.04); }
-    .membership-card h2 { color:var(--white); }
-    .membership-card p { color:rgba(255,255,255,0.8); }
-    .dept-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1rem; }
-    .dept-item { border:2px solid var(--gray-200); border-radius:var(--radius-sm); padding:1.25rem; text-align:center; cursor:pointer; transition:var(--transition); }
-    .dept-item.selected, .dept-item:hover { border-color:var(--primary-light); background:var(--light); }
-    .dept-item i { font-size:1.75rem; color:var(--primary-light); display:block; margin-bottom:0.6rem; }
-    .dept-item span { font-size:0.88rem; font-weight:600; color:var(--primary); }
-    .member-card { background:linear-gradient(135deg,var(--primary),#7c3aed); color:var(--white); border-radius:var(--radius); padding:2rem; text-align:center; position:relative; overflow:hidden; }
-    .member-card-avatar { width:80px; height:80px; border-radius:50%; background:rgba(255,255,255,0.2); border:3px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:800; margin:0 auto 1rem; color:var(--white); }
-    .member-id { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:0.75rem; margin-top:1rem; font-size:0.82rem; }
-    .member-id .id-num { font-size:1.25rem; font-weight:800; color:var(--gold); }
-    @media(max-width:768px){
-      .dept-grid { grid-template-columns:repeat(3,1fr)!important; gap:0.6rem!important; }
-      .dept-item { padding:0.85rem 0.4rem!important; }
-      .dept-item i { font-size:1.4rem!important; margin-bottom:0.35rem!important; }
-      .dept-item span { font-size:0.75rem!important; }
-      .member-card { padding:1.5rem!important; }
-      .member-card-avatar { width:64px!important; height:64px!important; font-size:1.5rem!important; }
-      .membership-card { padding:1.5rem!important; }
-    }
-    @media(max-width:480px){
-      .dept-grid { grid-template-columns:repeat(2,1fr)!important; }
-    }
-  </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Membership | Apostle MJ Ministries</title>
+ <link rel="stylesheet" href="css/style.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ <style>
+ .membership-card { background:linear-gradient(135deg,var(--primary),var(--primary-mid)); color:var(--white); border-radius:var(--radius); padding:2.5rem; position:relative; overflow:hidden; }
+ .membership-card::before { content:''; position:absolute; right:-20px; top:-20px; font-size:10rem; color:rgba(255,255,255,0.04); }
+ .membership-card h2 { color:var(--white); }
+ .membership-card p { color:rgba(255,255,255,0.8); }
+ .dept-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1rem; }
+ .dept-item { border:2px solid var(--gray-200); border-radius:var(--radius-sm); padding:1.25rem; text-align:center; cursor:pointer; transition:var(--transition); }
+ .dept-item.selected, .dept-item:hover { border-color:var(--primary-light); background:var(--light); }
+ .dept-item i { font-size:1.75rem; color:var(--primary-light); display:block; margin-bottom:0.6rem; }
+ .dept-item span { font-size:0.88rem; font-weight:600; color:var(--primary); }
+ .member-card { background:linear-gradient(135deg,var(--primary),#7c3aed); color:var(--white); border-radius:var(--radius); padding:2rem; text-align:center; position:relative; overflow:hidden; }
+ .member-card-avatar { width:80px; height:80px; border-radius:50%; background:rgba(255,255,255,0.2); border:3px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:800; margin:0 auto 1rem; color:var(--white); }
+ .member-id { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:0.75rem; margin-top:1rem; font-size:0.82rem; }
+ .member-id .id-num { font-size:1.25rem; font-weight:800; color:var(--gold); }
+ @media(max-width:768px){
+ .dept-grid { grid-template-columns:repeat(3,1fr)!important; gap:0.6rem!important; }
+ .dept-item { padding:0.85rem 0.4rem!important; }
+ .dept-item i { font-size:1.4rem!important; margin-bottom:0.35rem!important; }
+ .dept-item span { font-size:0.75rem!important; }
+ .member-card { padding:1.5rem!important; }
+ .member-card-avatar { width:64px!important; height:64px!important; font-size:1.5rem!important; }
+ .membership-card { padding:1.5rem!important; }
+ }
+ @media(max-width:480px){
+ .dept-grid { grid-template-columns:repeat(2,1fr)!important; }
+ }
+ </style>
 </head>
 <body>
 <nav class="navbar">
-  <a href="index.html" class="navbar-brand" style="text-decoration:none;"><img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;"><div class="brand-text"><span class="name">Apostle MJ Ministries</span><span class="sub">Spreading the Gospel</span></div></a><ul class="nav-links" id="nav-links">
-    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="prayer.html">Prayer</a></li>
-    <li><a href="sermons.html">Sermons</a></li><li><a href="testimony.html">Testimony</a></li>
-    <li><a href="devotions.html">Devotions</a></li><li><a href="charity.html">Charity</a></li>
-    <li><a href="media.html">Media</a></li><li><a href="livestream.html">Livestream</a></li>
-    <li><a href="events.html">Events</a></li><li><a href="membership.html" class="active">Membership</a></li>
-    <li><a href="contact.html">Contact</a></li><li><a href="donations.html" class="nav-donate">Give</a></li>
-  </ul>
-  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
+ <a href="index.html" class="navbar-brand" style="text-decoration:none;"><img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;"><div class="brand-text"><span class="name">Apostle MJ Ministries</span><span class="sub">Spreading the Gospel</span></div></a><ul class="nav-links" id="nav-links">
+ <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="prayer.html">Prayer</a></li>
+ <li><a href="sermons.html">Sermons</a></li><li><a href="testimony.html">Testimony</a></li>
+ <li><a href="devotions.html">Devotions</a></li><li><a href="charity.html">Charity</a></li>
+ <li><a href="media.html">Media</a></li><li><a href="livestream.html">Livestream</a></li>
+ <li><a href="events.html">Events</a></li><li><a href="membership.html" class="active">Membership</a></li>
+ <li><a href="contact.html">Contact</a></li><li><a href="donations.html" class="nav-donate">Give</a></li>
+ </ul>
+ <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div><div class="nav-overlay" id="nav-overlay"></div>
 </nav>
 
 <div class="page-hero">
-  <div class="breadcrumb"><a href="index.html">Home</a> &rsaquo; Membership</div>
-  <h1>👥 Join the Family</h1>
-  <p>Become an official member of Apostle MJ Ministries and be part of a Spirit-filled community serving God together.</p>
+ <div class="breadcrumb"><a href="index.html">Home</a>&rsaquo; Membership</div>
+ <h1>Join the Family</h1>
+ <p>Become an official member of Apostle MJ Ministries and be part of a Spirit-filled community serving God together.</p>
 </div>
 
 <div class="page-content">
 
 <!-- BENEFITS -->
 <section class="section section-light">
-  <div class="container">
-    <div class="section-header">
-      <span class="label">Why Join?</span>
-      <h2>Benefits of Membership</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="grid-4">
-      <div class="mv-card" style="text-align:center;background:var(--white);border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);"><i class="fas fa-id-card" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;display:block;"></i><h4 style="color:var(--primary);">Membership Card</h4><p style="font-size:0.88rem;color:var(--text-muted);">Receive your digital membership card and profile number.</p></div>
-      <div class="mv-card" style="text-align:center;background:var(--white);border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);"><i class="fas fa-users" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;display:block;"></i><h4 style="color:var(--primary);">Community</h4><p style="font-size:0.88rem;color:var(--text-muted);">Join a loving, Spirit-filled community of believers.</p></div>
-      <div class="mv-card" style="text-align:center;background:var(--white);border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);"><i class="fas fa-graduation-cap" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;display:block;"></i><h4 style="color:var(--primary);">Discipleship</h4><p style="font-size:0.88rem;color:var(--text-muted);">Access to exclusive Bible studies and discipleship programs.</p></div>
-      <div class="mv-card" style="text-align:center;background:var(--white);border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);"><i class="fas fa-hands-helping" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;display:block;"></i><h4 style="color:var(--primary);">Serve</h4><p style="font-size:0.88rem;color:var(--text-muted);">Opportunities to serve in various ministry departments.</p></div>
-    </div>
-  </div>
+ <div class="container">
+ <div class="section-header">
+ <span class="label">Why Join?</span>
+ <h2>Benefits of Membership</h2>
+ <div class="divider"></div>
+ </div>
+ <div class="grid-4">
+ <div class="mv-card" style="text-align:center;background:var(--white);border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);"><i class="fas fa-id-card" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;display:block;"></i><h4 style="color:var(--primary);">Membership Card</h4><p style="font-size:0.88rem;color:var(--text-muted);">Receive your digital membership card and profile number.</p></div>
+ <div class="mv-card" style="text-align:center;background:var(--white);border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);"><i class="fas fa-users" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;display:block;"></i><h4 style="color:var(--primary);">Community</h4><p style="font-size:0.88rem;color:var(--text-muted);">Join a loving, Spirit-filled community of believers.</p></div>
+ <div class="mv-card" style="text-align:center;background:var(--white);border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);"><i class="fas fa-graduation-cap" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;display:block;"></i><h4 style="color:var(--primary);">Discipleship</h4><p style="font-size:0.88rem;color:var(--text-muted);">Access to exclusive Bible studies and discipleship programs.</p></div>
+ <div class="mv-card" style="text-align:center;background:var(--white);border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);"><i class="fas fa-hands-helping" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;display:block;"></i><h4 style="color:var(--primary);">Serve</h4><p style="font-size:0.88rem;color:var(--text-muted);">Opportunities to serve in various ministry departments.</p></div>
+ </div>
+ </div>
 </section>
 
 <!-- MEMBERSHIP FORM -->
 <section class="section">
-  <div class="container">
-    <div class="grid-2" style="gap:3rem;align-items:start;">
-      <div>
-        <div class="section-header" style="text-align:left;margin-bottom:2rem;">
-          <span class="label">Register Today</span>
-          <h2>Membership Registration Form</h2>
-          <p>Fill in the form below to join Apostle MJ Ministries. Registration is free!</p>
-          <div class="divider" style="margin-left:0;"></div>
-        </div>
+ <div class="container">
+ <div class="grid-2" style="gap:3rem;align-items:start;">
+ <div>
+ <div class="section-header" style="text-align:left;margin-bottom:2rem;">
+ <span class="label">Register Today</span>
+ <h2>Membership Registration Form</h2>
+ <p>Fill in the form below to join Apostle MJ Ministries. Registration is free!</p>
+ <div class="divider" style="margin-left:0;"></div>
+ </div>
 
-        <div class="card">
-          <div class="card-body">
-            <form id="member-form" novalidate>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Full Name <span class="required">*</span></label>
-                  <input type="text" name="full-name" class="form-control" placeholder="Your full name" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Date of Birth</label>
-                  <input type="date" name="dob" class="form-control">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Phone Number <span class="required">*</span></label>
-                  <input type="tel" name="phone" class="form-control" placeholder="+211 912 345 678" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Email Address</label>
-                  <input type="email" name="email" class="form-control" placeholder="your@email.com">
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Country <span class="required">*</span></label>
-                  <select name="country" class="form-control" required>
-                    <option value="">-- Select --</option>
-                    <option>South Sudan</option><option>Kenya</option><option>Uganda</option>
-                    <option>Ethiopia</option><option>Tanzania</option><option>Rwanda</option>
-                    <option>Nigeria</option><option>Ghana</option><option>South Africa</option>
-                    <option>United States</option><option>United Kingdom</option><option>Canada</option>
-                    <option>Australia</option><option>Other</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">City / Town</label>
-                  <input type="text" name="city" class="form-control" placeholder="Your city">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Marital Status</label>
-                <select name="marital" class="form-control">
-                  <option>Single</option><option>Married</option><option>Widowed</option><option>Divorced</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">How did you find us?</label>
-                <select name="source" class="form-control">
-                  <option>Church Service</option><option>Facebook</option><option>YouTube</option>
-                  <option>TikTok</option><option>WhatsApp</option><option>Friend / Family</option><option>Other</option>
-                </select>
-              </div>
+ <div class="card">
+ <div class="card-body">
+ <form id="member-form" novalidate>
+ <div class="form-row">
+ <div class="form-group">
+ <label class="form-label">Full Name <span class="required">*</span></label>
+ <input type="text" name="full-name" class="form-control" placeholder="Your full name" required>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Date of Birth</label>
+ <input type="date" name="dob" class="form-control">
+ </div>
+ </div>
+ <div class="form-row">
+ <div class="form-group">
+ <label class="form-label">Phone Number <span class="required">*</span></label>
+ <input type="tel" name="phone" class="form-control" placeholder="+211 912 345 678" required>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Email Address</label>
+ <input type="email" name="email" class="form-control" placeholder="your@email.com">
+ </div>
+ </div>
+ <div class="form-row">
+ <div class="form-group">
+ <label class="form-label">Country <span class="required">*</span></label>
+ <select name="country" class="form-control" required>
+ <option value="">-- Select --</option>
+ <option>South Sudan</option><option>Kenya</option><option>Uganda</option>
+ <option>Ethiopia</option><option>Tanzania</option><option>Rwanda</option>
+ <option>Nigeria</option><option>Ghana</option><option>South Africa</option>
+ <option>United States</option><option>United Kingdom</option><option>Canada</option>
+ <option>Australia</option><option>Other</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label class="form-label">City / Town</label>
+ <input type="text" name="city" class="form-control" placeholder="Your city">
+ </div>
+ </div>
+ <div class="form-group">
+ <label class="form-label">Marital Status</label>
+ <select name="marital" class="form-control">
+ <option>Single</option><option>Married</option><option>Widowed</option><option>Divorced</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label class="form-label">How did you find us?</label>
+ <select name="source" class="form-control">
+ <option>Church Service</option><option>Facebook</option><option>YouTube</option>
+ <option>TikTok</option><option>WhatsApp</option><option>Friend / Family</option><option>Other</option>
+ </select>
+ </div>
 
-              <!-- DEPARTMENTS -->
-              <div class="form-group">
-                <label class="form-label">Would you like to serve? Select a Department:</label>
-                <div class="dept-grid" id="dept-grid">
-                  <div class="dept-item" onclick="selectDept(this, 'Worship & Music')"><i class="fas fa-music"></i><span>Worship & Music</span></div>
-                  <div class="dept-item" onclick="selectDept(this, 'Prayer Team')"><i class="fas fa-hands-praying"></i><span>Prayer Team</span></div>
-                  <div class="dept-item" onclick="selectDept(this, 'Evangelism')"><i class="fas fa-cross"></i><span>Evangelism</span></div>
-                  <div class="dept-item" onclick="selectDept(this, 'Charity & Welfare')"><i class="fas fa-heart"></i><span>Charity & Welfare</span></div>
-                  <div class="dept-item" onclick="selectDept(this, 'Youth Ministry')"><i class="fas fa-child"></i><span>Youth Ministry</span></div>
-                  <div class="dept-item" onclick="selectDept(this, 'Children Ministry')"><i class="fas fa-baby"></i><span>Children</span></div>
-                  <div class="dept-item" onclick="selectDept(this, 'Media & Tech')"><i class="fas fa-camera"></i><span>Media & Tech</span></div>
-                  <div class="dept-item" onclick="selectDept(this, 'Ushering')"><i class="fas fa-door-open"></i><span>Ushering</span></div>
-                  <div class="dept-item" onclick="selectDept(this, 'Not Yet - Just a Member')"><i class="fas fa-user-check"></i><span>Not Yet</span></div>
-                </div>
-                <input type="hidden" name="department" id="selected-dept">
-              </div>
+ <!-- DEPARTMENTS -->
+ <div class="form-group">
+ <label class="form-label">Would you like to serve? Select a Department:</label>
+ <div class="dept-grid" id="dept-grid">
+ <div class="dept-item" onclick="selectDept(this, 'Worship & Music')"><i class="fas fa-music"></i><span>Worship & Music</span></div>
+ <div class="dept-item" onclick="selectDept(this, 'Prayer Team')"><i class="fas fa-hands-praying"></i><span>Prayer Team</span></div>
+ <div class="dept-item" onclick="selectDept(this, 'Evangelism')"><i class="fas fa-cross"></i><span>Evangelism</span></div>
+ <div class="dept-item" onclick="selectDept(this, 'Charity & Welfare')"><i class="fas fa-heart"></i><span>Charity & Welfare</span></div>
+ <div class="dept-item" onclick="selectDept(this, 'Youth Ministry')"><i class="fas fa-child"></i><span>Youth Ministry</span></div>
+ <div class="dept-item" onclick="selectDept(this, 'Children Ministry')"><i class="fas fa-baby"></i><span>Children</span></div>
+ <div class="dept-item" onclick="selectDept(this, 'Media & Tech')"><i class="fas fa-camera"></i><span>Media & Tech</span></div>
+ <div class="dept-item" onclick="selectDept(this, 'Ushering')"><i class="fas fa-door-open"></i><span>Ushering</span></div>
+ <div class="dept-item" onclick="selectDept(this, 'Not Yet - Just a Member')"><i class="fas fa-user-check"></i><span>Not Yet</span></div>
+ </div>
+ <input type="hidden" name="department" id="selected-dept">
+ </div>
 
-              <div class="form-group mt-2">
-                <label class="form-label">Is there anything you would like the ministry to know about you?</label>
-                <textarea name="notes" class="form-control" rows="3" placeholder="Optional message..."></textarea>
-              </div>
+ <div class="form-group mt-2">
+ <label class="form-label">Is there anything you would like the ministry to know about you?</label>
+ <textarea name="notes" class="form-control" rows="3" placeholder="Optional message..."></textarea>
+ </div>
 
-              <div style="background:var(--light);border-radius:var(--radius-sm);padding:1rem;font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem;">
-                <i class="fas fa-info-circle" style="color:var(--primary-light);"></i>
-                By registering, you agree to be part of the Apostle MJ Ministries family. We will contact you via WhatsApp to confirm your registration.
-              </div>
+ <div style="background:var(--light);border-radius:var(--radius-sm);padding:1rem;font-size:0.85rem;color:var(--text-muted);margin-bottom:1.25rem;">
+ <i class="fas fa-info-circle" style="color:var(--primary-light);"></i>
+ By registering, you agree to be part of the Apostle MJ Ministries family. We will contact you via WhatsApp to confirm your registration.
+ </div>
 
-              <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">
-                <i class="fas fa-users"></i> Register as a Member
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+ <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">
+ <i class="fas fa-users"></i>Register as a Member
+ </button>
+ </form>
+ </div>
+ </div>
+ </div>
 
-      <!-- MEMBER PREVIEW CARD -->
-      <div>
-        <div class="member-card mb-3">
-          <div style="font-size:0.75rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;">Apostle MJ Ministries</div>
-          <div class="member-card-avatar" id="card-avatar">?</div>
-          <h3 style="color:var(--white);margin-bottom:0.25rem;" id="card-name">Your Name Here</h3>
-          <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;" id="card-location">Your Location</p>
-          <div style="color:var(--gold);font-size:0.82rem;font-weight:600;" id="card-dept">Department / Role</div>
-          <div class="member-id">
-            <div style="color:rgba(255,255,255,0.6);font-size:0.75rem;margin-bottom:0.25rem;">Member ID</div>
-            <div class="id-num" id="card-id">MJ-2024-XXXX</div>
-          </div>
-          <div style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:1rem;">✞ Member of the Apostle MJ Ministries Family</div>
-        </div>
+ <!-- MEMBER PREVIEW CARD -->
+ <div>
+ <div class="member-card mb-3">
+ <div style="font-size:0.75rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;">Apostle MJ Ministries</div>
+ <div class="member-card-avatar" id="card-avatar">?</div>
+ <h3 style="color:var(--white);margin-bottom:0.25rem;" id="card-name">Your Name Here</h3>
+ <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;" id="card-location">Your Location</p>
+ <div style="color:var(--gold);font-size:0.82rem;font-weight:600;" id="card-dept">Department / Role</div>
+ <div class="member-id">
+ <div style="color:rgba(255,255,255,0.6);font-size:0.75rem;margin-bottom:0.25rem;">Member ID</div>
+ <div class="id-num" id="card-id">MJ-2024-XXXX</div>
+ </div>
+ <div style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:1rem;">Member of the Apostle MJ Ministries Family</div>
+ </div>
 
-        <div class="scripture-card">
-          <p class="scripture-text">"And let us consider how we may spur one another on toward love and good deeds, not giving up meeting together..."</p>
-          <span class="scripture-ref">— Hebrews 10:24-25</span>
-        </div>
+ <div class="scripture-card">
+ <p class="scripture-text">"And let us consider how we may spur one another on toward love and good deeds, not giving up meeting together..."</p>
+ <span class="scripture-ref">— Hebrews 10:24-25</span>
+ </div>
 
-        <div class="card mt-3">
-          <div class="card-body">
-            <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-question-circle" style="color:var(--gold);"></i> Already a Member?</h4>
-            <p style="font-size:0.9rem;color:var(--text-muted);">If you're already a member and need to update your information or volunteer for a department, contact us via WhatsApp.</p>
-            <button onclick="existingMemberContact()" class="btn btn-whatsapp" style="width:100%;justify-content:center;margin-top:0.75rem;"><i class="fab fa-whatsapp"></i> Contact Us on WhatsApp</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+ <div class="card mt-3">
+ <div class="card-body">
+ <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-question-circle" style="color:var(--gold);"></i>Already a Member?</h4>
+ <p style="font-size:0.9rem;color:var(--text-muted);">If you're already a member and need to update your information or volunteer for a department, contact us via WhatsApp.</p>
+ <button onclick="existingMemberContact()" class="btn btn-whatsapp" style="width:100%;justify-content:center;margin-top:0.75rem;"><i class="fab fa-whatsapp"></i>Contact Us on WhatsApp</button>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
 </section>
 
 </div>
 
 <footer>
   <div class="container"><div class="footer-grid"><div class="footer-col"><h4>Apostle MJ Ministries</h4><p>You belong here. Welcome to the family!</p></div><div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="prayer.html">Prayer</a></li><li><a href="donations.html">Donate</a></li><li><a href="admin.html">Staff Login</a></li></ul></div><div class="footer-col"><h4>Ministry</h4><ul><li><a href="events.html">Events</a></li><li><a href="charity.html">Charity</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-col"><h4>Connect</h4><div class="footer-socials"><a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a><a href="https://wa.me/211921444658" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a></div></div></div></div>
-  <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
+ <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
 </footer>
 <a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa"><i class="fab fa-whatsapp"></i><span class="float-wa-tooltip">Prayer via WhatsApp</span></a>
 <button id="back-top"><i class="fas fa-chevron-up"></i></button>
@@ -217,26 +217,26 @@
 <script>
 let selectedDept = '';
 function selectDept(el, dept) {
-  document.querySelectorAll('.dept-item').forEach(d => d.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedDept = dept;
-  document.getElementById('selected-dept').value = dept;
-  document.getElementById('card-dept').textContent = dept;
+ document.querySelectorAll('.dept-item').forEach(d =>d.classList.remove('selected'));
+ el.classList.add('selected');
+ selectedDept = dept;
+ document.getElementById('selected-dept').value = dept;
+ document.getElementById('card-dept').textContent = dept;
 }
 // Live card preview
-document.addEventListener('DOMContentLoaded', () => {
-  const nameInput = document.querySelector('[name="full-name"]');
-  const locInput  = document.querySelector('[name="country"]');
-  if (nameInput) nameInput.addEventListener('input', () => {
-    const n = nameInput.value || 'Your Name';
-    document.getElementById('card-name').textContent = n;
-    document.getElementById('card-avatar').textContent = n.charAt(0).toUpperCase();
-    const randId = 'MJ-2024-' + Math.floor(1000 + Math.random() * 9000);
-    document.getElementById('card-id').textContent = randId;
-  });
-  if (locInput) locInput.addEventListener('change', () => {
-    document.getElementById('card-location').textContent = locInput.value || 'Your Location';
-  });
+document.addEventListener('DOMContentLoaded', () =>{
+ const nameInput = document.querySelector('[name="full-name"]');
+ const locInput = document.querySelector('[name="country"]');
+ if (nameInput) nameInput.addEventListener('input', () =>{
+ const n = nameInput.value || 'Your Name';
+ document.getElementById('card-name').textContent = n;
+ document.getElementById('card-avatar').textContent = n.charAt(0).toUpperCase();
+ const randId = 'MJ-2024-' + Math.floor(1000 + Math.random() * 9000);
+ document.getElementById('card-id').textContent = randId;
+ });
+ if (locInput) locInput.addEventListener('change', () =>{
+ document.getElementById('card-location').textContent = locInput.value || 'Your Location';
+ });
 });
 function existingMemberContact() {
   const msg = `*👤 MEMBER UPDATE — ${MINISTRY_NAME}*\n\nHello! I am already a member and would like to update my information or volunteer for a department.\n\nName: [Your Name]\nMember ID (if known): [ID]\nMessage: [What you need]`;

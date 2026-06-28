@@ -1,287 +1,287 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apostle MJ Ministries | Bringing Hope, Healing & Salvation</title>
-  <meta name="description" content="Apostle MJ Ministries — a Spirit-filled ministry spreading the Gospel through prayer, teaching, charity and outreach.">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    .hero { min-height: 96vh; }
-    .announcement-ticker {
-      background: var(--gold);
-      color: var(--primary);
-      padding: 0.6rem 1.5rem;
-      font-size: 0.88rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      overflow: hidden;
-    }
-    .ticker-label { background: var(--primary); color: var(--gold); padding: 0.2rem 0.75rem; border-radius: 4px; white-space: nowrap; font-size: 0.78rem; }
-    .ticker-scroll { overflow: hidden; flex: 1; }
-    .ticker-inner { display: flex; gap: 3rem; animation: ticker 30s linear infinite; white-space: nowrap; }
-    @keyframes ticker { from{transform:translateX(0);} to{transform:translateX(-50%);} }
-    .welcome-photo { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
-    .welcome-photo img { width: 100%; height: 450px; object-fit: cover; }
-    @media (max-width: 768px) { .welcome-photo img { height: 260px; } }
-  </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Apostle MJ Ministries | Bringing Hope, Healing & Salvation</title>
+ <meta name="description" content="Apostle MJ Ministries — a Spirit-filled ministry spreading the Gospel through prayer, teaching, charity and outreach.">
+ <link rel="stylesheet" href="css/style.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ <style>
+ .hero { min-height: 96vh; }
+ .announcement-ticker {
+ background: var(--gold);
+ color: var(--primary);
+ padding: 0.6rem 1.5rem;
+ font-size: 0.88rem;
+ font-weight: 700;
+ display: flex;
+ align-items: center;
+ gap: 1rem;
+ overflow: hidden;
+ }
+ .ticker-label { background: var(--primary); color: var(--gold); padding: 0.2rem 0.75rem; border-radius: 4px; white-space: nowrap; font-size: 0.78rem; }
+ .ticker-scroll { overflow: hidden; flex: 1; }
+ .ticker-inner { display: flex; gap: 3rem; animation: ticker 30s linear infinite; white-space: nowrap; }
+ @keyframes ticker { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+ .welcome-photo { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
+ .welcome-photo img { width: 100%; height: 450px; object-fit: cover; }
+ @media (max-width: 768px) { .welcome-photo img { height: 260px; } }
+ </style>
 </head>
 <body>
 <!-- NAVIGATION -->
 <nav class="navbar">
-  <a href="index.html" class="navbar-brand" style="text-decoration:none;">
-    <img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;">
-    <div class="brand-text">
-      <span class="name">Apostle MJ Ministries</span>
-      <span class="sub">Spreading the Gospel</span>
-    </div>
-  </a><ul class="nav-links" id="nav-links">
-    <li><a href="index.html" class="active">Home</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="prayer.html">Prayer</a></li>
-    <li><a href="sermons.html">Sermons</a></li>
-    <li><a href="testimony.html">Testimony</a></li>
-    <li><a href="devotions.html">Devotions</a></li>
-    <li><a href="charity.html">Charity</a></li>
-    <li><a href="media.html">Media</a></li>
-    <li><a href="livestream.html">Livestream</a></li>
-    <li><a href="events.html">Events</a></li>
-    <li><a href="membership.html">Membership</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="donations.html" class="nav-donate">Give</a></li>
-  </ul>
-  <div class="nav-toggle" id="nav-toggle" role="button" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </div>
+ <a href="index.html" class="navbar-brand" style="text-decoration:none;">
+ <img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;">
+ <div class="brand-text">
+ <span class="name">Apostle MJ Ministries</span>
+ <span class="sub">Spreading the Gospel</span>
+ </div>
+ </a><ul class="nav-links" id="nav-links">
+ <li><a href="index.html" class="active">Home</a></li>
+ <li><a href="about.html">About</a></li>
+ <li><a href="prayer.html">Prayer</a></li>
+ <li><a href="sermons.html">Sermons</a></li>
+ <li><a href="testimony.html">Testimony</a></li>
+ <li><a href="devotions.html">Devotions</a></li>
+ <li><a href="charity.html">Charity</a></li>
+ <li><a href="media.html">Media</a></li>
+ <li><a href="livestream.html">Livestream</a></li>
+ <li><a href="events.html">Events</a></li>
+ <li><a href="membership.html">Membership</a></li>
+ <li><a href="contact.html">Contact</a></li>
+ <li><a href="donations.html" class="nav-donate">Give</a></li>
+ </ul>
+ <div class="nav-toggle" id="nav-toggle" role="button" aria-label="Menu">
+ <span></span><span></span><span></span>
+ </div>
 </nav>
 
 <!-- ANNOUNCEMENT TICKER -->
 <div class="announcement-ticker" id="announcement-ticker" style="display:none;">
-  <span class="ticker-label">📢 ANNOUNCEMENTS</span>
-  <div class="ticker-scroll">
-    <div class="ticker-inner" id="ticker-inner"></div>
-  </div>
+ <span class="ticker-label">ANNOUNCEMENTS</span>
+ <div class="ticker-scroll">
+ <div class="ticker-inner" id="ticker-inner"></div>
+ </div>
 </div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg" style="background-image:url('WhatsApp Image 2026-06-24 at 09.09.25.jpeg');"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <img src="apostlemj.jpeg" alt="Apostle MJ" class="hero-img-circle">
-    <div class="hero-badge"><i class="fas fa-cross"></i> &nbsp; Welcome to Apostle MJ Ministries</div>
-    <h1>Touching Lives Through the <span>Power of God</span></h1>
-    <p>A Spirit-filled ministry dedicated to spreading the Gospel, healing the sick, setting captives free, and transforming communities with the love of Christ.</p>
-    <div class="hero-buttons">
-      <a href="prayer.html" class="btn btn-primary btn-lg"><i class="fas fa-hands-praying"></i> Send a Prayer Request</a>
-      <a href="sermons.html" class="btn btn-outline btn-lg"><i class="fas fa-play-circle"></i> Watch Sermons</a>
-      <a href="livestream.html" class="btn btn-outline btn-lg"><i class="fas fa-broadcast-tower"></i> Watch Live</a>
-    </div>
-  </div>
+ <div class="hero-bg" style="background-image:url('WhatsApp Image 2026-06-24 at 09.09.25.jpeg');"></div>
+ <div class="hero-overlay"></div>
+ <div class="hero-content">
+ <img src="apostlemj.jpeg" alt="Apostle MJ" class="hero-img-circle">
+ <div class="hero-badge"><i class="fas fa-cross"></i>&nbsp; Welcome to Apostle MJ Ministries</div>
+ <h1>Touching Lives Through the <span>Power of God</span></h1>
+ <p>A Spirit-filled ministry dedicated to spreading the Gospel, healing the sick, setting captives free, and transforming communities with the love of Christ.</p>
+ <div class="hero-buttons">
+ <a href="prayer.html" class="btn btn-primary btn-lg"><i class="fas fa-hands-praying"></i>Send a Prayer Request</a>
+ <a href="sermons.html" class="btn btn-outline btn-lg"><i class="fas fa-play-circle"></i>Watch Sermons</a>
+ <a href="livestream.html" class="btn btn-outline btn-lg"><i class="fas fa-broadcast-tower"></i>Watch Live</a>
+ </div>
+ </div>
 </section>
 
 <!-- SCRIPTURE OF THE DAY -->
 <section class="section" style="padding:3rem 1.5rem; background:var(--primary);">
-  <div class="container">
-    <div class="scripture-card">
-      <div class="hero-badge" style="margin-bottom:1rem;"><i class="fas fa-bible"></i> &nbsp; Scripture of the Day</div>
-      <p class="scripture-text" id="scripture-text">"For God so loved the world that He gave His only begotten Son..."</p>
-      <span class="scripture-ref" id="scripture-ref">— John 3:16</span>
-    </div>
-  </div>
+ <div class="container">
+ <div class="scripture-card">
+ <div class="hero-badge" style="margin-bottom:1rem;"><i class="fas fa-bible"></i>&nbsp; Scripture of the Day</div>
+ <p class="scripture-text" id="scripture-text">"For God so loved the world that He gave His only begotten Son..."</p>
+ <span class="scripture-ref" id="scripture-ref">— John 3:16</span>
+ </div>
+ </div>
 </section>
 
 <!-- QUICK LINKS -->
 <section class="section section-light">
-  <div class="container">
-    <div class="section-header">
-      <span class="label">Navigate the Ministry</span>
-      <h2>Everything You Need</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="quick-links">
-      <a href="prayer.html" class="quick-link"><i class="fas fa-hands-praying"></i> Prayer Center</a>
-      <a href="sermons.html" class="quick-link"><i class="fas fa-play-circle"></i> Sermons</a>
-      <a href="livestream.html" class="quick-link"><i class="fas fa-broadcast-tower"></i> Livestream</a>
-      <a href="testimony.html" class="quick-link"><i class="fas fa-star"></i> Testimonies</a>
-      <a href="devotions.html" class="quick-link"><i class="fas fa-book-bible"></i> Devotions</a>
-      <a href="charity.html" class="quick-link"><i class="fas fa-heart"></i> Charity</a>
-      <a href="donations.html" class="quick-link"><i class="fas fa-hand-holding-heart"></i> Donate / Give</a>
-      <a href="events.html" class="quick-link"><i class="fas fa-calendar-alt"></i> Events</a>
-      <a href="membership.html" class="quick-link"><i class="fas fa-users"></i> Membership</a>
-      <a href="media.html" class="quick-link"><i class="fas fa-images"></i> Media Gallery</a>
-      <a href="contact.html" class="quick-link"><i class="fas fa-phone"></i> Contact Us</a>
-      <a href="about.html" class="quick-link"><i class="fas fa-info-circle"></i> About Us</a>
-    </div>
-  </div>
+ <div class="container">
+ <div class="section-header">
+ <span class="label">Navigate the Ministry</span>
+ <h2>Everything You Need</h2>
+ <div class="divider"></div>
+ </div>
+ <div class="quick-links">
+ <a href="prayer.html" class="quick-link"><i class="fas fa-hands-praying"></i>Prayer Center</a>
+ <a href="sermons.html" class="quick-link"><i class="fas fa-play-circle"></i>Sermons</a>
+ <a href="livestream.html" class="quick-link"><i class="fas fa-broadcast-tower"></i>Livestream</a>
+ <a href="testimony.html" class="quick-link"><i class="fas fa-star"></i>Testimonies</a>
+ <a href="devotions.html" class="quick-link"><i class="fas fa-book-bible"></i>Devotions</a>
+ <a href="charity.html" class="quick-link"><i class="fas fa-heart"></i>Charity</a>
+ <a href="donations.html" class="quick-link"><i class="fas fa-hand-holding-heart"></i>Donate / Give</a>
+ <a href="events.html" class="quick-link"><i class="fas fa-calendar-alt"></i>Events</a>
+ <a href="membership.html" class="quick-link"><i class="fas fa-users"></i>Membership</a>
+ <a href="media.html" class="quick-link"><i class="fas fa-images"></i>Media Gallery</a>
+ <a href="contact.html" class="quick-link"><i class="fas fa-phone"></i>Contact Us</a>
+ <a href="about.html" class="quick-link"><i class="fas fa-info-circle"></i>About Us</a>
+ </div>
+ </div>
 </section>
 
 <!-- WELCOME MESSAGE -->
 <section class="section">
-  <div class="container">
-    <div class="grid-2" style="align-items:center; gap:4rem;">
-      <div>
-        <span class="label" style="color:var(--gold-dark); font-size:0.8rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;">A Message from Apostle MJ</span>
-        <h2 style="color:var(--primary); margin:0.75rem 0 1.25rem;">Welcome to Our Online Home</h2>
-        <p style="font-size:1.05rem; line-height:1.85;">Greetings in the name of our Lord and Saviour Jesus Christ! I am so glad you found your way here. This ministry exists to carry the fire of God's love to every corner of the earth.</p>
-        <p>Whether you need prayer, seek spiritual growth, or want to partner with us to impact lives — you have come to the right place. Together, we are making a difference in our communities through the power of the Holy Spirit.</p>
-        <p><strong>"The Spirit of the Lord is upon me, because He has anointed me to preach good news to the poor." — Luke 4:18</strong></p>
-        <a href="about.html" class="btn btn-purple mt-2"><i class="fas fa-user"></i> Learn More About the Ministry</a>
-      </div>
-      <div class="welcome-photo">
-        <img src="WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg" alt="Apostle MJ Preaching" loading="lazy">
-      </div>
-    </div>
-  </div>
+ <div class="container">
+ <div class="grid-2" style="align-items:center; gap:4rem;">
+ <div>
+ <span class="label" style="color:var(--gold-dark); font-size:0.8rem; font-weight:700; letter-spacing:2px; text-transform:uppercase;">A Message from Apostle MJ</span>
+ <h2 style="color:var(--primary); margin:0.75rem 0 1.25rem;">Welcome to Our Online Home</h2>
+ <p style="font-size:1.05rem; line-height:1.85;">Greetings in the name of our Lord and Saviour Jesus Christ! I am so glad you found your way here. This ministry exists to carry the fire of God's love to every corner of the earth.</p>
+ <p>Whether you need prayer, seek spiritual growth, or want to partner with us to impact lives — you have come to the right place. Together, we are making a difference in our communities through the power of the Holy Spirit.</p>
+ <p><strong>"The Spirit of the Lord is upon me, because He has anointed me to preach good news to the poor." — Luke 4:18</strong></p>
+ <a href="about.html" class="btn btn-purple mt-2"><i class="fas fa-user"></i>Learn More About the Ministry</a>
+ </div>
+ <div class="welcome-photo">
+ <img src="WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg" alt="Apostle MJ Preaching" loading="lazy">
+ </div>
+ </div>
+ </div>
 </section>
 
 <!-- MINISTRY STATS -->
 <section class="section section-dark">
-  <div class="container">
-    <div class="section-header">
-      <span class="label">God is Moving</span>
-      <h2>Ministry Impact</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="stats-bar">
-      <div class="stat-card"><span class="number">500+</span><span class="label">Souls Saved</span></div>
-      <div class="stat-card"><span class="number">200+</span><span class="label">Prayer Answered</span></div>
-      <div class="stat-card"><span class="number">50+</span><span class="label">Families Supported</span></div>
-      <div class="stat-card"><span class="number">5+</span><span class="label">Years of Ministry</span></div>
-      <div class="stat-card"><span class="number">100+</span><span class="label">Sermons Preached</span></div>
-    </div>
-  </div>
+ <div class="container">
+ <div class="section-header">
+ <span class="label">God is Moving</span>
+ <h2>Ministry Impact</h2>
+ <div class="divider"></div>
+ </div>
+ <div class="stats-bar">
+ <div class="stat-card"><span class="number">500+</span><span class="label">Souls Saved</span></div>
+ <div class="stat-card"><span class="number">200+</span><span class="label">Prayer Answered</span></div>
+ <div class="stat-card"><span class="number">50+</span><span class="label">Families Supported</span></div>
+ <div class="stat-card"><span class="number">5+</span><span class="label">Years of Ministry</span></div>
+ <div class="stat-card"><span class="number">100+</span><span class="label">Sermons Preached</span></div>
+ </div>
+ </div>
 </section>
 
 <!-- PHOTO GALLERY PREVIEW -->
 <section class="section section-gray">
-  <div class="container">
-    <div class="section-header">
-      <span class="label">From Our Gatherings</span>
-      <h2>Life at Apostle MJ Ministries</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="gallery">
-      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.25.jpeg')">
-        <img src="WhatsApp Image 2026-06-24 at 09.09.25.jpeg" alt="Church Service" loading="lazy">
-        <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
-      </div>
-      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26.jpeg')">
-        <img src="WhatsApp Image 2026-06-24 at 09.09.26.jpeg" alt="Church Service" loading="lazy">
-        <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
-      </div>
-      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26 (1).jpeg')">
-        <img src="WhatsApp Image 2026-06-24 at 09.09.26 (1).jpeg" alt="Ministry" loading="lazy">
-        <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
-      </div>
-      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg')">
-        <img src="WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg" alt="Apostle MJ Preaching" loading="lazy">
-        <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
-      </div>
-      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.28.jpeg')">
-        <img src="WhatsApp Image 2026-06-24 at 09.09.28.jpeg" alt="Apostle MJ" loading="lazy">
-        <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
-      </div>
-      <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26 (2).jpeg')">
-        <img src="WhatsApp Image 2026-06-24 at 09.09.26 (2).jpeg" alt="Ministry" loading="lazy">
-        <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
-      </div>
-    </div>
-    <div class="text-center mt-3"><a href="media.html" class="btn btn-purple"><i class="fas fa-images"></i> View Full Gallery</a></div>
-  </div>
+ <div class="container">
+ <div class="section-header">
+ <span class="label">From Our Gatherings</span>
+ <h2>Life at Apostle MJ Ministries</h2>
+ <div class="divider"></div>
+ </div>
+ <div class="gallery">
+ <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.25.jpeg')">
+ <img src="WhatsApp Image 2026-06-24 at 09.09.25.jpeg" alt="Church Service" loading="lazy">
+ <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
+ </div>
+ <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26.jpeg')">
+ <img src="WhatsApp Image 2026-06-24 at 09.09.26.jpeg" alt="Church Service" loading="lazy">
+ <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
+ </div>
+ <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26 (1).jpeg')">
+ <img src="WhatsApp Image 2026-06-24 at 09.09.26 (1).jpeg" alt="Ministry" loading="lazy">
+ <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
+ </div>
+ <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg')">
+ <img src="WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg" alt="Apostle MJ Preaching" loading="lazy">
+ <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
+ </div>
+ <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.28.jpeg')">
+ <img src="WhatsApp Image 2026-06-24 at 09.09.28.jpeg" alt="Apostle MJ" loading="lazy">
+ <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
+ </div>
+ <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.26 (2).jpeg')">
+ <img src="WhatsApp Image 2026-06-24 at 09.09.26 (2).jpeg" alt="Ministry" loading="lazy">
+ <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
+ </div>
+ </div>
+ <div class="text-center mt-3"><a href="media.html" class="btn btn-purple"><i class="fas fa-images"></i>View Full Gallery</a></div>
+ </div>
 </section>
 
 <!-- PRAYER & DONATION CTA -->
 <section class="section section-dark">
-  <div class="container">
-    <div class="grid-2" style="gap:2rem;">
-      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);padding:2.5rem;text-align:center;">
-        <i class="fas fa-hands-praying" style="font-size:3rem;color:var(--gold);margin-bottom:1.25rem;display:block;"></i>
-        <h3 style="color:var(--white);margin-bottom:0.75rem;">Need Prayer?</h3>
-        <p style="color:rgba(255,255,255,0.75);">Submit your prayer request and our dedicated prayer team will intercede on your behalf. God hears every prayer!</p>
-        <a href="prayer.html" class="btn btn-primary mt-2">🙏 Submit Prayer Request</a>
-        <div style="margin-top:1rem;font-size:0.85rem;color:rgba(255,255,255,0.5);">Or send directly via</div>
-        <button onclick="sendPrayerViaWhatsApp()" class="btn btn-whatsapp btn-sm mt-1"><i class="fab fa-whatsapp"></i> WhatsApp Prayer</button>
-      </div>
-      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);padding:2.5rem;text-align:center;">
-        <i class="fas fa-hand-holding-heart" style="font-size:3rem;color:var(--gold);margin-bottom:1.25rem;display:block;"></i>
-        <h3 style="color:var(--white);margin-bottom:0.75rem;">Partner With Us</h3>
-        <p style="color:rgba(255,255,255,0.75);">Your giving fuels the Gospel, feeds the hungry, and supports orphans and widows. Every gift makes an eternal difference.</p>
-        <a href="donations.html" class="btn btn-primary mt-2"><i class="fas fa-heart"></i> Give an Offering</a>
-      </div>
-    </div>
-  </div>
+ <div class="container">
+ <div class="grid-2" style="gap:2rem;">
+ <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);padding:2.5rem;text-align:center;">
+ <i class="fas fa-hands-praying" style="font-size:3rem;color:var(--gold);margin-bottom:1.25rem;display:block;"></i>
+ <h3 style="color:var(--white);margin-bottom:0.75rem;">Need Prayer?</h3>
+ <p style="color:rgba(255,255,255,0.75);">Submit your prayer request and our dedicated prayer team will intercede on your behalf. God hears every prayer!</p>
+ <a href="prayer.html" class="btn btn-primary mt-2">Submit Prayer Request</a>
+ <div style="margin-top:1rem;font-size:0.85rem;color:rgba(255,255,255,0.5);">Or send directly via</div>
+ <button onclick="sendPrayerViaWhatsApp()" class="btn btn-whatsapp btn-sm mt-1"><i class="fab fa-whatsapp"></i>WhatsApp Prayer</button>
+ </div>
+ <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);padding:2.5rem;text-align:center;">
+ <i class="fas fa-hand-holding-heart" style="font-size:3rem;color:var(--gold);margin-bottom:1.25rem;display:block;"></i>
+ <h3 style="color:var(--white);margin-bottom:0.75rem;">Partner With Us</h3>
+ <p style="color:rgba(255,255,255,0.75);">Your giving fuels the Gospel, feeds the hungry, and supports orphans and widows. Every gift makes an eternal difference.</p>
+ <a href="donations.html" class="btn btn-primary mt-2"><i class="fas fa-heart"></i>Give an Offering</a>
+ </div>
+ </div>
+ </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-col">
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
-          <img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;">
-          <div><div style="font-weight:700;font-family:'Playfair Display',serif;">Apostle MJ Ministries</div><div style="font-size:0.75rem;color:var(--gold);">Spreading the Gospel</div></div>
-        </div>
-        <p>A Spirit-filled ministry dedicated to reaching the lost, healing the sick, and transforming communities through the power of the Gospel.</p>
-        <div class="footer-socials">
-          <a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="footer-social"><i class="fab fa-youtube"></i></a>
-          <a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a>
+ <div class="container">
+ <div class="footer-grid">
+ <div class="footer-col">
+ <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+ <img src="logo.jpeg" alt="SOFAN Logo" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;">
+ <div><div style="font-weight:700;font-family:'Playfair Display',serif;">Apostle MJ Ministries</div><div style="font-size:0.75rem;color:var(--gold);">Spreading the Gospel</div></div>
+ </div>
+ <p>A Spirit-filled ministry dedicated to reaching the lost, healing the sick, and transforming communities through the power of the Gospel.</p>
+ <div class="footer-socials">
+ <a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a>
+ <a href="#" class="footer-social"><i class="fab fa-youtube"></i></a>
+ <a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a>
           <a href="https://wa.me/211921444658" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="sermons.html">Sermons</a></li>
-          <li><a href="prayer.html">Prayer Center</a></li>
-          <li><a href="testimony.html">Testimonies</a></li>
-          <li><a href="devotions.html">Daily Devotions</a></li>
-          <li><a href="charity.html">Charity & Outreach</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Ministry</h4>
-        <ul>
-          <li><a href="events.html">Events & Conferences</a></li>
-          <li><a href="livestream.html">Watch Live</a></li>
-          <li><a href="media.html">Media Gallery</a></li>
-          <li><a href="membership.html">Join the Ministry</a></li>
-          <li><a href="donations.html">Donate / Give</a></li>
-          <li><a href="admin.html">Staff Login</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contact Us</h4>
-        <p><i class="fas fa-phone" style="color:var(--gold);margin-right:0.5rem;"></i> Prayer Hotline: Available on WhatsApp</p>
-        <p><i class="fab fa-whatsapp" style="color:var(--gold);margin-right:0.5rem;"></i> WhatsApp Support</p>
-        <p><i class="fas fa-clock" style="color:var(--gold);margin-right:0.5rem;"></i> Sun Service: 9:00 AM</p>
-        <p><i class="fas fa-clock" style="color:var(--gold);margin-right:0.5rem;"></i> Wed Bible Study: 6:00 PM</p>
-        <a href="contact.html" class="btn btn-primary btn-sm mt-2"><i class="fas fa-envelope"></i> Contact Page</a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="container">
-      <p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved. | Made with ❤️ for the Kingdom of God | <a href="admin.html">Admin</a></p>
-    </div>
-  </div>
+ </div>
+ </div>
+ <div class="footer-col">
+ <h4>Quick Links</h4>
+ <ul>
+ <li><a href="about.html">About Us</a></li>
+ <li><a href="sermons.html">Sermons</a></li>
+ <li><a href="prayer.html">Prayer Center</a></li>
+ <li><a href="testimony.html">Testimonies</a></li>
+ <li><a href="devotions.html">Daily Devotions</a></li>
+ <li><a href="charity.html">Charity & Outreach</a></li>
+ </ul>
+ </div>
+ <div class="footer-col">
+ <h4>Ministry</h4>
+ <ul>
+ <li><a href="events.html">Events & Conferences</a></li>
+ <li><a href="livestream.html">Watch Live</a></li>
+ <li><a href="media.html">Media Gallery</a></li>
+ <li><a href="membership.html">Join the Ministry</a></li>
+ <li><a href="donations.html">Donate / Give</a></li>
+ <li><a href="admin.html">Staff Login</a></li>
+ </ul>
+ </div>
+ <div class="footer-col">
+ <h4>Contact Us</h4>
+ <p><i class="fas fa-phone" style="color:var(--gold);margin-right:0.5rem;"></i>Prayer Hotline: Available on WhatsApp</p>
+ <p><i class="fab fa-whatsapp" style="color:var(--gold);margin-right:0.5rem;"></i>WhatsApp Support</p>
+ <p><i class="fas fa-clock" style="color:var(--gold);margin-right:0.5rem;"></i>Sun Service: 9:00 AM</p>
+ <p><i class="fas fa-clock" style="color:var(--gold);margin-right:0.5rem;"></i>Wed Bible Study: 6:00 PM</p>
+ <a href="contact.html" class="btn btn-primary btn-sm mt-2"><i class="fas fa-envelope"></i>Contact Page</a>
+ </div>
+ </div>
+ </div>
+ <div class="footer-bottom">
+ <div class="container">
+ <p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved. | Made with for the Kingdom of God | <a href="admin.html">Admin</a></p>
+ </div>
+ </div>
 </footer>
 
 <!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
-  <img src="" alt="Gallery Image">
+ <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+ <img src="" alt="Gallery Image">
 </div>
 
 <!-- FLOATING WHATSAPP -->
 <a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa" title="Chat on WhatsApp">
-  <i class="fab fa-whatsapp"></i>
-  <span class="float-wa-tooltip">Send Prayer via WhatsApp</span>
+ <i class="fab fa-whatsapp"></i>
+ <span class="float-wa-tooltip">Send Prayer via WhatsApp</span>
 </a>
 
 <!-- BACK TO TOP -->
@@ -289,16 +289,16 @@
 
 <script src="js/main.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const announcements = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
-  if (announcements.length) {
-    const ticker = document.getElementById('announcement-ticker');
-    const inner = document.getElementById('ticker-inner');
-    // Duplicate items for seamless loop
-    const items = announcements.map(a => `<span>📢 ${escapeHtml(a.title)} — ${escapeHtml(a.text.substring(0,80))}${a.text.length>80?'...':''}</span>`).join('');
-    inner.innerHTML = items + items;
-    ticker.style.display = 'flex';
-  }
+document.addEventListener('DOMContentLoaded', () =>{
+ const announcements = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
+ if (announcements.length) {
+ const ticker = document.getElementById('announcement-ticker');
+ const inner = document.getElementById('ticker-inner');
+ // Duplicate items for seamless loop
+ const items = announcements.map(a =>`<span>${escapeHtml(a.title)} — ${escapeHtml(a.text.substring(0,80))}${a.text.length>80?'...':''}</span>`).join('');
+ inner.innerHTML = items + items;
+ ticker.style.display = 'flex';
+ }
 });
 </script>
 </body>
