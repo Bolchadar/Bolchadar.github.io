@@ -456,6 +456,9 @@ function saveDevotional() {
     prayers: document.getElementById('dev-prayers').value
   });
   localStorage.setItem('mj_devotionals', JSON.stringify(devs));
+  ['dev-date','dev-topic','dev-ref','dev-verse','dev-message','dev-prayers'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
   showToast('Devotional saved and published!');
 }
 

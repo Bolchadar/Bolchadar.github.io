@@ -45,7 +45,7 @@
       <h2>Today's Devotional</h2>
       <div class="divider"></div>
     </div>
-    <div class="devotion-card" style="max-width:780px;margin:0 auto;">
+    <div class="devotion-card" id="today-devotion-card" style="max-width:780px;margin:0 auto;">
       <div class="devotion-header">
         <div class="label" style="color:var(--gold-light);margin-bottom:0.5rem;">Featured Message</div>
         <h3>Walking in God's Purpose — You Were Created for More</h3>
@@ -68,11 +68,6 @@
           <div class="prayer-point"><i class="fas fa-pray"></i><div>Intercede for someone else who needs to discover their purpose in God.</div></div>
         </div>
 
-        <div style="background:var(--light);border-radius:var(--radius-sm);padding:1.25rem;margin-top:1.5rem;text-align:center;">
-          <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--primary);margin-bottom:0.5rem;">"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future."</p>
-          <span style="font-size:0.85rem;color:var(--text-muted);">— Jeremiah 29:11</span>
-        </div>
-
         <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;">
           <a href="prayer.html" class="btn btn-primary"><i class="fas fa-hands-praying"></i> Submit Prayer Request</a>
           <button onclick="shareDevotional()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Share via WhatsApp</button>
@@ -90,7 +85,7 @@
       <h2>Devotional Archive</h2>
       <div class="divider"></div>
     </div>
-    <div class="grid-3">
+    <div class="grid-3" id="devotion-archive">
       <div class="card">
         <div class="card-body">
           <div class="card-meta">📅 Yesterday &nbsp;|&nbsp; 🏷 Faith</div>
@@ -181,13 +176,74 @@
 <script src="js/main.js"></script>
 <script>
 document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-GB', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+
+(function loadPublishedDevotionals() {
+  const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
+  if (!devs.length) return;
+
+  // Sort newest first
+  devs.sort((a, b) => (b.date || '').localeCompare(a.date || '') || b.id - a.id);
+  const latest = devs[0];
+
+  // Build prayer points HTML
+  const prayerLines = (latest.prayers || '').split('\n').filter(l => l.trim());
+  const prayerHtml = prayerLines.length
+    ? `<div class="prayer-points mt-3">
+        <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i> Today's Prayer Points</h4>
+        ${prayerLines.map(l => `<div class="prayer-point"><i class="fas fa-pray"></i><div>${escapeHtml(l)}</div></div>`).join('')}
+       </div>` : '';
+
+  // Build message paragraphs
+  const msgHtml = (latest.message || '').split('\n\n').filter(p => p.trim())
+    .map(p => `<p>${escapeHtml(p.trim())}</p>`).join('');
+
+  document.getElementById('today-devotion-card').innerHTML = `
+    <div class="devotion-header">
+      <div class="label" style="color:var(--gold-light);margin-bottom:0.5rem;">Featured Message</div>
+      <h3>${escapeHtml(latest.topic)}</h3>
+      ${latest.verse ? `<div class="verse" style="margin-top:0.75rem;">
+        <i class="fas fa-bible"></i> &nbsp;
+        <em>"${escapeHtml(latest.verse)}"</em>${latest.ref ? ` — ${escapeHtml(latest.ref)}` : ''}
+      </div>` : ''}
+    </div>
+    <div class="devotion-body">
+      ${msgHtml}
+      ${prayerHtml}
+      <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;">
+        <a href="prayer.html" class="btn btn-primary"><i class="fas fa-hands-praying"></i> Submit Prayer Request</a>
+        <button onclick="shareDevotional()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i> Share via WhatsApp</button>
+      </div>
+    </div>`;
+
+  // Update archive with older devotionals
+  if (devs.length > 1) {
+    const archive = document.getElementById('devotion-archive');
+    archive.innerHTML = devs.slice(1, 4).map(d => {
+      const dateLabel = d.date ? new Date(d.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) : '';
+      return `<div class="card">
+        <div class="card-body">
+          <div class="card-meta">📅 ${escapeHtml(dateLabel)}</div>
+          <h4 class="card-title">${escapeHtml(d.topic)}</h4>
+          <p class="card-text">${d.ref ? escapeHtml(d.ref) + ' — ' : ''}${escapeHtml((d.message || '').substring(0, 100))}...</p>
+        </div>
+      </div>`;
+    }).join('');
+  }
+})();
+
 function toggleCheck(el) {
   el.classList.toggle('checked');
   if (el.classList.contains('checked')) el.innerHTML = '<i class="fas fa-check" style="color:#fff;font-size:0.7rem;"></i>';
   else el.innerHTML = '';
 }
 function shareDevotional() {
-  const msg = `*📖 Daily Devotional — ${MINISTRY_NAME}*\n\n*Today's Topic:* Walking in God's Purpose\n*Scripture:* Ephesians 2:10 — "For we are God's handiwork, created in Christ Jesus to do good works."\n\nYou are not an accident. God created you with purpose and intention. Step boldly into your calling today!\n\n🙏 Read the full devotional: Visit our website\n_— Apostle MJ Ministries_`;
+  const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
+  const d = devs.length ? devs.sort((a,b) => b.id - a.id)[0] : null;
+  const topic = d ? d.topic : 'Walking in God\'s Purpose';
+  const ref = d ? d.ref : 'Ephesians 2:10';
+  const verse = d ? d.verse.substring(0,120) : 'For we are God\'s handiwork, created in Christ Jesus to do good works.';
+  const preview = d ? d.message.substring(0,300) : 'You are not an accident. God created you with purpose and intention.';
+  const msg = `*📖 Daily Devotional — ${MINISTRY_NAME}*\n\n*Topic:* ${topic}\n*Scripture:* ${ref}\n\n_"${verse}..."_\n\n${preview}...\n\n🙏 Visit our website to read the full devotional.\n_— Apostle MJ Ministries_`;
   openWhatsApp(msg);
 }
 function subscribeDevotional() {
