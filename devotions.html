@@ -45,34 +45,8 @@
  <h2>Today's Devotional</h2>
  <div class="divider"></div>
  </div>
- <div class="devotion-card" id="today-devotion-card" style="max-width:780px;margin:0 auto;">
- <div class="devotion-header">
- <div class="label" style="color:var(--gold-light);margin-bottom:0.5rem;">Featured Message</div>
- <h3>Walking in God's Purpose — You Were Created for More</h3>
- <div class="verse" style="margin-top:0.75rem;">
- <i class="fas fa-bible"></i>&nbsp;
- <em>"For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do."</em>— Ephesians 2:10
- </div>
- </div>
- <div class="devotion-body">
- <p>You are not an accident. You are not a mistake. Before the foundation of the world, God had a plan and a purpose specifically for you. The verse today reminds us that we are His <em>masterpiece</em>— crafted with intention, love, and divine design.</p>
- <p>Many people spend their lives wondering why they are here. They search for meaning in careers, relationships, and achievements. But the truth of God's Word declares something greater: you were made to walk in the works that God prepared for you before time began.</p>
- <p>This means that no matter what you have been through — the failures, the losses, the disappointments — God has not abandoned His purpose for your life. He is still working, still weaving, still preparing the path that leads to your divine destiny.</p>
- <p><strong>Today, be encouraged.</strong>Step boldly into what God has placed in your heart. Trust His timing. Walk in faith. Your best days are not behind you — they are ahead, in the hands of the One who created you for His glory.</p>
-
- <div class="prayer-points mt-3">
- <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i>Today's Prayer Points</h4>
- <div class="prayer-point"><i class="fas fa-pray"></i><div>Thank God for creating you with purpose and intentionality.</div></div>
- <div class="prayer-point"><i class="fas fa-pray"></i><div>Ask God to reveal the specific works He has prepared for you.</div></div>
- <div class="prayer-point"><i class="fas fa-pray"></i><div>Pray for boldness to step into your God-given calling, despite fear or doubt.</div></div>
- <div class="prayer-point"><i class="fas fa-pray"></i><div>Intercede for someone else who needs to discover their purpose in God.</div></div>
- </div>
-
- <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;">
- <a href="prayer.html" class="btn btn-primary"><i class="fas fa-hands-praying"></i>Submit Prayer Request</a>
- <button onclick="shareDevotional()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
- </div>
- </div>
+ <div id="today-devotion-card" style="max-width:780px;margin:0 auto;">
+ <p id="devotion-empty" style="text-align:center;color:var(--text-muted);padding:3rem 1rem;">No devotional has been published yet. Check back soon!</p>
  </div>
  </div>
 </section>
@@ -157,6 +131,8 @@ document.getElementById('today-date').textContent = new Date().toLocaleDateStrin
 (function loadPublishedDevotionals() {
  const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
  if (!devs.length) return;
+ const emptyMsg = document.getElementById('devotion-empty');
+ if (emptyMsg) emptyMsg.remove();
 
  // Sort newest first
  devs.sort((a, b) =>(b.date || '').localeCompare(a.date || '') || b.id - a.id);
@@ -174,7 +150,7 @@ document.getElementById('today-date').textContent = new Date().toLocaleDateStrin
  const msgHtml = (latest.message || '').split('\n\n').filter(p =>p.trim())
  .map(p =>`<p>${escapeHtml(p.trim())}</p>`).join('');
 
- document.getElementById('today-devotion-card').innerHTML = `
+ document.getElementById('today-devotion-card').innerHTML = `<div class="devotion-card">
  <div class="devotion-header">
  <div class="label" style="color:var(--gold-light);margin-bottom:0.5rem;">Featured Message</div>
  <h3>${escapeHtml(latest.topic)}</h3>
@@ -190,7 +166,7 @@ document.getElementById('today-date').textContent = new Date().toLocaleDateStrin
  <a href="prayer.html" class="btn btn-primary"><i class="fas fa-hands-praying"></i>Submit Prayer Request</a>
  <button onclick="shareDevotional()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
  </div>
- </div>`;
+ </div></div>`;
 
  // Update archive with older devotionals
  const archive = document.getElementById('devotion-archive');
