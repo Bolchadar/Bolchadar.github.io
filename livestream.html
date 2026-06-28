@@ -59,8 +59,7 @@
  <div style="text-align:center;margin-bottom:2.5rem;">
  <div id="live-status-bar" style="display:inline-flex;align-items:center;gap:1rem;background:var(--white);border-radius:50px;padding:0.75rem 1.75rem;box-shadow:var(--shadow);font-weight:600;">
  <div class="live-dot" style="background:var(--text-muted);"></div>
- <span id="live-text" style="color:var(--text-muted);">Next service: Sunday at 9:00 AM</span>
- <span id="live-badge-text"></span>
+ <span id="live-text" style="color:var(--text-muted);">Check our social media for the next service time</span>
  </div>
  </div>
 
@@ -69,7 +68,7 @@
  <!-- YOUTUBE LIVE -->
  <div class="stream-card mb-3">
  <div class="stream-header">
- <div><div class="live-badge"><div class="live-dot"></div>LIVE</div><h3 style="color:var(--white);margin:0.5rem 0 0;">YouTube Live Service</h3></div>
+ <div><h3 style="color:var(--white);margin:0;">YouTube Live Service</h3></div>
  <i class="fab fa-youtube" style="font-size:2.5rem;color:#ff0000;"></i>
  </div>
  <div style="padding:1.5rem;">
@@ -88,7 +87,7 @@
  <!-- FACEBOOK LIVE -->
  <div class="stream-card">
  <div class="stream-header" style="background:linear-gradient(135deg,#1877F2,#0d5dbf);">
- <div><div class="live-badge"><div class="live-dot"></div>LIVE</div><h3 style="color:var(--white);margin:0.5rem 0 0;">Facebook Live Service</h3></div>
+ <div><h3 style="color:var(--white);margin:0;">Facebook Live Service</h3></div>
  <i class="fab fa-facebook" style="font-size:2.5rem;color:rgba(255,255,255,0.8);"></i>
  </div>
  <div style="padding:1.5rem;">
@@ -107,19 +106,21 @@
  <!-- SERVICE SCHEDULE -->
  <div class="card mb-3">
  <div class="card-body">
- <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-calendar" style="color:var(--gold);"></i>Live Service Schedule</h4>
- <div class="schedule-item"><div class="schedule-time">Sun 9:00 AM</div><div><strong>Sunday Worship Service</strong><div style="font-size:0.82rem;color:var(--text-muted);">Main weekly service — preaching, prayer, worship</div></div></div>
- <div class="schedule-item"><div class="schedule-time">Wed 6:00 PM</div><div><strong>Midweek Bible Study</strong><div style="font-size:0.82rem;color:var(--text-muted);">In-depth Bible teaching and Q&A</div></div></div>
- <div class="schedule-item"><div class="schedule-time">Fri 7:00 PM</div><div><strong>Friday Night Prayer</strong><div style="font-size:0.82rem;color:var(--text-muted);">Corporate prayer and intercession session</div></div></div>
- <div class="schedule-item"><div class="schedule-time">Daily 6:00 AM</div><div><strong>Morning Devotional</strong><div style="font-size:0.82rem;color:var(--text-muted);">Short daily word of encouragement</div></div></div>
+ <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-calendar" style="color:var(--gold);"></i>Service Schedule</h4>
+ <p style="color:var(--text-muted);font-size:0.92rem;">Follow us on YouTube or Facebook to stay updated on upcoming live services and prayer sessions.</p>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
+  <a href="https://youtube.com/@apostlemjministries" target="_blank" class="btn btn-sm btn-primary"><i class="fab fa-youtube"></i>YouTube</a>
+  <a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="btn btn-sm btn-primary"><i class="fab fa-facebook"></i>Facebook</a>
+  <a href="https://wa.me/211921444658" target="_blank" class="btn btn-sm btn-whatsapp"><i class="fab fa-whatsapp"></i>WhatsApp</a>
+ </div>
  </div>
  </div>
 
  <!-- STREAM PLATFORMS -->
  <div class="card mb-3">
  <div class="card-body">
- <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-broadcast-tower" style="color:var(--gold);"></i>Watch On These Platforms</h4>
- <a href="https://youtube.com/@apostlemjministries" target="_blank" class="platform-btn" style="background:#ff0000;"><span class="platform-icon"><i class="fab fa-youtube"></i></span><div><div>YouTube</div><div style="font-size:0.8rem;opacity:0.85;">Subscribe & hit the bell </div></div></a>
+ <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-tower-broadcast" style="color:var(--gold);"></i>Watch On These Platforms</h4>
+ <a href="https://youtube.com/@apostlemjministries" target="_blank" class="platform-btn" style="background:#ff0000;"><span class="platform-icon"><i class="fab fa-youtube"></i></span><div><div>YouTube</div><div style="font-size:0.8rem;opacity:0.85;">Subscribe & get notified</div></div></a>
  <a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="platform-btn" style="background:#1877F2;"><span class="platform-icon"><i class="fab fa-facebook"></i></span><div><div>Facebook</div><div style="font-size:0.8rem;opacity:0.85;">Follow our page for live alerts</div></div></a>
  <a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="platform-btn" style="background:#010101;"><span class="platform-icon"><i class="fab fa-tiktok"></i></span><div><div>TikTok</div><div style="font-size:0.8rem;opacity:0.85;">Short clips & daily encouragement</div></div></a>
  </div>
@@ -170,14 +171,7 @@ function subscribeNotifications() {
   const msg = `*📺 LIVESTREAM NOTIFICATIONS — ${MINISTRY_NAME}*\n\nHello! I want to subscribe to live service notifications.\n\nPlease notify me via WhatsApp when you go LIVE on YouTube or Facebook!\n\nName: [Your Name]\nCountry: [Your Country]\n\nGod bless you!`;
   openWhatsApp(msg);
 }
-// Check if it's Sunday between 8-11 AM to show live indicator
-const now = new Date();
-if (now.getDay() === 0 && now.getHours() >= 8 && now.getHours() < 11) {
- document.getElementById('live-text').textContent = 'We are LIVE now!';
- document.getElementById('live-text').style.color = '#ef4444';
- document.querySelector('#live-status-bar .live-dot').style.background = '#ef4444';
- document.getElementById('live-status-bar').style.borderLeft = '4px solid #ef4444';
-}
+// Live status is managed manually — update live-text content when going live
 </script>
 </body>
 </html>
