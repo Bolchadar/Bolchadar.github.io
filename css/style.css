@@ -188,7 +188,7 @@ p  { margin-bottom: 1rem; }
 .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.85); max-width: 650px; margin: 0 auto 2rem; }
 .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .hero-img-circle {
-  width: 220px; height: 220px;
+  width: 220px; height: 280px;
   border-radius: 50%;
   object-fit: cover;
   object-position: top center;
@@ -983,7 +983,7 @@ footer {
 
   /* HERO */
   .hero { min-height: 85vh; }
-  .hero-img-circle { width: 160px !important; height: 160px !important; margin-bottom: 1.25rem !important; }
+  .hero-img-circle { width: 160px !important; height: 200px !important; margin-bottom: 1.25rem !important; }
   .hero h1 { font-size: 1.75rem; }
   .hero p { font-size: 0.95rem; }
   .hero-buttons { flex-direction: column; align-items: center; gap: 0.75rem; }
@@ -1155,7 +1155,7 @@ footer {
 
   /* HERO */
   .hero { min-height: 90vh; }
-  .hero-img-circle { width: 140px !important; height: 140px !important; }
+  .hero-img-circle { width: 140px !important; height: 175px !important; }
   .hero h1 { font-size: 1.5rem; }
 
   /* SECTIONS */
