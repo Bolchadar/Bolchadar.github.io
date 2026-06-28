@@ -9,6 +9,16 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
  <style>
  .hero { min-height: 96vh; }
+ @media (max-width: 768px) {
+  .hero { min-height: auto; padding: 5rem 1.25rem 3rem; }
+  .hero-img-circle { margin-bottom: 0.75rem !important; }
+  .hero-badge { margin-bottom: 0.75rem; }
+  .hero h1 { margin-bottom: 0.6rem; }
+  .hero p { margin-bottom: 1.25rem; }
+ }
+ @media (max-width: 480px) {
+  .hero { padding: 4rem 1rem 2.5rem; }
+ }
  .announcement-ticker {
  background: var(--gold);
  color: var(--primary);
@@ -78,7 +88,7 @@
  <div class="hero-buttons">
  <a href="prayer.html" class="btn btn-primary btn-lg"><i class="fas fa-hands-praying"></i>Send a Prayer Request</a>
  <a href="sermons.html" class="btn btn-outline btn-lg"><i class="fas fa-play-circle"></i>Watch Sermons</a>
- <a href="livestream.html" class="btn btn-outline btn-lg"><i class="fas fa-broadcast-tower"></i>Watch Live</a>
+ <a href="livestream.html" class="btn btn-outline btn-lg"><i class="fas fa-tower-broadcast"></i>Watch Live</a>
  </div>
  </div>
 </section>
