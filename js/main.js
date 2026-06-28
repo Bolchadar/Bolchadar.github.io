@@ -11,7 +11,7 @@ const MINISTRY_NAME  = "Apostle MJ Ministries";
      crypto.subtle.digest('SHA-256', new TextEncoder().encode('YourPassword'))
        .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
    Replace the hash below with the output. */
-const ADMIN_PASSWORD_HASH = "d47d1c10045b4eb1f74bb7a44927d1441481073e5c5c860bf687c7993510f092";
+const ADMIN_PASSWORD_HASH = "58b9317ecf8669d33ea206d7e48e599f507ff589013a9f87b59dd6b131cc6f23";
 
 function escapeHtml(str) {
   return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -304,6 +304,18 @@ function closeLightbox() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 /* ===== ADMIN ===== */
+function togglePassVisibility() {
+  const input = document.getElementById('admin-pass');
+  const icon  = document.getElementById('toggle-pass-icon');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.classList.replace('fa-eye', 'fa-eye-slash');
+  } else {
+    input.type = 'password';
+    icon.classList.replace('fa-eye-slash', 'fa-eye');
+  }
+}
+
 async function adminLogin() {
   const pass = document.getElementById('admin-pass');
   if (!pass) return;
