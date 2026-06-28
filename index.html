@@ -59,21 +59,10 @@
 </nav>
 
 <!-- ANNOUNCEMENT TICKER -->
-<div class="announcement-ticker">
+<div class="announcement-ticker" id="announcement-ticker" style="display:none;">
   <span class="ticker-label">📢 ANNOUNCEMENTS</span>
   <div class="ticker-scroll">
-    <div class="ticker-inner">
-      <span>🙏 Sunday Service — Every Sunday at 9:00 AM</span>
-      <span>✨ Revival Meeting — Coming Soon, Register Now!</span>
-      <span>🎤 Mid-Week Bible Study — Every Wednesday at 6:00 PM</span>
-      <span>❤️ Charity Drive — Support our Orphan & Widow Program</span>
-      <span>📺 Watch us LIVE on YouTube & Facebook every Sunday</span>
-      <span>🙏 Sunday Service — Every Sunday at 9:00 AM</span>
-      <span>✨ Revival Meeting — Coming Soon, Register Now!</span>
-      <span>🎤 Mid-Week Bible Study — Every Wednesday at 6:00 PM</span>
-      <span>❤️ Charity Drive — Support our Orphan & Widow Program</span>
-      <span>📺 Watch us LIVE on YouTube & Facebook every Sunday</span>
-    </div>
+    <div class="ticker-inner" id="ticker-inner"></div>
   </div>
 </div>
 
@@ -299,6 +288,19 @@
 <button id="back-top" title="Back to Top"><i class="fas fa-chevron-up"></i></button>
 
 <script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const announcements = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
+  if (announcements.length) {
+    const ticker = document.getElementById('announcement-ticker');
+    const inner = document.getElementById('ticker-inner');
+    // Duplicate items for seamless loop
+    const items = announcements.map(a => `<span>📢 ${escapeHtml(a.title)} — ${escapeHtml(a.text.substring(0,80))}${a.text.length>80?'...':''}</span>`).join('');
+    inner.innerHTML = items + items;
+    ticker.style.display = 'flex';
+  }
+});
+</script>
 </body>
 </html>
 

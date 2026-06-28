@@ -69,43 +69,8 @@
     </div>
 
     <!-- EVENT LIST -->
-    <div style="display:flex;flex-direction:column;gap:1.25rem;margin-bottom:3rem;">
-      <div class="event-card">
-        <div class="event-date"><span class="day">15</span><span class="month">AUG</span></div>
-        <div class="event-info">
-          <h4>Annual Revival & Healing Conference 2026</h4>
-          <div class="meta"><i class="fas fa-clock"></i> 9:00 AM - 5:00 PM &nbsp;|&nbsp; <i class="fas fa-map-marker-alt"></i> Church Grounds, Juba &nbsp;|&nbsp; <i class="fas fa-ticket-alt"></i> Free</div>
-          <p>Three days of powerful revival, healing miracles, and spiritual breakthrough. Invite your family and friends!</p>
-          <button onclick="scrollToRegister()" class="btn btn-sm btn-primary mt-1">Register</button>
-        </div>
-      </div>
-      <div class="event-card">
-        <div class="event-date"><span class="day">06</span><span class="month">JUL</span></div>
-        <div class="event-info">
-          <h4>Youth Empowerment Summit</h4>
-          <div class="meta"><i class="fas fa-clock"></i> 10:00 AM - 4:00 PM &nbsp;|&nbsp; <i class="fas fa-map-marker-alt"></i> Ministry Hall &nbsp;|&nbsp; <i class="fas fa-ticket-alt"></i> Free</div>
-          <p>A special summit for youth aged 13-35 featuring workshops, testimonies, music, and a powerful message on purpose and destiny.</p>
-          <button onclick="scrollToRegister()" class="btn btn-sm btn-primary mt-1">Register</button>
-        </div>
-      </div>
-      <div class="event-card">
-        <div class="event-date"><span class="day">20</span><span class="month">JUL</span></div>
-        <div class="event-info">
-          <h4>Community Feeding Program</h4>
-          <div class="meta"><i class="fas fa-clock"></i> 8:00 AM - 12:00 PM &nbsp;|&nbsp; <i class="fas fa-map-marker-alt"></i> Community Center &nbsp;|&nbsp; <i class="fas fa-ticket-alt"></i> Open to All</div>
-          <p>Monthly community feeding. Volunteers needed! Contact us to join our serving team for this event.</p>
-          <button onclick="scrollToRegister()" class="btn btn-sm btn-primary mt-1">Volunteer</button>
-        </div>
-      </div>
-      <div class="event-card">
-        <div class="event-date"><span class="day">03</span><span class="month">AUG</span></div>
-        <div class="event-info">
-          <h4>Marriage & Family Seminar</h4>
-          <div class="meta"><i class="fas fa-clock"></i> 2:00 PM - 6:00 PM &nbsp;|&nbsp; <i class="fas fa-map-marker-alt"></i> Church Hall &nbsp;|&nbsp; <i class="fas fa-ticket-alt"></i> Free</div>
-          <p>A biblical seminar on building a strong Christian marriage and family, featuring teaching from Apostle MJ and testimonies from couples.</p>
-          <button onclick="scrollToRegister()" class="btn btn-sm btn-primary mt-1">Register</button>
-        </div>
-      </div>
+    <div id="events-list" style="display:flex;flex-direction:column;gap:1.25rem;margin-bottom:3rem;">
+      <p id="events-empty" style="text-align:center;color:var(--text-muted);padding:3rem 0;">No upcoming events at the moment. Check back soon!</p>
     </div>
 
     <!-- REGISTRATION FORM -->
@@ -179,6 +144,36 @@
 function scrollToRegister() {
   document.getElementById('register-section').scrollIntoView({behavior:'smooth', block:'start'});
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const events = JSON.parse(localStorage.getItem('mj_events') || '[]');
+  events.sort((a,b) => a.date.localeCompare(b.date));
+  const container = document.getElementById('events-list');
+  const empty = document.getElementById('events-empty');
+  if (events.length) {
+    if (empty) empty.remove();
+    events.forEach(e => {
+      const d = e.date ? new Date(e.date) : null;
+      const day = d ? String(d.getDate()).padStart(2,'0') : '--';
+      const month = d ? d.toLocaleDateString('en-GB',{month:'short'}).toUpperCase() : '---';
+      const card = document.createElement('div');
+      card.className = 'event-card';
+      card.innerHTML = `
+        <div class="event-date"><span class="day">${escapeHtml(day)}</span><span class="month">${escapeHtml(month)}</span></div>
+        <div class="event-info">
+          <h4>${escapeHtml(e.name)}</h4>
+          <div class="meta">
+            ${e.time?`<i class="fas fa-clock"></i> ${escapeHtml(e.time)} &nbsp;|&nbsp; `:''}
+            ${e.venue?`<i class="fas fa-map-marker-alt"></i> ${escapeHtml(e.venue)} &nbsp;|&nbsp; `:''}
+            ${e.ticket?`<i class="fas fa-ticket-alt"></i> ${escapeHtml(e.ticket)}`:''}
+          </div>
+          <p>${escapeHtml(e.desc||'')}</p>
+          <button onclick="scrollToRegister()" class="btn btn-sm btn-primary mt-1">Register</button>
+        </div>`;
+      container.appendChild(card);
+    });
+  }
+});
 </script>
 </body>
 </html>

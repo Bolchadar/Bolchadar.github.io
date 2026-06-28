@@ -86,30 +86,7 @@
       <div class="divider"></div>
     </div>
     <div class="grid-3" id="devotion-archive">
-      <div class="card">
-        <div class="card-body">
-          <div class="card-meta">📅 Yesterday &nbsp;|&nbsp; 🏷 Faith</div>
-          <h4 class="card-title">Faith That Speaks — Calling Things That Are Not</h4>
-          <p class="card-text">Based on Romans 4:17 — How Abraham's faith declared what God had promised before he saw any evidence.</p>
-          <a href="#" class="btn btn-sm btn-purple mt-2">Read</a>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <div class="card-meta">📅 2 Days Ago &nbsp;|&nbsp; 🏷 Prayer</div>
-          <h4 class="card-title">The Secret Place — Finding God in the Quiet</h4>
-          <p class="card-text">Psalm 91 — The power of dwelling in the presence of God and the promises available to those who do.</p>
-          <a href="#" class="btn btn-sm btn-purple mt-2">Read</a>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <div class="card-meta">📅 3 Days Ago &nbsp;|&nbsp; 🏷 Healing</div>
-          <h4 class="card-title">He Took Our Infirmities — The Healing Covenant</h4>
-          <p class="card-text">Isaiah 53:5 — Understanding the covenant of divine healing that was purchased at the cross for every believer.</p>
-          <a href="#" class="btn btn-sm btn-purple mt-2">Read</a>
-        </div>
-      </div>
+      <p id="archive-empty" style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:2rem 0;">No previous devotionals yet.</p>
     </div>
   </div>
 </section>
@@ -216,9 +193,11 @@ document.getElementById('today-date').textContent = new Date().toLocaleDateStrin
     </div>`;
 
   // Update archive with older devotionals
+  const archive = document.getElementById('devotion-archive');
+  const archiveEmpty = document.getElementById('archive-empty');
   if (devs.length > 1) {
-    const archive = document.getElementById('devotion-archive');
-    archive.innerHTML = devs.slice(1, 4).map(d => {
+    if (archiveEmpty) archiveEmpty.remove();
+    archive.innerHTML = devs.slice(1, 7).map(d => {
       const dateLabel = d.date ? new Date(d.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) : '';
       return `<div class="card">
         <div class="card-body">

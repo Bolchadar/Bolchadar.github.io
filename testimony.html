@@ -38,30 +38,7 @@
       <div class="divider"></div>
     </div>
     <div id="testimonies-display" class="grid-3">
-      <div class="testimony-card">
-        <p>"I had been suffering from chronic back pain for 3 years. After Apostle MJ prayed for me during a service, I felt the pain leave immediately. I am completely healed! Praise God!"</p>
-        <div class="author"><div class="avatar">M</div><div><div class="author-name">Mary A.</div><div class="author-location">Kenya</div></div></div>
-      </div>
-      <div class="testimony-card">
-        <p>"My business was failing and I was in debt. I gave my first tithe through this ministry and prayed with Apostle MJ. Within 3 months, God opened doors I never expected. I am now debt-free!"</p>
-        <div class="author"><div class="avatar">J</div><div><div class="author-name">John D.</div><div class="author-location">South Sudan</div></div></div>
-      </div>
-      <div class="testimony-card">
-        <p>"I was addicted to alcohol for 10 years and my family was broken. After a prayer session, God delivered me completely. My family is restored and I have been sober for 2 years now!"</p>
-        <div class="author"><div class="avatar">P</div><div><div class="author-name">Peter K.</div><div class="author-location">Uganda</div></div></div>
-      </div>
-      <div class="testimony-card">
-        <p>"I was barren for 7 years. Doctors said I could never have children. I submitted a prayer request, and our prayer team prayed for me. Today I have a beautiful baby daughter. God is faithful!"</p>
-        <div class="author"><div class="avatar">R</div><div><div class="author-name">Ruth N.</div><div class="author-location">Ethiopia</div></div></div>
-      </div>
-      <div class="testimony-card">
-        <p>"My son was in a coma for 3 days after an accident. The ministry prayed around the clock. On the third day he woke up — completely healed with no brain damage. Jesus is Lord!"</p>
-        <div class="author"><div class="avatar">A</div><div><div class="author-name">Agnes M.</div><div class="author-location">Tanzania</div></div></div>
-      </div>
-      <div class="testimony-card">
-        <p>"I watched Apostle MJ's sermon on YouTube and gave my life to Christ. I was baptized last month. I have never known such peace. My entire family is now saved!"</p>
-        <div class="author"><div class="avatar">S</div><div><div class="author-name">Samuel O.</div><div class="author-location">Nigeria</div></div></div>
-      </div>
+      <p id="testimonies-empty" style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:2rem 0;">No testimonies have been approved yet. Submit yours below!</p>
     </div>
   </div>
 </section>
@@ -185,16 +162,17 @@ function sendTestimonyViaWhatsApp() {
   const msg = `*🌟 TESTIMONY — ${MINISTRY_NAME}*\n\nPraise God! I want to share what God has done in my life...\n\n_Please reply with your testimony and we will add it to our Testimony Center!_`;
   openWhatsApp(msg);
 }
-// Load approved testimonies from localStorage
 document.addEventListener('DOMContentLoaded', () => {
   const stored = JSON.parse(localStorage.getItem('mj_testimonies') || '[]').filter(t => t.approved);
+  const container = document.getElementById('testimonies-display');
+  const empty = document.getElementById('testimonies-empty');
   if (stored.length > 0) {
-    const container = document.getElementById('testimonies-display');
-    stored.forEach(t => {
+    if (empty) empty.remove();
+    stored.slice().reverse().forEach(t => {
       const div = document.createElement('div');
       div.className = 'testimony-card';
-      div.innerHTML = `<p>"${t.testimony}"</p><div class="author"><div class="avatar">${t.name[0]}</div><div><div class="author-name">${t.name}</div><div class="author-location">${t.location || 'Apostle MJ Ministries'}</div></div></div>`;
-      container.prepend(div);
+      div.innerHTML = `<p>"${escapeHtml(t.testimony)}"</p><div class="author"><div class="avatar">${escapeHtml(t.name[0].toUpperCase())}</div><div><div class="author-name">${escapeHtml(t.name)}</div><div class="author-location">${escapeHtml(t.location || 'Apostle MJ Ministries')}</div></div></div>`;
+      container.appendChild(div);
     });
   }
 });
