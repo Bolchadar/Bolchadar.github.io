@@ -1169,8 +1169,13 @@ footer {
   .gallery { grid-template-columns: repeat(2, 1fr); }
 
   /* FOOTER */
-  .footer-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.25rem; padding-bottom: 1.5rem; }
+  .footer-grid .footer-col:first-child { grid-column: 1 / -1; }
+  .footer-grid .footer-col:last-child { grid-column: 1 / -1; }
   .footer-socials { justify-content: flex-start; }
+  .footer-col h4 { margin-bottom: 0.75rem; }
+  .footer-col p, .footer-col li { margin-bottom: 0.4rem; }
+  footer { padding: 2rem 1rem 0; }
 
   /* STATS */
   .stats-bar { grid-template-columns: 1fr 1fr; }
