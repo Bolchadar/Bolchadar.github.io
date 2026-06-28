@@ -5,7 +5,7 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Sermons | Apostle MJ Ministries</title>
  <link rel="stylesheet" href="css/style.css">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPDbXiMBBELf+BbDQ/3r2tKEi5aHZGW0xkjb1jEAXxXDsqCFEXaig==" crossorigin="anonymous" referrerpolicy="no-referrer">
  <style>
  .sermon-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; }
  .sermon-tab { padding:0.6rem 1.25rem; border-radius:50px; border:2px solid var(--gray-200); background:var(--white); cursor:pointer; font-weight:600; font-size:0.88rem; color:var(--text-muted); transition:var(--transition); }
@@ -133,7 +133,7 @@
  <div class="footer-col"><h4>Apostle MJ Ministries</h4><p>Spreading the Gospel through preaching, teaching, and outreach.</p></div>
  <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="prayer.html">Prayer</a></li><li><a href="donations.html">Donate</a></li><li><a href="admin.html">Staff Login</a></li></ul></div>
  <div class="footer-col"><h4>Ministry</h4><ul><li><a href="livestream.html">Watch Live</a></li><li><a href="events.html">Events</a></li><li><a href="membership.html">Join Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
-      <div class="footer-col"><h4>Connect</h4><div class="footer-socials"><a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="footer-social"><i class="fab fa-facebook-f"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" class="footer-social"><i class="fab fa-tiktok"></i></a><a href="https://wa.me/211921444658" target="_blank" class="footer-social"><i class="fab fa-whatsapp"></i></a></div></div>
+      <div class="footer-col"><h4>Connect</h4><div class="footer-socials"><a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" rel="noopener noreferrer" class="footer-social"><i class="fab fa-facebook-f"></i></a><a href="#" class="footer-social"><i class="fab fa-youtube"></i></a><a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" rel="noopener noreferrer" class="footer-social"><i class="fab fa-tiktok"></i></a><a href="https://wa.me/211921444658" target="_blank" rel="noopener noreferrer" class="footer-social"><i class="fab fa-whatsapp"></i></a></div></div>
  </div>
  </div>
  <div class="footer-bottom"><div class="container"><p>&copy; 2024 Apostle MJ Ministries. All Rights Reserved.</p></div></div>
@@ -156,10 +156,15 @@ function filterByTopic(el, topic) {
  c.style.display = (topic === 'all' || c.dataset.topic === topic) ? '' : 'none';
  });
 }
+function isSafeUrl(url) {
+ return /^https?:\/\//i.test(url);
+}
 function playVideo(thumb, url) {
+ if (!isSafeUrl(url)) return;
  const iframe = document.createElement('iframe');
  iframe.src = url + '?autoplay=1';
  iframe.allow = 'autoplay; fullscreen';
+ iframe.allowFullscreen = true;
  iframe.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0;border:none;';
  thumb.innerHTML = '';
  thumb.appendChild(iframe);
@@ -169,15 +174,6 @@ function filterSermons() {
  document.querySelectorAll('.video-card').forEach(c =>{
  c.style.display = c.textContent.toLowerCase().includes(q) ? '' : 'none';
  });
-}
-
-function playVideo(thumb, url) {
- const iframe = document.createElement('iframe');
- iframe.src = url + '?autoplay=1';
- iframe.allow = 'autoplay; fullscreen';
- iframe.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0;border:none;';
- thumb.innerHTML = '';
- thumb.appendChild(iframe);
 }
 
 function toYouTubeEmbed(url) {
@@ -202,22 +198,32 @@ document.addEventListener('DOMContentLoaded', () =>{
  const card = document.createElement('div');
  card.className = 'video-card';
  card.dataset.topic = (s.topic||'').toLowerCase();
- card.innerHTML = `
- <div class="video-thumb" onclick="playVideo(this,'${escapeHtml(embedUrl)}')">
- <div style="width:100%;height:100%;background:var(--primary);display:flex;align-items:center;justify-content:center;">
- <i class="fab fa-youtube" style="font-size:3rem;color:#ff0000;"></i>
- </div>
- <div class="play-btn"><i class="fas fa-play"></i></div>
- </div>
- <div class="card-body">
- <div class="card-meta">${escapeHtml(dateLabel)} &nbsp;|&nbsp; <i class="fas fa-tag"></i>${escapeHtml(s.topic||'General')}</div>
- <h4 class="card-title">${escapeHtml(s.title)}</h4>
- <p class="card-text">${escapeHtml(s.desc||'')}</p>
- <div style="display:flex;gap:0.5rem;margin-top:1rem;">
- <button class="btn btn-sm btn-purple" onclick="playVideo(this.closest('.video-card').querySelector('.video-thumb'),'${escapeHtml(embedUrl)}')"><i class="fas fa-play"></i>Watch</button>
- <a href="${escapeHtml(s.url)}" target="_blank" class="btn btn-sm btn-outline" style="color:var(--primary);border-color:var(--gray-200);"><i class="fab fa-youtube"></i>YouTube</a>
- </div>
- </div>`;
+ const thumb = document.createElement('div');
+ thumb.className = 'video-thumb';
+ thumb.dataset.url = embedUrl;
+ thumb.innerHTML = `<div style="width:100%;height:100%;background:var(--primary);display:flex;align-items:center;justify-content:center;"><i class="fab fa-youtube" style="font-size:3rem;color:#ff0000;"></i></div><div class="play-btn"><i class="fas fa-play"></i></div>`;
+ thumb.addEventListener('click', () => playVideo(thumb, thumb.dataset.url));
+ const watchBtn = document.createElement('button');
+ watchBtn.className = 'btn btn-sm btn-purple';
+ watchBtn.innerHTML = '<i class="fas fa-play"></i>Watch';
+ watchBtn.addEventListener('click', () => playVideo(card.querySelector('.video-thumb'), embedUrl));
+ const ytLink = document.createElement('a');
+ ytLink.href = isSafeUrl(s.url) ? s.url : '#';
+ ytLink.target = '_blank';
+ ytLink.rel = 'noopener noreferrer';
+ ytLink.className = 'btn btn-sm btn-outline';
+ ytLink.style.cssText = 'color:var(--primary);border-color:var(--gray-200);';
+ ytLink.innerHTML = '<i class="fab fa-youtube"></i>YouTube';
+ const cardBody = document.createElement('div');
+ cardBody.className = 'card-body';
+ cardBody.innerHTML = `<div class="card-meta">${escapeHtml(dateLabel)} &nbsp;|&nbsp; <i class="fas fa-tag"></i>${escapeHtml(s.topic||'General')}</div><h4 class="card-title">${escapeHtml(s.title)}</h4><p class="card-text">${escapeHtml(s.desc||'')}</p>`;
+ const btnRow = document.createElement('div');
+ btnRow.style.cssText = 'display:flex;gap:0.5rem;margin-top:1rem;';
+ btnRow.appendChild(watchBtn);
+ btnRow.appendChild(ytLink);
+ cardBody.appendChild(btnRow);
+ card.appendChild(thumb);
+ card.appendChild(cardBody);
  grid.appendChild(card);
  }
  // Audio list item
@@ -229,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () =>{
  item.innerHTML = `<div class="audio-num">${num}</div>
  <div class="audio-info"><h4>${escapeHtml(s.title)}</h4>
  <p>${escapeHtml(dateLabel)} &nbsp;|&nbsp; ${escapeHtml(s.topic||'General')} &nbsp;|&nbsp; ${escapeHtml(s.speaker||'Apostle MJ')}</p></div>
- ${s.url ? `<a href="${escapeHtml(s.url)}" target="_blank" class="btn btn-sm btn-purple"><i class="fas fa-play"></i>Watch</a>` : ''}`;
+ ${s.url && isSafeUrl(s.url) ? `<a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-purple"><i class="fas fa-play"></i>Watch</a>` : ''}`;
  audioGrid.appendChild(item);
  });
  }

@@ -325,7 +325,11 @@ function showToast(message, isError = false) {
  document.body.appendChild(toast);
  }
  toast.className = `toast${isError ? ' error' : ''}`;
- toast.innerHTML = `<i class="fas fa-${isError ? 'exclamation-circle' : 'check-circle'}" style="color:${isError?'#ef4444':'#10b981'};font-size:1.2rem;"></i>${message}`;
+ const icon = document.createElement('i');
+ icon.className = `fas fa-${isError ? 'exclamation-circle' : 'check-circle'}`;
+ icon.style.cssText = `color:${isError?'#ef4444':'#10b981'};font-size:1.2rem;`;
+ toast.textContent = message;
+ toast.prepend(icon);
  setTimeout(() =>toast.classList.add('show'), 10);
  setTimeout(() =>toast.classList.remove('show'), 4500);
 }

@@ -5,7 +5,7 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Admin Dashboard | Apostle MJ Ministries</title>
  <link rel="stylesheet" href="css/style.css">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPDbXiMBBELf+BbDQ/3r2tKEi5aHZGW0xkjb1jEAXxXDsqCFEXaig==" crossorigin="anonymous" referrerpolicy="no-referrer">
  <style>
  body { background:#f0f2f8; }
  .admin-stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.25rem; margin-bottom:2rem; }
@@ -528,7 +528,7 @@ function loadAnnouncements() {
  const list = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
  el.innerHTML = list.length ? list.slice().reverse().map(a =>`
  <div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
- <div><strong>${escapeHtml(a.title)}</strong><span style="font-size:0.8rem;color:var(--text-muted);margin-left:0.5rem;">${a.date}</span><br>
+ <div><strong>${escapeHtml(a.title)}</strong><span style="font-size:0.8rem;color:var(--text-muted);margin-left:0.5rem;">${escapeHtml(a.date)}</span><br>
  <span style="font-size:0.82rem;color:var(--text-muted);">${escapeHtml(a.text.substring(0,100))}${a.text.length>100?'...':''}</span></div>
  <button class="btn-xs btn-xs-red" onclick="deleteAnnouncement(${a.id})">Delete</button>
  </div>`).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No announcements yet. Post one above!</p>';
@@ -641,7 +641,7 @@ function saveDonation() {
  localStorage.setItem('mj_donations', JSON.stringify(donations));
  // Add to table
  const tbody = document.getElementById('donations-table-body');
- const row = `<tr><td><strong>${d.name}</strong></td><td style="color:var(--success);font-weight:700;">${d.amount}</td><td>${d.category}</td><td>${d.method}</td><td>${d.date}</td><td>${d.notes||'-'}</td></tr>`;
+ const row = `<tr><td><strong>${escapeHtml(d.name)}</strong></td><td style="color:var(--success);font-weight:700;">${escapeHtml(d.amount)}</td><td>${escapeHtml(d.category)}</td><td>${escapeHtml(d.method)}</td><td>${escapeHtml(d.date)}</td><td>${escapeHtml(d.notes||'-')}</td></tr>`;
  if (tbody.querySelector('td[colspan]')) tbody.innerHTML = '';
  tbody.insertAdjacentHTML('afterbegin', row);
  showToast('Donation recorded!');
