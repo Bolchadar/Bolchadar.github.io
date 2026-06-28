@@ -10,14 +10,19 @@
  <style>
  .hero { min-height: 96vh; }
  @media (max-width: 768px) {
-  .hero { min-height: auto; padding: 5rem 1.25rem 3rem; }
-  .hero-img-circle { width: 155px !important; height: 155px !important; margin-bottom: 0.75rem !important; }
-  .hero-badge { margin-bottom: 0.75rem; }
-  .hero h1 { margin-bottom: 0.6rem; }
-  .hero p { margin-bottom: 1.25rem; }
+  .hero { min-height: auto; padding: calc(var(--nav-height) + 0.5rem) 1.25rem 1.5rem; }
+  .hero-img-circle { width: 115px !important; height: 115px !important; margin-bottom: 0.5rem !important; }
+  .hero-badge { margin-bottom: 0.5rem; font-size: 0.68rem; padding: 0.3rem 0.9rem; }
+  .hero h1 { margin-bottom: 0.35rem; font-size: 1.35rem; }
+  .hero p { margin-bottom: 0.75rem; font-size: 0.88rem; }
+  .hero-buttons { gap: 0.5rem; }
+  .hero-buttons .btn { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
  }
  @media (max-width: 480px) {
-  .hero { padding: 4rem 1rem 2.5rem; }
+  .hero { padding: calc(var(--nav-height) + 0.25rem) 1rem 1.25rem; }
+  .hero-img-circle { width: 100px !important; height: 100px !important; }
+  .hero h1 { font-size: 1.2rem; }
+  .hero p { font-size: 0.85rem; margin-bottom: 0.6rem; }
  }
  .announcement-ticker {
  background: var(--gold);
