@@ -8,6 +8,11 @@
  <link rel="stylesheet" href="css/style.css">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
  <style>
+ /* Lucide quick-link icon circles */
+ .quick-link .ql-icon { width:52px;height:52px;background:var(--light);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--primary-light);transition:var(--transition);flex-shrink:0; }
+ .quick-link:hover .ql-icon { background:var(--primary);color:var(--gold); }
+ .quick-link .ql-icon svg { width:26px;height:26px;stroke:currentColor;flex-shrink:0; }
+ @media(max-width:768px){ .quick-link .ql-icon{width:42px;height:42px;} .quick-link .ql-icon svg{width:22px;height:22px;} }
  .hero { min-height: 96vh; }
  @media (max-width: 768px) {
   .hero { min-height: auto; padding: calc(var(--nav-height) + 0.5rem) 1.25rem 1.5rem; }
@@ -119,20 +124,20 @@
  <div class="divider"></div>
  </div>
  <div class="quick-links">
- <a href="prayer.html" class="quick-link"><i class="fas fa-hands-praying"></i>Prayer Center</a>
- <a href="sermons.html" class="quick-link"><i class="fas fa-play-circle"></i>Sermons</a>
- <a href="livestream.html" class="quick-link"><i class="fas fa-tower-broadcast"></i>Livestream</a>
- <a href="testimony.html" class="quick-link"><i class="fas fa-star"></i>Testimonies</a>
- <a href="prophecy.html" class="quick-link"><i class="fas fa-fire"></i>Prophecy</a>
- <a href="fulfillment.html" class="quick-link"><i class="fas fa-check-circle"></i>Fulfillment</a>
- <a href="devotions.html" class="quick-link"><i class="fas fa-book-bible"></i>Devotions</a>
- <a href="charity.html" class="quick-link"><i class="fas fa-heart"></i>Charity</a>
- <a href="donations.html" class="quick-link"><i class="fas fa-hand-holding-heart"></i>Donate / Give</a>
- <a href="events.html" class="quick-link"><i class="fas fa-calendar-alt"></i>Events</a>
- <a href="membership.html" class="quick-link"><i class="fas fa-users"></i>Membership</a>
- <a href="media.html" class="quick-link"><i class="fas fa-images"></i>Media Gallery</a>
- <a href="contact.html" class="quick-link"><i class="fas fa-phone"></i>Contact Us</a>
- <a href="about.html" class="quick-link"><i class="fas fa-info-circle"></i>About Us</a>
+ <a href="prayer.html" class="quick-link"><span class="ql-icon"><i data-lucide="sun"></i></span>Prayer Center</a>
+ <a href="sermons.html" class="quick-link"><span class="ql-icon"><i data-lucide="play-circle"></i></span>Sermons</a>
+ <a href="livestream.html" class="quick-link"><span class="ql-icon"><i data-lucide="radio"></i></span>Livestream</a>
+ <a href="testimony.html" class="quick-link"><span class="ql-icon"><i data-lucide="star"></i></span>Testimonies</a>
+ <a href="prophecy.html" class="quick-link"><span class="ql-icon"><i data-lucide="flame"></i></span>Prophecy</a>
+ <a href="fulfillment.html" class="quick-link"><span class="ql-icon"><i data-lucide="badge-check"></i></span>Fulfillment</a>
+ <a href="devotions.html" class="quick-link"><span class="ql-icon"><i data-lucide="book-open"></i></span>Devotions</a>
+ <a href="charity.html" class="quick-link"><span class="ql-icon"><i data-lucide="heart"></i></span>Charity</a>
+ <a href="donations.html" class="quick-link"><span class="ql-icon"><i data-lucide="gift"></i></span>Donate / Give</a>
+ <a href="events.html" class="quick-link"><span class="ql-icon"><i data-lucide="calendar-days"></i></span>Events</a>
+ <a href="membership.html" class="quick-link"><span class="ql-icon"><i data-lucide="users"></i></span>Membership</a>
+ <a href="media.html" class="quick-link"><span class="ql-icon"><i data-lucide="images"></i></span>Media Gallery</a>
+ <a href="contact.html" class="quick-link"><span class="ql-icon"><i data-lucide="phone"></i></span>Contact Us</a>
+ <a href="about.html" class="quick-link"><span class="ql-icon"><i data-lucide="info"></i></span>About Us</a>
  </div>
  </div>
 </section>
@@ -318,6 +323,8 @@ document.addEventListener('DOMContentLoaded', () =>{
  }
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
 </body>
 </html>
 
