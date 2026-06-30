@@ -103,6 +103,8 @@
  <div class="sidebar-section">Content</div>
  <a href="#" onclick="showAdminSection('sec-sermons');closeSidebar();"><i class="fas fa-play-circle"></i>Upload Sermons</a>
  <a href="#" onclick="showAdminSection('sec-devotionals');closeSidebar();"><i class="fas fa-book-bible"></i>Devotionals</a>
+ <a href="#" onclick="showAdminSection('sec-prophecy');closeSidebar();"><i class="fas fa-fire"></i>Prophecy</a>
+ <a href="#" onclick="showAdminSection('sec-fulfillment');closeSidebar();"><i class="fas fa-check-circle"></i>Fulfillments</a>
  <a href="#" onclick="showAdminSection('sec-events');closeSidebar();"><i class="fas fa-calendar-alt"></i>Events</a>
  <a href="#" onclick="showAdminSection('sec-announcements');closeSidebar();"><i class="fas fa-bullhorn"></i>Announcements</a>
 
@@ -149,6 +151,8 @@
  <div class="quick-action" onclick="showAdminSection('sec-members')"><i class="fas fa-users"></i>View New Members</div>
  <div class="quick-action" onclick="showAdminSection('sec-sermons')"><i class="fas fa-upload"></i>Upload a New Sermon</div>
  <div class="quick-action" onclick="showAdminSection('sec-devotionals')"><i class="fas fa-book-bible"></i>Write Daily Devotional</div>
+ <div class="quick-action" onclick="showAdminSection('sec-prophecy')"><i class="fas fa-fire"></i>Post Prophetic Word</div>
+ <div class="quick-action" onclick="showAdminSection('sec-fulfillment')"><i class="fas fa-check-circle"></i>Record Fulfillment</div>
  <div class="quick-action" onclick="showAdminSection('sec-events')"><i class="fas fa-calendar-alt"></i>Manage Events</div>
  <div class="quick-action" onclick="showAdminSection('sec-announcements')"><i class="fas fa-bullhorn"></i>Post Announcement</div>
  </div>
@@ -346,6 +350,55 @@
  <div class="admin-card mt-3">
  <h4 style="color:var(--primary);margin-bottom:1rem;">Current Announcements (Ticker)</h4>
  <div id="announcements-list" style="font-size:0.9rem;"><p style="color:var(--text-muted);">No announcements yet.</p></div>
+ </div>
+ </div>
+
+ <!-- PROPHECY -->
+ <div id="sec-prophecy" class="admin-section" data-title="Post Prophetic Word">
+ <div class="admin-card">
+  <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-fire" style="color:var(--gold);"></i>Post a Prophetic Word</h4>
+  <div class="form-row">
+  <div class="form-group"><label class="form-label">Title / Heading <span class="required">*</span></label><input type="text" class="form-control" placeholder="e.g. A Word for the Nation" id="proph-title"></div>
+  <div class="form-group"><label class="form-label">Date Given</label><input type="date" class="form-control" id="proph-date"></div>
+  </div>
+  <div class="form-row">
+  <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="proph-category"><option>General</option><option>National</option><option>Church</option><option>Personal</option><option>Healing</option><option>Revival</option></select></div>
+  <div class="form-group"><label class="form-label">Scripture Reference</label><input type="text" class="form-control" placeholder="e.g. Jeremiah 29:11" id="proph-scripture"></div>
+  </div>
+  <div class="form-group"><label class="form-label">Prophetic Word <span class="required">*</span></label><textarea class="form-control" rows="10" placeholder="Type the prophetic word here..." id="proph-word"></textarea></div>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+  <button onclick="saveProphecy()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
+  <button onclick="shareProphecyWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
+  </div>
+ </div>
+ <div class="admin-card mt-3">
+  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Published Prophecies</h4>
+  <div id="prophecy-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">No prophetic words published yet.</p></div>
+ </div>
+ </div>
+
+ <!-- FULFILLMENTS -->
+ <div id="sec-fulfillment" class="admin-section" data-title="Record Fulfilled Prophecy">
+ <div class="admin-card">
+  <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-check-circle" style="color:#10b981;"></i>Record a Fulfilled Prophecy</h4>
+  <div class="form-row">
+  <div class="form-group"><label class="form-label">Fulfillment Title <span class="required">*</span></label><input type="text" class="form-control" placeholder="e.g. National Peace Prophecy Fulfilled" id="ful-title"></div>
+  <div class="form-group"><label class="form-label">Date Fulfilled</label><input type="date" class="form-control" id="ful-date"></div>
+  </div>
+  <div class="form-row">
+  <div class="form-group"><label class="form-label">Date Originally Prophesied</label><input type="date" class="form-control" id="ful-propdate"></div>
+  <div class="form-group"></div>
+  </div>
+  <div class="form-group"><label class="form-label">Original Prophecy (brief quote)</label><textarea class="form-control" rows="3" placeholder="Paste or summarise the original prophetic word..." id="ful-original"></textarea></div>
+  <div class="form-group"><label class="form-label">How It Was Fulfilled <span class="required">*</span></label><textarea class="form-control" rows="8" placeholder="Describe how this prophecy came to pass..." id="ful-how"></textarea></div>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+  <button onclick="saveFulfillment()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
+  <button onclick="shareFulfillmentAdminWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
+  </div>
+ </div>
+ <div class="admin-card mt-3">
+  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Recorded Fulfillments</h4>
+  <div id="fulfillment-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">No fulfillments recorded yet.</p></div>
  </div>
  </div>
 
@@ -671,6 +724,105 @@ function refreshActivity() {
  const badge = document.getElementById('badge-prayers');
  if (badge) badge.textContent = pending;
 }
+function saveProphecy() {
+ const title = document.getElementById('proph-title').value.trim();
+ const word = document.getElementById('proph-word').value.trim();
+ if (!title || !word) { showToast('Please enter a title and the prophetic word.', true); return; }
+ const list = JSON.parse(localStorage.getItem('mj_prophecies') || '[]');
+ list.push({
+  id: Date.now(),
+  title,
+  date: document.getElementById('proph-date').value,
+  category: document.getElementById('proph-category').value,
+  scripture: document.getElementById('proph-scripture').value,
+  word
+ });
+ localStorage.setItem('mj_prophecies', JSON.stringify(list));
+ ['proph-title','proph-date','proph-scripture','proph-word'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
+ loadProphecyList();
+ showToast('Prophetic word saved and published!');
+}
+
+function shareProphecyWA() {
+ const title = document.getElementById('proph-title').value || 'Prophetic Word';
+ const word = document.getElementById('proph-word').value || '';
+ const ref = document.getElementById('proph-scripture').value || '';
+ const msg = `*🔥 PROPHETIC WORD — ${MINISTRY_NAME}*\n\n*${title}*${ref ? '\n_Scripture: ' + ref + '_' : ''}\n\n${word.substring(0,500)}...\n\n— Apostle MJ\n_Shared via Ministry Website_`;
+ openWhatsApp(msg);
+}
+
+function deleteProphecy(id) {
+ if (!confirm('Delete this prophetic word?')) return;
+ const list = JSON.parse(localStorage.getItem('mj_prophecies') || '[]');
+ localStorage.setItem('mj_prophecies', JSON.stringify(list.filter(p => p.id !== id)));
+ loadProphecyList();
+ showToast('Prophecy deleted.');
+}
+
+function loadProphecyList() {
+ const el = document.getElementById('prophecy-admin-list');
+ if (!el) return;
+ const list = JSON.parse(localStorage.getItem('mj_prophecies') || '[]');
+ list.sort((a,b) => (b.date||'').localeCompare(a.date||'') || b.id - a.id);
+ el.innerHTML = list.length ? list.map(p => {
+  const label = p.date ? new Date(p.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
+  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+  <div><strong>${escapeHtml(p.title)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.5rem;">[${escapeHtml(p.category||'General')}]</span><br>
+  <span style="font-size:0.82rem;color:var(--text-muted);">${label}${p.scripture?' | '+escapeHtml(p.scripture):''}</span></div>
+  <button class="btn-xs btn-xs-red" onclick="deleteProphecy(${p.id})">Delete</button>
+  </div>`;
+ }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No prophetic words published yet.</p>';
+}
+
+function saveFulfillment() {
+ const title = document.getElementById('ful-title').value.trim();
+ const how = document.getElementById('ful-how').value.trim();
+ if (!title || !how) { showToast('Please enter a title and how it was fulfilled.', true); return; }
+ const list = JSON.parse(localStorage.getItem('mj_fulfillments') || '[]');
+ list.push({
+  id: Date.now(),
+  title,
+  fulfilledDate: document.getElementById('ful-date').value,
+  prophecyDate: document.getElementById('ful-propdate').value,
+  originalWord: document.getElementById('ful-original').value,
+  howFulfilled: how
+ });
+ localStorage.setItem('mj_fulfillments', JSON.stringify(list));
+ ['ful-title','ful-date','ful-propdate','ful-original','ful-how'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
+ loadFulfillmentList();
+ showToast('Fulfillment recorded and published!');
+}
+
+function shareFulfillmentAdminWA() {
+ const title = document.getElementById('ful-title').value || 'Fulfilled Prophecy';
+ const how = document.getElementById('ful-how').value || '';
+ const msg = `*✅ FULFILLED PROPHECY — ${MINISTRY_NAME}*\n\n*${title}*\n\n${how.substring(0,500)}...\n\nTo God be all the glory!\n— Apostle MJ`;
+ openWhatsApp(msg);
+}
+
+function deleteFulfillment(id) {
+ if (!confirm('Delete this fulfillment record?')) return;
+ const list = JSON.parse(localStorage.getItem('mj_fulfillments') || '[]');
+ localStorage.setItem('mj_fulfillments', JSON.stringify(list.filter(f => f.id !== id)));
+ loadFulfillmentList();
+ showToast('Fulfillment deleted.');
+}
+
+function loadFulfillmentList() {
+ const el = document.getElementById('fulfillment-admin-list');
+ if (!el) return;
+ const list = JSON.parse(localStorage.getItem('mj_fulfillments') || '[]');
+ list.sort((a,b) => (b.fulfilledDate||'').localeCompare(a.fulfilledDate||'') || b.id - a.id);
+ el.innerHTML = list.length ? list.map(f => {
+  const label = f.fulfilledDate ? new Date(f.fulfilledDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
+  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+  <div><strong>${escapeHtml(f.title)}</strong><br>
+  <span style="font-size:0.82rem;color:var(--text-muted);">Fulfilled: ${label}</span></div>
+  <button class="btn-xs btn-xs-red" onclick="deleteFulfillment(${f.id})">Delete</button>
+  </div>`;
+ }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No fulfillments recorded yet.</p>';
+}
+
 // Hook into loadAdminData
 const origLoad = loadAdminData;
 window.loadAdminData = function() {
@@ -680,6 +832,8 @@ window.loadAdminData = function() {
  loadEventsAdmin();
  loadDevotionalsList();
  loadSermonsList();
+ loadProphecyList();
+ loadFulfillmentList();
 };
 </script>
 </body>
