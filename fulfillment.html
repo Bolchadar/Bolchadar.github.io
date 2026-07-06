@@ -111,6 +111,12 @@ function shareFulfillmentWA() {
  openWhatsApp(msg);
 }
 
+function isSafeUrl(u) { return u && /^https?:\/\//i.test(u); }
+function toYTEmbed(url) {
+ if (!isSafeUrl(url)) return '';
+ const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_\-]+)/);
+ return m ? 'https://www.youtube.com/embed/' + m[1] : '';
+}
 document.addEventListener('DOMContentLoaded', () => {
  const list = document.getElementById('fulfillment-list');
  const empty = document.getElementById('fulfillment-empty');
@@ -120,15 +126,31 @@ document.addEventListener('DOMContentLoaded', () => {
   fulfillments.slice().reverse().forEach(f => {
    const div = document.createElement('div');
    div.className = 'fulfillment-card';
-   div.innerHTML = `
-    <span class="fulfillment-seal"><i class="fas fa-check-circle"></i> FULFILLED</span>
+   const pLabel = f.prophecyDate ? new Date(f.prophecyDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+   const fLabel = f.fulfilledDate ? new Date(f.fulfilledDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+   const embedUrl = toYTEmbed(f.video || '');
+   let html = `<span class="fulfillment-seal"><i class="fas fa-check-circle"></i> FULFILLED</span>
     <h3 style="color:var(--primary);margin-bottom:0.75rem;margin-right:6rem;">${escapeHtml(f.title)}</h3>
     <div class="fulfillment-dates">
-     ${f.prophecyDate ? `<span class="fulfillment-date-item"><i class="fas fa-fire" style="color:var(--gold);"></i> Prophesied: ${escapeHtml(f.prophecyDate)}</span>` : ''}
-     ${f.fulfilledDate ? `<span class="fulfillment-date-item"><i class="fas fa-check-circle" style="color:#10b981;"></i> Fulfilled: ${escapeHtml(f.fulfilledDate)}</span>` : ''}
+     ${pLabel ? `<span class="fulfillment-date-item"><i class="fas fa-fire" style="color:var(--gold);"></i> Prophesied: ${escapeHtml(pLabel)}</span>` : ''}
+     ${fLabel ? `<span class="fulfillment-date-item"><i class="fas fa-check-circle" style="color:#10b981;"></i> Fulfilled: ${escapeHtml(fLabel)}</span>` : ''}
     </div>
     ${f.originalWord ? `<div class="fulfillment-prophecy"><i class="fas fa-quote-left" style="color:var(--gold);margin-right:0.5rem;"></i>${escapeHtml(f.originalWord)}</div>` : ''}
     <div class="fulfillment-how">${escapeHtml(f.howFulfilled).replace(/\n/g, '<br>')}</div>`;
+   if (f.photos && f.photos.length > 0) {
+    const validPhotos = f.photos.filter(p => isSafeUrl(p));
+    if (validPhotos.length > 0) {
+     html += `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:0.5rem;margin-top:1.25rem;">`;
+     validPhotos.forEach(ph => {
+      html += `<img src="${escapeHtml(ph)}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;" onerror="this.style.display='none'">`;
+     });
+     html += `</div>`;
+    }
+   }
+   if (embedUrl) {
+    html += `<div style="position:relative;aspect-ratio:16/9;margin-top:1.25rem;"><iframe src="${escapeHtml(embedUrl)}" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:8px;" allow="fullscreen" allowfullscreen></iframe></div>`;
+   }
+   div.innerHTML = html;
    list.appendChild(div);
   });
  }

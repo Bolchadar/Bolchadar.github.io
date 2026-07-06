@@ -49,6 +49,21 @@
 
 <div class="page-content">
 
+<!-- DYNAMIC CHARITY PROJECTS -->
+<section class="section">
+ <div class="container">
+ <div class="section-header">
+ <span class="label">Latest Projects</span>
+ <h2>Our Charity Projects</h2>
+ <p>See what God is doing through our hands in the community — recent outreaches, drives, and initiatives.</p>
+ <div class="divider"></div>
+ </div>
+ <div id="charity-projects-display">
+ <p id="charity-projects-empty" style="text-align:center;color:var(--text-muted);padding:2rem 0;">No projects posted yet. Check back soon!</p>
+ </div>
+ </div>
+</section>
+
 <!-- PROGRAMS -->
 <section class="section section-light">
  <div class="container">
@@ -154,6 +169,57 @@
 <a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa"><i class="fab fa-whatsapp"></i><span class="float-wa-tooltip">Prayer via WhatsApp</span></a>
 <button id="back-top"><i class="fas fa-chevron-up"></i></button>
 <script src="js/main.js"></script>
+<script>
+function isSafeUrl(u) { return u && /^https?:\/\//i.test(u); }
+function toYTEmbed(url) {
+ if (!isSafeUrl(url)) return '';
+ const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_\-]+)/);
+ return m ? 'https://www.youtube.com/embed/' + m[1] : '';
+}
+document.addEventListener('DOMContentLoaded', () => {
+ const projects = JSON.parse(localStorage.getItem('mj_charity') || '[]');
+ const container = document.getElementById('charity-projects-display');
+ const empty = document.getElementById('charity-projects-empty');
+ if (!projects.length) return;
+ if (empty) empty.remove();
+ projects.slice().reverse().forEach(c => {
+  const div = document.createElement('div');
+  div.style.cssText = 'background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:2rem;overflow:hidden;';
+  const dateLabel = c.date ? new Date(c.date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) : '';
+  const embedUrl = toYTEmbed(c.video || '');
+  let html = '';
+  const validPhotos = (c.photos||[]).filter(p => isSafeUrl(p));
+  if (validPhotos.length > 0) {
+   html += `<img src="${escapeHtml(validPhotos[0])}" alt="${escapeHtml(c.title)}" style="width:100%;max-height:320px;object-fit:cover;" onerror="this.style.display='none'">`;
+  }
+  html += `<div style="padding:2rem;">`;
+  html += `<h3 style="color:var(--primary);margin-bottom:0.75rem;">${escapeHtml(c.title)}</h3>`;
+  if (dateLabel || c.location) {
+   html += `<div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;font-size:0.85rem;color:var(--text-muted);">`;
+   if (dateLabel) html += `<span><i class="fas fa-calendar-alt" style="color:var(--gold);margin-right:0.3rem;"></i>${escapeHtml(dateLabel)}</span>`;
+   if (c.location) html += `<span><i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:0.3rem;"></i>${escapeHtml(c.location)}</span>`;
+   html += `</div>`;
+  }
+  html += `<p style="line-height:1.8;color:var(--text);margin-bottom:1rem;">${escapeHtml(c.desc).replace(/\n/g,'<br>')}</p>`;
+  if (validPhotos.length > 1) {
+   html += `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.5rem;margin-bottom:1rem;">`;
+   validPhotos.slice(1).forEach(ph => {
+    html += `<img src="${escapeHtml(ph)}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;" onerror="this.style.display='none'">`;
+   });
+   html += `</div>`;
+  }
+  if (embedUrl) {
+   html += `<div style="position:relative;aspect-ratio:16/9;margin-bottom:1rem;"><iframe src="${escapeHtml(embedUrl)}" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:8px;" allow="fullscreen" allowfullscreen></iframe></div>`;
+  }
+  if (c.donation) {
+   html += `<div style="background:var(--light);border-radius:var(--radius-sm);padding:1rem;border-left:4px solid var(--gold);margin-top:0.5rem;"><strong style="color:var(--primary);"><i class="fas fa-hand-holding-heart" style="color:var(--gold);margin-right:0.4rem;"></i>How to Give:</strong><br><span style="font-size:0.9rem;color:var(--text-muted);">${escapeHtml(c.donation)}</span></div>`;
+  }
+  html += `</div>`;
+  div.innerHTML = html;
+  container.appendChild(div);
+ });
+});
+</script>
 </body>
 </html>
 

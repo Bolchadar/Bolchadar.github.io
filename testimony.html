@@ -34,8 +34,23 @@
 
 <div class="page-content">
 
-<!-- TESTIMONIES -->
+<!-- CHURCH TESTIMONIES -->
 <section class="section section-light">
+ <div class="container">
+ <div class="section-header">
+ <span class="label">Church Testimonies</span>
+ <h2>What God Has Done</h2>
+ <p>Testimonies published by Apostle MJ Ministries — proof of God's faithfulness in our community.</p>
+ <div class="divider"></div>
+ </div>
+ <div id="church-testimonies-display" class="grid-3">
+ <p id="church-testimonies-empty" style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:2rem 0;">No church testimonies yet. Check back soon!</p>
+ </div>
+ </div>
+</section>
+
+<!-- SUBMITTED TESTIMONIES -->
+<section class="section">
  <div class="container">
  <div class="section-header">
  <span class="label">God's Miracles</span>
@@ -168,18 +183,63 @@ function sendTestimonyViaWhatsApp() {
   const msg = `*🌟 TESTIMONY — ${MINISTRY_NAME}*\n\nPraise God! I want to share what God has done in my life...\n\n_Please reply with your testimony and we will add it to our Testimony Center!_`;
   openWhatsApp(msg);
 }
+function isSafeUrl(u) { return u && /^https?:\/\//i.test(u); }
+function toYTEmbed(url) {
+ if (!isSafeUrl(url)) return '';
+ const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_\-]+)/);
+ return m ? 'https://www.youtube.com/embed/' + m[1] : '';
+}
 document.addEventListener('DOMContentLoaded', () =>{
+ // Church testimonies
+ const churchList = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
+ const churchContainer = document.getElementById('church-testimonies-display');
+ const churchEmpty = document.getElementById('church-testimonies-empty');
+ if (churchList.length > 0) {
+  if (churchEmpty) churchEmpty.remove();
+  churchList.slice().reverse().forEach(t => {
+   const div = document.createElement('div');
+   div.style.cssText = 'background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;';
+   let html = '';
+   if (isSafeUrl(t.photo)) html += `<img src="${escapeHtml(t.photo)}" alt="${escapeHtml(t.title||'')}" style="width:100%;aspect-ratio:16/9;object-fit:cover;" onerror="this.style.display='none'">`;
+   html += `<div style="padding:1.5rem;">`;
+   if (t.title) html += `<h4 style="color:var(--primary);margin-bottom:0.75rem;">${escapeHtml(t.title)}</h4>`;
+   if (t.category) html += `<span style="font-size:0.78rem;font-weight:700;background:var(--light);color:var(--primary-light);padding:0.2rem 0.7rem;border-radius:50px;margin-bottom:0.75rem;display:inline-block;">${escapeHtml(t.category)}</span>`;
+   html += `<p style="line-height:1.8;color:var(--text);">"${escapeHtml(t.testimony)}"</p>`;
+   const embedUrl = toYTEmbed(t.video || '');
+   if (embedUrl) {
+    html += `<div style="position:relative;aspect-ratio:16/9;margin-top:1rem;"><iframe src="${escapeHtml(embedUrl)}" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:8px;" allow="fullscreen" allowfullscreen></iframe></div>`;
+   }
+   const label = t.date ? new Date(t.date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) : '';
+   html += `<div style="display:flex;align-items:center;gap:0.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-200);"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem;flex-shrink:0;">${escapeHtml((t.name||'C')[0].toUpperCase())}</div><div><div style="font-weight:600;font-size:0.92rem;color:var(--primary);">${escapeHtml(t.name||'Church')}</div><div style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(label||'Apostle MJ Ministries')}</div></div></div>`;
+   html += `</div>`;
+   div.innerHTML = html;
+   churchContainer.appendChild(div);
+  });
+ }
+
+ // Approved submitted testimonies
  const stored = JSON.parse(localStorage.getItem('mj_testimonies') || '[]').filter(t =>t.approved);
  const container = document.getElementById('testimonies-display');
  const empty = document.getElementById('testimonies-empty');
- if (stored.length >0) {
- if (empty) empty.remove();
- stored.slice().reverse().forEach(t =>{
- const div = document.createElement('div');
- div.className = 'testimony-card';
- div.innerHTML = `<p>"${escapeHtml(t.testimony)}"</p><div class="author"><div class="avatar">${escapeHtml((t.name||'?')[0].toUpperCase())}</div><div><div class="author-name">${escapeHtml(t.name||'Anonymous')}</div><div class="author-location">${escapeHtml(t.location || 'Apostle MJ Ministries')}</div></div></div>`;
- container.appendChild(div);
- });
+ if (stored.length > 0) {
+  if (empty) empty.remove();
+  stored.slice().reverse().forEach(t =>{
+   const div = document.createElement('div');
+   div.style.cssText = 'background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;';
+   let html = '';
+   if (isSafeUrl(t.featuredPhoto)) html += `<img src="${escapeHtml(t.featuredPhoto)}" alt="${escapeHtml(t.title||t.name||'')}" style="width:100%;aspect-ratio:16/9;object-fit:cover;" onerror="this.style.display='none'">`;
+   html += `<div style="padding:1.5rem;">`;
+   if (t.title) html += `<h4 style="color:var(--primary);margin-bottom:0.75rem;">${escapeHtml(t.title)}</h4>`;
+   html += `<p style="line-height:1.8;color:var(--text);">"${escapeHtml(t.testimony)}"</p>`;
+   const embedUrl = toYTEmbed(t.videoUrl || '');
+   if (embedUrl) {
+    html += `<div style="position:relative;aspect-ratio:16/9;margin-top:1rem;"><iframe src="${escapeHtml(embedUrl)}" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:8px;" allow="fullscreen" allowfullscreen></iframe></div>`;
+   }
+   html += `<div style="display:flex;align-items:center;gap:0.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-200);"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem;flex-shrink:0;">${escapeHtml((t.name||'?')[0].toUpperCase())}</div><div><div style="font-weight:600;font-size:0.92rem;color:var(--primary);">${escapeHtml(t.name||'Anonymous')}</div><div style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(t.location||'Apostle MJ Ministries')}</div></div></div>`;
+   html += `</div>`;
+   div.innerHTML = html;
+   container.appendChild(div);
+  });
  }
 });
 </script>

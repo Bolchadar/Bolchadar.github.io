@@ -458,7 +458,7 @@ function loadAdminData() {
  <td><span class="badge ${t.approved?'badge-completed':'badge-pending'}">${t.approved?' Approved':'⏳ Pending'}</span></td>
  <td>${escapeHtml(t.date)}</td>
  <td>
- <button class="btn-xs btn-xs-green" onclick="approveTestimony(${t.id})">Approve</button>
+ <button class="btn-xs btn-xs-green" onclick="(window.openEnrichApprove||approveTestimony)(${t.id})">Approve</button>
  <button class="btn-xs btn-xs-red" onclick="deleteTestimony(${t.id})" style="margin-left:4px;">Delete</button>
  </td>
  </tr>`).join('') : '<tr><td colspan="6" class="text-center text-muted">No testimonies yet.</td></tr>';

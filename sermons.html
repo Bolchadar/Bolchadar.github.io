@@ -183,9 +183,9 @@ function filterSermons() {
 }
 
 function toYouTubeEmbed(url) {
- if (!url) return '';
- const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?\/\s]+)/);
- return m ? 'https://www.youtube.com/embed/' + m[1] : url;
+ if (!isSafeUrl(url)) return '';
+ const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_\-]+)/);
+ return m ? 'https://www.youtube.com/embed/' + m[1] : '';
 }
 
 document.addEventListener('DOMContentLoaded', () =>{
@@ -207,7 +207,10 @@ document.addEventListener('DOMContentLoaded', () =>{
  const thumb = document.createElement('div');
  thumb.className = 'video-thumb';
  thumb.dataset.url = embedUrl;
- thumb.innerHTML = `<div style="width:100%;height:100%;background:var(--primary);display:flex;align-items:center;justify-content:center;"><i class="fab fa-youtube" style="font-size:3rem;color:#ff0000;"></i></div><div class="play-btn"><i class="fas fa-play"></i></div>`;
+ const thumbBg = s.preacherPhoto && isSafeUrl(s.preacherPhoto)
+  ? `<img src="${escapeHtml(s.preacherPhoto)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">`
+  : `<div style="width:100%;height:100%;background:var(--primary);display:flex;align-items:center;justify-content:center;"><i class="fab fa-youtube" style="font-size:3rem;color:#ff0000;"></i></div>`;
+ thumb.innerHTML = thumbBg + `<div class="play-btn"><i class="fas fa-play"></i></div>`;
  thumb.addEventListener('click', () => playVideo(thumb, thumb.dataset.url));
  const watchBtn = document.createElement('button');
  watchBtn.className = 'btn btn-sm btn-purple';
@@ -222,9 +225,12 @@ document.addEventListener('DOMContentLoaded', () =>{
  ytLink.innerHTML = '<i class="fab fa-youtube"></i>YouTube';
  const cardBody = document.createElement('div');
  cardBody.className = 'card-body';
- cardBody.innerHTML = `<div class="card-meta">${escapeHtml(dateLabel)} &nbsp;|&nbsp; <i class="fas fa-tag"></i>${escapeHtml(s.topic||'General')}</div><h4 class="card-title">${escapeHtml(s.title)}</h4><p class="card-text">${escapeHtml(s.desc||'')}</p>`;
+ const speakerLine = s.preacherPhoto && isSafeUrl(s.preacherPhoto)
+  ? `<img src="${escapeHtml(s.preacherPhoto)}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:0.4rem;" onerror="this.style.display='none'">`
+  : '<i class="fas fa-user-circle" style="color:var(--primary-light);margin-right:0.4rem;"></i>';
+ cardBody.innerHTML = `<div class="card-meta">${escapeHtml(dateLabel)} &nbsp;|&nbsp; <i class="fas fa-tag"></i>${escapeHtml(s.topic||'General')}</div><h4 class="card-title">${escapeHtml(s.title)}</h4>${s.scripture?`<div style="font-size:0.83rem;color:var(--primary-light);font-style:italic;margin-bottom:0.5rem;"><i class="fas fa-book" style="margin-right:0.3rem;"></i>${escapeHtml(s.scripture)}</div>`:''}<p class="card-text">${escapeHtml(s.desc||'')}</p><div style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">${speakerLine}${escapeHtml(s.speaker||'Apostle MJ')}</div>`;
  const btnRow = document.createElement('div');
- btnRow.style.cssText = 'display:flex;gap:0.5rem;margin-top:1rem;';
+ btnRow.style.cssText = 'display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;';
  btnRow.appendChild(watchBtn);
  btnRow.appendChild(ytLink);
  cardBody.appendChild(btnRow);
@@ -238,10 +244,13 @@ document.addEventListener('DOMContentLoaded', () =>{
  if (audioEmpty) audioEmpty.remove();
  const item = document.createElement('div');
  item.className = 'audio-item';
+ const scriptureTag = s.scripture ? ` &nbsp;|&nbsp; <i class="fas fa-book" style="color:var(--gold);"></i>${escapeHtml(s.scripture)}` : '';
+ const audioAction = s.audio && isSafeUrl(s.audio)
+  ? `<a href="${escapeHtml(s.audio)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-purple"><i class="fas fa-headphones"></i>Listen</a>`
+  : (s.url && isSafeUrl(s.url) ? `<a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-purple"><i class="fas fa-play"></i>Watch</a>` : '');
  item.innerHTML = `<div class="audio-num">${num}</div>
  <div class="audio-info"><h4>${escapeHtml(s.title)}</h4>
- <p>${escapeHtml(dateLabel)} &nbsp;|&nbsp; ${escapeHtml(s.topic||'General')} &nbsp;|&nbsp; ${escapeHtml(s.speaker||'Apostle MJ')}</p></div>
- ${s.url && isSafeUrl(s.url) ? `<a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-purple"><i class="fas fa-play"></i>Watch</a>` : ''}`;
+ <p>${escapeHtml(dateLabel)} &nbsp;|&nbsp; ${escapeHtml(s.speaker||'Apostle MJ')}${scriptureTag}</p></div>${audioAction}`;
  audioGrid.appendChild(item);
  });
  }

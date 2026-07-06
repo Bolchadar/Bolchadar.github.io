@@ -98,7 +98,9 @@
 
  <div class="sidebar-section">Community</div>
  <a href="#" onclick="showAdminSection('sec-testimonies');closeSidebar();"><i class="fas fa-star"></i>Testimonies</a>
+ <a href="#" onclick="showAdminSection('sec-church-testimonies');closeSidebar();"><i class="fas fa-church"></i>Church Testimonies</a>
  <a href="#" onclick="showAdminSection('sec-members');closeSidebar();"><i class="fas fa-users"></i>Members</a>
+ <a href="#" onclick="showAdminSection('sec-charity');closeSidebar();"><i class="fas fa-heart"></i>Charity Projects</a>
 
  <div class="sidebar-section">Content</div>
  <a href="#" onclick="showAdminSection('sec-sermons');closeSidebar();"><i class="fas fa-play-circle"></i>Upload Sermons</a>
@@ -149,7 +151,9 @@
  <div style="display:flex;flex-direction:column;gap:0.75rem;">
  <div class="quick-action" onclick="showAdminSection('sec-prayers')"><i class="fas fa-hands-praying"></i>View & Manage Prayer Requests</div>
  <div class="quick-action" onclick="showAdminSection('sec-testimonies')"><i class="fas fa-star"></i>Approve Testimonies</div>
- <div class="quick-action" onclick="showAdminSection('sec-members')"><i class="fas fa-users"></i>View New Members</div>
+ <div class="quick-action" onclick="showAdminSection('sec-church-testimonies')"><i class="fas fa-church"></i>Post Church Testimony</div>
+ <div class="quick-action" onclick="showAdminSection('sec-members')"><i class="fas fa-users"></i>View New Members / Directory</div>
+ <div class="quick-action" onclick="showAdminSection('sec-charity')"><i class="fas fa-heart"></i>Post Charity Project</div>
  <div class="quick-action" onclick="showAdminSection('sec-sermons')"><i class="fas fa-upload"></i>Upload a New Sermon</div>
  <div class="quick-action" onclick="showAdminSection('sec-devotionals')"><i class="fas fa-book-bible"></i>Write Daily Devotional</div>
  <div class="quick-action" onclick="showAdminSection('sec-prophecy')"><i class="fas fa-fire"></i>Post Prophetic Word</div>
@@ -217,6 +221,26 @@
  <!-- MEMBERS -->
  <div id="sec-members" class="admin-section" data-title="Members">
  <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-id-card" style="color:var(--gold);"></i>Add to Public Member Directory</h4>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Full Name <span class="required">*</span></label><input type="text" class="form-control" id="mp-name" placeholder="Member's full name"></div>
+ <div class="form-group"><label class="form-label">Photo URL</label><input type="url" class="form-control" id="mp-photo" placeholder="https://... (hosted photo link)"></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Gender</label><select class="form-control" id="mp-gender"><option>Male</option><option>Female</option></select></div>
+ <div class="form-group"><label class="form-label">Ministry / Department</label><input type="text" class="form-control" id="mp-dept" placeholder="e.g. Worship Team, Youth"></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Position / Role</label><input type="text" class="form-control" id="mp-position" placeholder="e.g. Elder, Deacon, Choir Leader"></div>
+ <div class="form-group"><label class="form-label">Membership Status</label><select class="form-control" id="mp-status"><option>Active Member</option><option>Leadership</option><option>Elder</option><option>Deacon</option><option>Minister</option><option>New Member</option></select></div>
+ </div>
+ <button onclick="saveMemberProfile()" class="btn btn-primary"><i class="fas fa-plus"></i>Add to Directory</button>
+ </div>
+ <div class="admin-card mt-3">
+ <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-address-book" style="color:var(--gold);"></i>Public Directory</h4>
+ <div id="member-profiles-list"><p style="color:var(--text-muted);font-size:0.9rem;">No member profiles in directory yet.</p></div>
+ </div>
+ <div class="admin-card mt-3">
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem;">
  <h4 style="color:var(--primary);margin:0;"><i class="fas fa-users" style="color:var(--gold);"></i>Registered Members</h4>
  <button onclick="exportMembers()" class="btn btn-sm btn-purple"><i class="fas fa-download"></i>Export</button>
@@ -243,36 +267,13 @@
  <div class="form-group"><label class="form-label">Category / Topic</label><select class="form-control" id="sermon-topic"><option>Faith</option><option>Healing</option><option>Prayer</option><option>Salvation</option><option>Holy Spirit</option><option>Family</option><option>Prosperity</option><option>Worship</option><option>Other</option></select></div>
  <div class="form-group"><label class="form-label">Date Preached</label><input type="date" class="form-control" id="sermon-date"></div>
  </div>
- <div class="form-group"><label class="form-label">YouTube Video URL (if uploaded)</label><input type="url" class="form-control" placeholder="https://youtube.com/watch?v=..." id="sermon-url"></div>
- <div class="form-group"><label class="form-label">Sermon Description</label><textarea class="form-control" rows="4" placeholder="Brief description of the sermon..." id="sermon-desc"></textarea></div>
+ <div class="form-group"><label class="form-label">YouTube Video URL</label><input type="url" class="form-control" placeholder="https://youtube.com/watch?v=..." id="sermon-url"></div>
  <div class="form-row">
- <div>
- <label class="form-label">Video File (MP4)</label>
- <div class="upload-zone" onclick="this.querySelector('input').click()">
- <i class="fas fa-video"></i>
- <p style="margin:0;font-size:0.9rem;">Click to upload video</p>
- <p style="margin:0;font-size:0.78rem;color:var(--text-muted);">MP4, MOV — Max 500MB</p>
- <input type="file" accept="video/*" class="hidden">
+ <div class="form-group"><label class="form-label">Preacher Photo URL</label><input type="url" class="form-control" placeholder="https://... (paste hosted image link)" id="sermon-preacher-photo"></div>
+ <div class="form-group"><label class="form-label">Scripture Reference</label><input type="text" class="form-control" placeholder="e.g. Romans 8:28" id="sermon-scripture"></div>
  </div>
- </div>
- <div>
- <label class="form-label">Audio File (MP3)</label>
- <div class="upload-zone" onclick="this.querySelector('input').click()">
- <i class="fas fa-music"></i>
- <p style="margin:0;font-size:0.9rem;">Click to upload audio</p>
- <p style="margin:0;font-size:0.78rem;color:var(--text-muted);">MP3, M4A — Max 100MB</p>
- <input type="file" accept="audio/*" class="hidden">
- </div>
- </div>
- </div>
- <div class="form-group mt-2">
- <label class="form-label">PDF Sermon Notes</label>
- <div class="upload-zone" onclick="this.querySelector('input').click()">
- <i class="fas fa-file-pdf" style="color:#ef4444;"></i>
- <p style="margin:0;font-size:0.9rem;">Click to upload sermon notes (PDF)</p>
- <input type="file" accept=".pdf" class="hidden">
- </div>
- </div>
+ <div class="form-group"><label class="form-label">Sermon Description</label><textarea class="form-control" rows="4" placeholder="Brief description of the sermon..." id="sermon-desc"></textarea></div>
+ <div class="form-group"><label class="form-label">Audio URL <span style="font-size:0.8rem;color:var(--text-muted);">(SoundCloud, Dropbox, or direct MP3 link — leave blank if none)</span></label><input type="url" class="form-control" placeholder="https://soundcloud.com/..." id="sermon-audio"></div>
  <button onclick="saveSermon()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save & Publish Sermon</button>
  </div>
  </div>
@@ -338,6 +339,11 @@
  <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-bullhorn" style="color:var(--gold);"></i>Post Announcement</h4>
  <div class="form-group"><label class="form-label">Announcement Title</label><input type="text" class="form-control" placeholder="e.g. Sunday Service Time Change" id="ann-title"></div>
  <div class="form-group"><label class="form-label">Announcement Text</label><textarea class="form-control" rows="5" placeholder="Write your announcement here..." id="ann-text"></textarea></div>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Event Date (optional)</label><input type="date" class="form-control" id="ann-event-date"></div>
+ <div class="form-group"><label class="form-label">Featured Photo URL</label><input type="url" class="form-control" placeholder="https://... (image URL)" id="ann-photo"></div>
+ </div>
+ <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" placeholder="https://youtube.com/..." id="ann-video"></div>
  <div class="form-group"><label class="form-label">Share To</label>
  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;">
  <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.9rem;"><input type="checkbox" checked>WhatsApp</label>
@@ -368,6 +374,10 @@
   <div class="form-group"><label class="form-label">Scripture Reference</label><input type="text" class="form-control" placeholder="e.g. Jeremiah 29:11" id="proph-scripture"></div>
   </div>
   <div class="form-group"><label class="form-label">Prophetic Word <span class="required">*</span></label><textarea class="form-control" rows="10" placeholder="Type the prophetic word here..." id="proph-word"></textarea></div>
+  <div class="form-row">
+  <div class="form-group"><label class="form-label">Prophet Photo URL</label><input type="url" class="form-control" placeholder="https://... (paste hosted photo link)" id="proph-photo"></div>
+  <div class="form-group"><label class="form-label">Prophecy Video URL (YouTube)</label><input type="url" class="form-control" placeholder="https://youtube.com/..." id="proph-video"></div>
+  </div>
   <div style="display:flex;gap:1rem;flex-wrap:wrap;">
   <button onclick="saveProphecy()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
   <button onclick="shareProphecyWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
@@ -393,6 +403,8 @@
   </div>
   <div class="form-group"><label class="form-label">Original Prophecy (brief quote)</label><textarea class="form-control" rows="3" placeholder="Paste or summarise the original prophetic word..." id="ful-original"></textarea></div>
   <div class="form-group"><label class="form-label">How It Was Fulfilled <span class="required">*</span></label><textarea class="form-control" rows="8" placeholder="Describe how this prophecy came to pass..." id="ful-how"></textarea></div>
+  <div class="form-group"><label class="form-label">Photos <span style="font-size:0.8rem;color:var(--text-muted);">(paste image URLs, one per line)</span></label><textarea class="form-control" rows="3" placeholder="https://image1.jpg&#10;https://image2.jpg" id="ful-photos"></textarea></div>
+  <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" placeholder="https://youtube.com/..." id="ful-video"></div>
   <div style="display:flex;gap:1rem;flex-wrap:wrap;">
   <button onclick="saveFulfillment()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
   <button onclick="shareFulfillmentAdminWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
@@ -464,8 +476,68 @@
  </div>
  </div>
 
+ <!-- CHURCH TESTIMONIES -->
+ <div id="sec-church-testimonies" class="admin-section" data-title="Church Testimonies">
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-church" style="color:var(--gold);"></i>Post Church Testimony</h4>
+ <div class="form-group"><label class="form-label">Title <span class="required">*</span></label><input type="text" class="form-control" id="ct-title" placeholder="e.g. God Healed Sister Mary!"></div>
+ <div class="form-group"><label class="form-label">Person's Name <span style="font-size:0.8rem;color:var(--text-muted);">(optional — leave blank for anonymous)</span></label><input type="text" class="form-control" id="ct-name" placeholder="First name or initials"></div>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-control" id="ct-date"></div>
+ <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="ct-category"><option>Healing</option><option>Financial Breakthrough</option><option>Salvation & New Life</option><option>Marriage & Family</option><option>Deliverance</option><option>Answered Prayer</option><option>Other</option></select></div>
+ </div>
+ <div class="form-group"><label class="form-label">Testimony <span class="required">*</span></label><textarea class="form-control" rows="8" id="ct-testimony" placeholder="Write the full testimony here..."></textarea></div>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Featured Photo URL</label><input type="url" class="form-control" id="ct-photo" placeholder="https://... (hosted image link)"></div>
+ <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" id="ct-video" placeholder="https://youtube.com/..."></div>
+ </div>
+ <button onclick="saveChurchTestimony()" class="btn btn-primary"><i class="fas fa-save"></i>Publish Testimony</button>
+ </div>
+ <div class="admin-card mt-3">
+ <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Published Church Testimonies</h4>
+ <div id="church-testimonies-list"><p style="color:var(--text-muted);font-size:0.9rem;">No church testimonies posted yet.</p></div>
+ </div>
+ </div>
+
+ <!-- CHARITY PROJECTS -->
+ <div id="sec-charity" class="admin-section" data-title="Charity Projects">
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-hand-holding-heart" style="color:var(--gold);"></i>Post Charity Project</h4>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Project Title <span class="required">*</span></label><input type="text" class="form-control" id="ch-title" placeholder="e.g. Back to School Drive 2024"></div>
+ <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-control" id="ch-date"></div>
+ </div>
+ <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-control" id="ch-location" placeholder="e.g. Juba, South Sudan"></div>
+ <div class="form-group"><label class="form-label">Description <span class="required">*</span></label><textarea class="form-control" rows="6" id="ch-desc" placeholder="Describe the charity project and its impact..."></textarea></div>
+ <div class="form-group"><label class="form-label">Photos <span style="font-size:0.8rem;color:var(--text-muted);">(paste image URLs, one per line)</span></label><textarea class="form-control" rows="3" id="ch-photos" placeholder="https://image1.jpg&#10;https://image2.jpg"></textarea></div>
+ <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" id="ch-video" placeholder="https://youtube.com/..."></div>
+ <div class="form-group"><label class="form-label">Donation Info <span style="font-size:0.8rem;color:var(--text-muted);">(optional — how people can contribute)</span></label><input type="text" class="form-control" id="ch-donation" placeholder="e.g. Give via M-Pesa 0712345678 — Ref: BACKTOSCHOOL"></div>
+ <button onclick="saveCharity()" class="btn btn-primary"><i class="fas fa-save"></i>Publish Project</button>
+ </div>
+ <div class="admin-card mt-3">
+ <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Charity Projects</h4>
+ <div id="charity-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">No charity projects posted yet.</p></div>
+ </div>
+ </div>
+
  </div><!-- end admin-content -->
  </main>
+ </div>
+
+ <!-- ENRICH APPROVE MODAL -->
+ <div id="enrich-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;">
+ <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:500px;width:100%;box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;">
+ <button onclick="closeEnrichModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);">&times;</button>
+ <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-star" style="color:var(--gold);"></i> Approve &amp; Enrich Testimony</h4>
+ <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">You can optionally add a title, featured photo, or video before publishing.</p>
+ <div class="form-group"><label class="form-label">Title (optional)</label><input type="text" class="form-control" id="enrich-title" placeholder="e.g. God Provided a Job!"></div>
+ <div class="form-group"><label class="form-label">Featured Photo URL (optional)</label><input type="url" class="form-control" id="enrich-photo" placeholder="https://... (hosted image link)"></div>
+ <div class="form-group"><label class="form-label">Video URL / YouTube (optional)</label><input type="url" class="form-control" id="enrich-video" placeholder="https://youtube.com/..."></div>
+ <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;">
+ <button onclick="doApproveTestimony()" class="btn btn-primary"><i class="fas fa-check"></i>Approve &amp; Publish</button>
+ <button onclick="closeEnrichModal()" class="btn" style="background:var(--gray-200);color:var(--text);">Cancel</button>
+ </div>
+ </div>
  </div>
 
  <!-- PRAYER FOLLOW-UP MODAL -->
@@ -625,10 +697,13 @@ function saveSermon() {
  topic: document.getElementById('sermon-topic').value,
  date: document.getElementById('sermon-date').value,
  url: document.getElementById('sermon-url').value,
- desc: document.getElementById('sermon-desc').value
+ preacherPhoto: document.getElementById('sermon-preacher-photo').value.trim(),
+ scripture: document.getElementById('sermon-scripture').value.trim(),
+ desc: document.getElementById('sermon-desc').value,
+ audio: document.getElementById('sermon-audio').value.trim()
  });
  localStorage.setItem('mj_sermons', JSON.stringify(sermons));
- ['sermon-title','sermon-speaker','sermon-url','sermon-desc','sermon-date'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
+ ['sermon-title','sermon-speaker','sermon-url','sermon-desc','sermon-date','sermon-preacher-photo','sermon-scripture','sermon-audio'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadSermonsList();
  showToast('Sermon saved and published!');
 }
@@ -668,10 +743,15 @@ function postAnnouncement() {
  const text = document.getElementById('ann-text').value.trim();
  if (!title || !text) { showToast('Please fill in the announcement.', true); return; }
  const announcements = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
- announcements.push({ id: Date.now(), title, text, date: new Date().toLocaleDateString('en-GB') });
+ announcements.push({
+ id: Date.now(), title, text,
+ date: new Date().toLocaleDateString('en-GB'),
+ eventDate: document.getElementById('ann-event-date').value,
+ photo: document.getElementById('ann-photo').value.trim(),
+ video: document.getElementById('ann-video').value.trim()
+ });
  localStorage.setItem('mj_announcements', JSON.stringify(announcements));
- document.getElementById('ann-title').value = '';
- document.getElementById('ann-text').value = '';
+ ['ann-title','ann-text','ann-event-date','ann-photo','ann-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadAnnouncements();
   const msg = `*📢 ANNOUNCEMENT — ${MINISTRY_NAME}*\n\n*${title}*\n\n${text}\n\n_God bless you all!_`;
   openWhatsApp(msg);
@@ -847,10 +927,12 @@ function saveProphecy() {
   date: document.getElementById('proph-date').value,
   category: document.getElementById('proph-category').value,
   scripture: document.getElementById('proph-scripture').value,
-  word
+  word,
+  photo: document.getElementById('proph-photo').value.trim(),
+  video: document.getElementById('proph-video').value.trim()
  });
  localStorage.setItem('mj_prophecies', JSON.stringify(list));
- ['proph-title','proph-date','proph-scripture','proph-word'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
+ ['proph-title','proph-date','proph-scripture','proph-word','proph-photo','proph-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadProphecyList();
  showToast('Prophetic word saved and published!');
 }
@@ -892,16 +974,19 @@ function saveFulfillment() {
  const how = document.getElementById('ful-how').value.trim();
  if (!title || !how) { showToast('Please enter a title and how it was fulfilled.', true); return; }
  const list = JSON.parse(localStorage.getItem('mj_fulfillments') || '[]');
+ const photosRaw = document.getElementById('ful-photos').value.trim();
  list.push({
   id: Date.now(),
   title,
   fulfilledDate: document.getElementById('ful-date').value,
   prophecyDate: document.getElementById('ful-propdate').value,
   originalWord: document.getElementById('ful-original').value,
-  howFulfilled: how
+  howFulfilled: how,
+  photos: photosRaw ? photosRaw.split('\n').map(u=>u.trim()).filter(u=>u && /^https?:\/\//i.test(u)) : [],
+  video: document.getElementById('ful-video').value.trim()
  });
  localStorage.setItem('mj_fulfillments', JSON.stringify(list));
- ['ful-title','ful-date','ful-propdate','ful-original','ful-how'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
+ ['ful-title','ful-date','ful-propdate','ful-original','ful-how','ful-photos','ful-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadFulfillmentList();
  showToast('Fulfillment recorded and published!');
 }
@@ -968,7 +1053,166 @@ window.loadAdminData = function() {
  loadProphecyList();
  loadFulfillmentList();
  loadLivestreamAdmin();
+ loadMemberProfiles();
+ loadChurchTestimonies();
+ loadCharityList();
 };
+
+// MEMBER PROFILES
+function saveMemberProfile() {
+ const name = document.getElementById('mp-name').value.trim();
+ if (!name) { showToast('Please enter the member name.', true); return; }
+ const list = JSON.parse(localStorage.getItem('mj_member_profiles') || '[]');
+ list.push({
+  id: Date.now(), name,
+  photo: document.getElementById('mp-photo').value.trim(),
+  gender: document.getElementById('mp-gender').value,
+  dept: document.getElementById('mp-dept').value.trim(),
+  position: document.getElementById('mp-position').value.trim(),
+  status: document.getElementById('mp-status').value,
+  date: new Date().toLocaleDateString('en-GB')
+ });
+ localStorage.setItem('mj_member_profiles', JSON.stringify(list));
+ ['mp-name','mp-photo','mp-dept','mp-position'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
+ loadMemberProfiles();
+ showToast('Member added to directory!');
+}
+function deleteMemberProfile(id) {
+ if (!confirm('Remove this member from the public directory?')) return;
+ const list = JSON.parse(localStorage.getItem('mj_member_profiles') || '[]');
+ localStorage.setItem('mj_member_profiles', JSON.stringify(list.filter(m => m.id !== id)));
+ loadMemberProfiles();
+ showToast('Member removed from directory.');
+}
+function loadMemberProfiles() {
+ const el = document.getElementById('member-profiles-list');
+ if (!el) return;
+ const list = JSON.parse(localStorage.getItem('mj_member_profiles') || '[]');
+ el.innerHTML = list.length ? list.map(m => {
+  const mid = parseInt(m.id, 10);
+  const avatar = m.photo && /^https?:\/\//i.test(m.photo)
+   ? `<img src="${escapeHtml(m.photo)}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none'">`
+   : `<div style="width:42px;height:42px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0;">${escapeHtml((m.name||'?')[0].toUpperCase())}</div>`;
+  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;gap:0.75rem;">${avatar}<div><strong>${escapeHtml(m.name)}</strong><br>
+  <span style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(m.position||'')}${m.dept?' | '+escapeHtml(m.dept):''} | ${escapeHtml(m.status)}</span></div></div>
+  <button class="btn-xs btn-xs-red" onclick="deleteMemberProfile(${mid})">Remove</button></div>`;
+ }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No member profiles in directory yet. Add one above!</p>';
+}
+
+// CHURCH TESTIMONIES
+function saveChurchTestimony() {
+ const title = document.getElementById('ct-title').value.trim();
+ const testimony = document.getElementById('ct-testimony').value.trim();
+ if (!title || !testimony) { showToast('Please enter title and testimony.', true); return; }
+ const list = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
+ list.push({
+  id: Date.now(), title,
+  name: document.getElementById('ct-name').value.trim(),
+  date: document.getElementById('ct-date').value,
+  category: document.getElementById('ct-category').value,
+  testimony,
+  photo: document.getElementById('ct-photo').value.trim(),
+  video: document.getElementById('ct-video').value.trim()
+ });
+ localStorage.setItem('mj_church_testimonies', JSON.stringify(list));
+ ['ct-title','ct-name','ct-date','ct-testimony','ct-photo','ct-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
+ loadChurchTestimonies();
+ showToast('Church testimony published!');
+}
+function deleteChurchTestimony(id) {
+ if (!confirm('Delete this church testimony?')) return;
+ const list = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
+ localStorage.setItem('mj_church_testimonies', JSON.stringify(list.filter(t => t.id !== id)));
+ loadChurchTestimonies();
+ showToast('Testimony deleted.');
+}
+function loadChurchTestimonies() {
+ const el = document.getElementById('church-testimonies-list');
+ if (!el) return;
+ const list = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
+ list.sort((a,b) => (b.date||'').localeCompare(a.date||'') || b.id - a.id);
+ el.innerHTML = list.length ? list.map(t => {
+  const tid = parseInt(t.id, 10);
+  const label = t.date ? new Date(t.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
+  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+  <div><strong>${escapeHtml(t.title)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.5rem;">[${escapeHtml(t.category||'General')}]</span><br>
+  <span style="font-size:0.82rem;color:var(--text-muted);">${label}${t.name?' | '+escapeHtml(t.name):' | Anonymous'}</span></div>
+  <button class="btn-xs btn-xs-red" onclick="deleteChurchTestimony(${tid})">Delete</button></div>`;
+ }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No church testimonies posted yet.</p>';
+}
+
+// CHARITY
+function saveCharity() {
+ const title = document.getElementById('ch-title').value.trim();
+ const desc = document.getElementById('ch-desc').value.trim();
+ if (!title || !desc) { showToast('Please enter project title and description.', true); return; }
+ const list = JSON.parse(localStorage.getItem('mj_charity') || '[]');
+ const photosRaw = document.getElementById('ch-photos').value.trim();
+ list.push({
+  id: Date.now(), title,
+  date: document.getElementById('ch-date').value,
+  location: document.getElementById('ch-location').value.trim(),
+  desc,
+  photos: photosRaw ? photosRaw.split('\n').map(u=>u.trim()).filter(u=>u && /^https?:\/\//i.test(u)) : [],
+  video: document.getElementById('ch-video').value.trim(),
+  donation: document.getElementById('ch-donation').value.trim()
+ });
+ localStorage.setItem('mj_charity', JSON.stringify(list));
+ ['ch-title','ch-date','ch-location','ch-desc','ch-photos','ch-video','ch-donation'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
+ loadCharityList();
+ showToast('Charity project published!');
+}
+function deleteCharity(id) {
+ if (!confirm('Delete this charity project?')) return;
+ const list = JSON.parse(localStorage.getItem('mj_charity') || '[]');
+ localStorage.setItem('mj_charity', JSON.stringify(list.filter(c => c.id !== id)));
+ loadCharityList();
+ showToast('Project deleted.');
+}
+function loadCharityList() {
+ const el = document.getElementById('charity-admin-list');
+ if (!el) return;
+ const list = JSON.parse(localStorage.getItem('mj_charity') || '[]');
+ list.sort((a,b) => (b.date||'').localeCompare(a.date||'') || b.id - a.id);
+ el.innerHTML = list.length ? list.map(c => {
+  const cid = parseInt(c.id, 10);
+  const label = c.date ? new Date(c.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
+  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+  <div><strong>${escapeHtml(c.title)}</strong><br>
+  <span style="font-size:0.82rem;color:var(--text-muted);">${label}${c.location?' | '+escapeHtml(c.location):''}</span></div>
+  <button class="btn-xs btn-xs-red" onclick="deleteCharity(${cid})">Delete</button></div>`;
+ }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No charity projects yet. Post one above!</p>';
+}
+
+// ENRICH APPROVE MODAL
+let _enrichId = null;
+function openEnrichApprove(id) {
+ _enrichId = id;
+ ['enrich-title','enrich-photo','enrich-video'].forEach(i =>{ const el=document.getElementById(i); if(el) el.value=''; });
+ const modal = document.getElementById('enrich-modal');
+ if (modal) { modal.classList.remove('hidden'); modal.style.display='flex'; }
+}
+function closeEnrichModal() {
+ _enrichId = null;
+ const modal = document.getElementById('enrich-modal');
+ if (modal) { modal.classList.add('hidden'); modal.style.display='none'; }
+}
+function doApproveTestimony() {
+ if (!_enrichId) return;
+ const testimonies = JSON.parse(localStorage.getItem('mj_testimonies') || '[]');
+ const idx = testimonies.findIndex(t => t.id === _enrichId);
+ if (idx > -1) {
+  testimonies[idx].approved = true;
+  testimonies[idx].title = document.getElementById('enrich-title').value.trim();
+  testimonies[idx].featuredPhoto = document.getElementById('enrich-photo').value.trim();
+  testimonies[idx].videoUrl = document.getElementById('enrich-video').value.trim();
+  localStorage.setItem('mj_testimonies', JSON.stringify(testimonies));
+ }
+ closeEnrichModal();
+ loadAdminData();
+ showToast('Testimony approved and published!');
+}
 </script>
 </body>
 </html>

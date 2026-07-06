@@ -50,6 +50,7 @@
  <div class="media-tabs">
  <button class="media-tab active" onclick="showMedia('photos')"><i class="fas fa-images"></i>Photo Gallery</button>
  <button class="media-tab" onclick="showMedia('videos')"><i class="fas fa-video"></i>Video Gallery</button>
+ <button class="media-tab" onclick="showMedia('announcements')"><i class="fas fa-bullhorn"></i>Announcements</button>
  <button class="media-tab" onclick="showMedia('news')"><i class="fas fa-newspaper"></i>Ministry News</button>
  <button class="media-tab" onclick="showMedia('events')"><i class="fas fa-calendar-check"></i>Event Reports</button>
  </div>
@@ -85,6 +86,13 @@
  </div>
  </div>
 
+ <!-- ANNOUNCEMENTS -->
+ <div id="media-announcements" class="media-panel">
+ <div id="media-announcements-grid">
+ <p id="media-announcements-empty" style="text-align:center;color:var(--text-muted);padding:3rem 0;">No announcements posted yet. Check back soon!</p>
+ </div>
+ </div>
+
  <!-- NEWS -->
  <div id="media-news" class="media-panel">
  <p style="text-align:center;color:var(--text-muted);padding:3rem 0;">No news articles posted yet. Check back soon!</p>
@@ -108,6 +116,37 @@
 <button id="back-top"><i class="fas fa-chevron-up"></i></button>
 <script src="js/main.js"></script>
 <script>
+function isSafeUrl(u) { return u && /^https?:\/\//i.test(u); }
+function toYTEmbed(url) {
+ if (!isSafeUrl(url)) return '';
+ const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_\-]+)/);
+ return m ? 'https://www.youtube.com/embed/' + m[1] : '';
+}
+// Load announcements
+(function() {
+ const anns = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
+ if (!anns.length) return;
+ const grid = document.getElementById('media-announcements-grid');
+ const empty = document.getElementById('media-announcements-empty');
+ if (empty) empty.remove();
+ anns.slice().reverse().forEach(a => {
+  const div = document.createElement('div');
+  div.style.cssText = 'background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:1.5rem;overflow:hidden;';
+  const embedUrl = toYTEmbed(a.video || '');
+  const eventLabel = a.eventDate ? new Date(a.eventDate).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) : '';
+  let html = '';
+  if (a.photo && isSafeUrl(a.photo)) html += `<img src="${escapeHtml(a.photo)}" alt="${escapeHtml(a.title)}" style="width:100%;max-height:240px;object-fit:cover;" onerror="this.style.display='none'">`;
+  html += `<div style="padding:1.5rem;">`;
+  html += `<div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;"><span style="background:var(--primary);color:#fff;font-size:0.75rem;font-weight:700;padding:0.25rem 0.75rem;border-radius:50px;">ANNOUNCEMENT</span>${eventLabel?`<span style="font-size:0.82rem;color:var(--gold);font-weight:600;"><i class="fas fa-calendar-alt" style="margin-right:0.3rem;"></i>${escapeHtml(eventLabel)}</span>`:''}<span style="font-size:0.78rem;color:var(--text-muted);margin-left:auto;">${escapeHtml(a.date||'')}</span></div>`;
+  html += `<h4 style="color:var(--primary);margin-bottom:0.75rem;">${escapeHtml(a.title)}</h4>`;
+  html += `<p style="color:var(--text);line-height:1.7;">${escapeHtml(a.text).replace(/\n/g,'<br>')}</p>`;
+  if (embedUrl) html += `<div style="position:relative;aspect-ratio:16/9;margin-top:1rem;"><iframe src="${escapeHtml(embedUrl)}" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:8px;" allow="fullscreen" allowfullscreen></iframe></div>`;
+  html += `</div>`;
+  div.innerHTML = html;
+  grid.appendChild(div);
+ });
+})();
+
 // Load sermons into video gallery
 (function() {
  const sermons = JSON.parse(localStorage.getItem('mj_sermons') || '[]');
