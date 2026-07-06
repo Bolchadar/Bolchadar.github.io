@@ -50,23 +50,8 @@
  <div class="divider"></div>
  </div>
 
- <!-- FEATURED -->
- <div class="event-hero-card mb-3">
- <img src="WhatsApp Image 2026-06-24 at 09.09.26.jpeg" alt="Revival Meeting">
- <div class="event-hero-overlay">
- <div class="event-hero-info">
- <span class="badge badge-pending" style="margin-bottom:0.75rem;">FEATURED EVENT</span>
- <h2>Annual Revival & Healing Conference 2026</h2>
- <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.9rem;margin:0.75rem 0 1.25rem;color:rgba(255,255,255,0.85);">
- <span><i class="fas fa-calendar" style="color:var(--gold);margin-right:0.35rem;"></i>August 15-17, 2026</span>
- <span><i class="fas fa-clock" style="color:var(--gold);margin-right:0.35rem;"></i>9:00 AM Daily</span>
- <span><i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:0.35rem;"></i>Church Grounds, Juba</span>
- <span><i class="fas fa-users" style="color:var(--gold);margin-right:0.35rem;"></i>Free Entry</span>
- </div>
- <button onclick="scrollToRegister()" class="btn btn-primary"><i class="fas fa-edit"></i>Register Now</button>
- </div>
- </div>
- </div>
+ <!-- FEATURED (dynamically populated) -->
+ <div id="featured-event-card" class="event-hero-card mb-3" style="display:none;"></div>
 
  <!-- EVENT LIST -->
  <div id="events-list" style="display:flex;flex-direction:column;gap:1.25rem;margin-bottom:3rem;">
@@ -100,12 +85,8 @@
  <div>
  <div class="form-group">
  <label class="form-label">Event <span class="required">*</span></label>
- <select name="event" class="form-control" required>
+ <select name="event" id="event-select" class="form-control" required>
  <option value="">-- Select Event --</option>
- <option>Annual Revival & Healing Conference (Aug 15-17)</option>
- <option>Youth Empowerment Summit (Jul 6)</option>
- <option>Community Feeding Program - Volunteer (Jul 20)</option>
- <option>Marriage & Family Seminar (Aug 3)</option>
  </select>
  </div>
  <div class="form-group">
@@ -147,31 +128,77 @@ function scrollToRegister() {
 
 document.addEventListener('DOMContentLoaded', () =>{
  const events = JSON.parse(localStorage.getItem('mj_events') || '[]');
- events.sort((a,b) =>a.date.localeCompare(b.date));
+ events.sort((a,b) =>(a.date||'').localeCompare(b.date||''));
  const container = document.getElementById('events-list');
  const empty = document.getElementById('events-empty');
+ const featuredCard = document.getElementById('featured-event-card');
+ const eventSelect = document.getElementById('event-select');
+
  if (events.length) {
  if (empty) empty.remove();
+
+ // Featured card — show next upcoming event
+ if (featuredCard) {
+  const next = events[0];
+  const d = next.date ? new Date(next.date) : null;
+  const dateStr = d ? d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) : '';
+  featuredCard.style.display = 'block';
+  featuredCard.innerHTML = `
+  <img src="WhatsApp Image 2026-06-24 at 09.09.26.jpeg" alt="Event">
+  <div class="event-hero-overlay">
+   <div class="event-hero-info">
+   <span class="badge badge-pending" style="margin-bottom:0.75rem;">FEATURED EVENT</span>
+   <h2>${escapeHtml(next.name)}</h2>
+   <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.9rem;margin:0.75rem 0 1.25rem;color:rgba(255,255,255,0.85);">
+    ${dateStr?`<span><i class="fas fa-calendar" style="color:var(--gold);margin-right:0.35rem;"></i>${escapeHtml(dateStr)}</span>`:''}
+    ${next.time?`<span><i class="fas fa-clock" style="color:var(--gold);margin-right:0.35rem;"></i>${escapeHtml(next.time)}</span>`:''}
+    ${next.venue?`<span><i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:0.35rem;"></i>${escapeHtml(next.venue)}</span>`:''}
+    ${next.ticket?`<span><i class="fas fa-users" style="color:var(--gold);margin-right:0.35rem;"></i>${escapeHtml(next.ticket)}</span>`:''}
+   </div>
+   <button onclick="scrollToRegister()" class="btn btn-primary"><i class="fas fa-edit"></i>Register Now</button>
+   </div>
+  </div>`;
+ }
+
+ // Event list cards
  events.forEach(e =>{
- const d = e.date ? new Date(e.date) : null;
- const day = d ? String(d.getDate()).padStart(2,'0') : '--';
- const month = d ? d.toLocaleDateString('en-GB',{month:'short'}).toUpperCase() : '---';
- const card = document.createElement('div');
- card.className = 'event-card';
- card.innerHTML = `
- <div class="event-date"><span class="day">${escapeHtml(day)}</span><span class="month">${escapeHtml(month)}</span></div>
- <div class="event-info">
- <h4>${escapeHtml(e.name)}</h4>
- <div class="meta">
- ${e.time?`<i class="fas fa-clock"></i>${escapeHtml(e.time)} &nbsp;|&nbsp; `:''}
- ${e.venue?`<i class="fas fa-map-marker-alt"></i>${escapeHtml(e.venue)} &nbsp;|&nbsp; `:''}
- ${e.ticket?`<i class="fas fa-ticket-alt"></i>${escapeHtml(e.ticket)}`:''}
- </div>
- <p>${escapeHtml(e.desc||'')}</p>
- <button onclick="scrollToRegister()" class="btn btn-sm btn-primary mt-1">Register</button>
- </div>`;
- container.appendChild(card);
+  const d = e.date ? new Date(e.date) : null;
+  const day = d ? String(d.getDate()).padStart(2,'0') : '--';
+  const month = d ? d.toLocaleDateString('en-GB',{month:'short'}).toUpperCase() : '---';
+  const card = document.createElement('div');
+  card.className = 'event-card';
+  card.innerHTML = `
+  <div class="event-date"><span class="day">${escapeHtml(day)}</span><span class="month">${escapeHtml(month)}</span></div>
+  <div class="event-info">
+  <h4>${escapeHtml(e.name)}</h4>
+  <div class="meta">
+   ${e.time?`<i class="fas fa-clock"></i>${escapeHtml(e.time)} &nbsp;|&nbsp; `:''}
+   ${e.venue?`<i class="fas fa-map-marker-alt"></i>${escapeHtml(e.venue)} &nbsp;|&nbsp; `:''}
+   ${e.ticket?`<i class="fas fa-ticket-alt"></i>${escapeHtml(e.ticket)}`:''}
+  </div>
+  <p>${escapeHtml(e.desc||'')}</p>
+  <button onclick="scrollToRegister()" class="btn btn-sm btn-primary mt-1">Register</button>
+  </div>`;
+  container.appendChild(card);
  });
+
+ // Populate registration dropdown
+ if (eventSelect) {
+  events.forEach(e =>{
+  const d = e.date ? new Date(e.date) : null;
+  const label = e.name + (d ? ' (' + d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ')' : '');
+  const opt = document.createElement('option');
+  opt.textContent = label;
+  eventSelect.appendChild(opt);
+  });
+ }
+ } else {
+ if (eventSelect) {
+  const opt = document.createElement('option');
+  opt.value = '';
+  opt.textContent = 'No upcoming events yet';
+  eventSelect.appendChild(opt);
+ }
  }
 });
 </script>
