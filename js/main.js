@@ -407,20 +407,28 @@ function loadAdminData() {
  // Prayer table
  const pTbl = document.getElementById('prayers-table-body');
  if (pTbl) {
+ const prayerLabel = s => s==='pending'?'⏳ Pending':s==='praying'?'🙏 Prayed For':'✔ Answered';
  pTbl.innerHTML = prayers.length ? prayers.slice().reverse().map((p) =>`
  <tr id="prayer-row-${p.id}">
  <td><strong>${escapeHtml(p.name)}</strong></td>
  <td>${escapeHtml(p.phone || '-')}</td>
  <td>${escapeHtml(p.country || '-')}</td>
- <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.request)}</td>
- <td><span class="badge badge-${p.status}">${p.status==='pending'?'⏳ Pending':p.status==='praying'?' Praying':' Completed'}</span></td>
+ <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(p.request)}">${escapeHtml(p.request)}</td>
+ <td><span class="badge badge-${p.status}">${prayerLabel(p.status)}</span></td>
+ <td style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.8rem;color:var(--text-muted);" title="${escapeHtml(p.notes||'')}">${escapeHtml(p.notes||'—')}</td>
  <td>${escapeHtml(p.date)}</td>
  <td style="white-space:nowrap;">
- <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${p.id},'praying')">Praying</button>
- <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${p.id},'completed')" style="margin-left:4px;">Done</button>
- <button class="btn-xs btn-xs-purple" onclick="whatsappPrayer(${JSON.stringify(p.phone)},${JSON.stringify(p.name)})" style="margin-left:4px;">WhatsApp</button>
+ <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${p.id},'praying')" title="Mark as Prayed For">🙏 Prayed</button>
+ <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${p.id},'completed')" style="margin-left:4px;" title="Mark as Answered">✔ Answered</button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;margin-left:4px;" onclick="openFollowUp(${p.id})" title="Send Follow-Up via WhatsApp">💬 Follow-Up</button>
  </td>
- </tr>`).join('') : '<tr><td colspan="7" class="text-center text-muted">No prayer requests yet.</td></tr>';
+ </tr>`).join('') : '<tr><td colspan="8" class="text-center text-muted">No prayer requests yet.</td></tr>';
+ // Update count badges
+ const setCount = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
+ setCount('count-all', prayers.length);
+ setCount('count-pending', prayers.filter(p=>p.status==='pending').length);
+ setCount('count-praying', prayers.filter(p=>p.status==='praying').length);
+ setCount('count-answered', prayers.filter(p=>p.status==='completed').length);
  }
 
  // Testimonies table
@@ -458,7 +466,13 @@ function loadAdminData() {
 function updatePrayerStatus(id, status) {
  const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
  const idx = prayers.findIndex(p =>p.id === id);
- if (idx >-1) { prayers[idx].status = status; localStorage.setItem('mj_prayers', JSON.stringify(prayers)); loadAdminData(); showToast(`Prayer status updated to: ${status}`); }
+ if (idx >-1) {
+  prayers[idx].status = status;
+  localStorage.setItem('mj_prayers', JSON.stringify(prayers));
+  loadAdminData();
+  const label = status==='praying'?'🙏 Marked as Prayed For':'✔ Marked as Answered';
+  showToast(label);
+ }
 }
 function whatsappPrayer(phone, name) {
  if (!phone) { showToast('No phone number for this person.', true); return; }

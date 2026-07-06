@@ -172,10 +172,10 @@
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem;">
  <h4 style="color:var(--primary);margin:0;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i>Prayer Requests</h4>
  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
- <button class="btn btn-sm btn-purple" onclick="filterPrayers('all')">All</button>
- <button class="btn btn-sm" style="background:#fef3c7;color:#92400e;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('pending')">⏳ Pending</button>
- <button class="btn btn-sm" style="background:#dbeafe;color:#1e40af;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('praying')">Praying</button>
- <button class="btn btn-sm" style="background:#d1fae5;color:#065f46;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('completed')">Completed</button>
+ <button class="btn btn-sm btn-purple" onclick="filterPrayers('all')">All <span id="count-all" class="notification-badge" style="background:var(--primary-light);">0</span></button>
+ <button class="btn btn-sm" style="background:#fef3c7;color:#92400e;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('pending')">⏳ Pending <span id="count-pending" class="notification-badge" style="background:#92400e;">0</span></button>
+ <button class="btn btn-sm" style="background:#dbeafe;color:#1e40af;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('praying')">🙏 Prayed For <span id="count-praying" class="notification-badge" style="background:#1e40af;">0</span></button>
+ <button class="btn btn-sm" style="background:#d1fae5;color:#065f46;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('completed')">✔ Answered <span id="count-answered" class="notification-badge" style="background:#065f46;">0</span></button>
  </div>
  </div>
  <div class="search-filter">
@@ -183,18 +183,18 @@
  </div>
  <div class="table-wrap">
  <table>
- <thead><tr><th>Name</th><th>Phone</th><th>Country</th><th>Request</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
- <tbody id="prayers-table-body"><tr><td colspan="7" class="text-center text-muted">No prayer requests yet.</td></tr></tbody>
+ <thead><tr><th>Name</th><th>Phone</th><th>Country</th><th>Request</th><th>Status</th><th>Notes</th><th>Date</th><th>Actions</th></tr></thead>
+ <tbody id="prayers-table-body"><tr><td colspan="8" class="text-center text-muted">No prayer requests yet.</td></tr></tbody>
  </table>
  </div>
  </div>
  <div class="admin-card">
  <h4 style="color:var(--primary);margin-bottom:0.75rem;"><i class="fas fa-info-circle" style="color:var(--gold);"></i>How to Use</h4>
  <div style="font-size:0.88rem;color:var(--text-muted);">
- <p>• <strong>Praying</strong>— Click to mark a request as "currently being prayed for"</p>
- <p>• <strong>Done</strong>— Click when you have prayed and want to mark as completed</p>
- <p>• <strong>WhatsApp</strong>— Send a follow-up message to the person directly via WhatsApp</p>
- <p>• Prayer requests submitted on the website <em>and</em>via WhatsApp are stored here for the admin team.</p>
+ <p>• <strong>🙏 Prayed For</strong> — Click after your team has prayed for this request</p>
+ <p>• <strong>✔ Answered</strong> — Click when God answers the prayer</p>
+ <p>• <strong>💬 Follow-Up</strong> — Opens WhatsApp with a personalized message for that person. You can edit it before sending.</p>
+ <p>• Follow-up notes are saved automatically so you can track what was sent.</p>
  </div>
  </div>
  </div>
@@ -432,6 +432,23 @@
  </div><!-- end admin-content -->
  </main>
  </div>
+
+ <!-- PRAYER FOLLOW-UP MODAL -->
+ <div id="prayer-followup-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:1rem;">
+ <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:540px;width:100%;box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;">
+  <button onclick="closeFollowUp()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">&times;</button>
+  <h4 style="color:var(--primary);margin-bottom:0.25rem;"><i class="fab fa-whatsapp" style="color:#25D366;"></i> Send Follow-Up via WhatsApp</h4>
+  <p id="followup-to" style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1.25rem;border-bottom:1px solid var(--gray-200);padding-bottom:0.75rem;"></p>
+  <div class="form-group">
+  <label class="form-label">Message <span style="font-size:0.8rem;font-weight:400;color:var(--text-muted);">(edit before sending)</span></label>
+  <textarea id="followup-message" class="form-control" rows="9" style="font-size:0.88rem;"></textarea>
+  </div>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
+  <button onclick="sendFollowUp()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Send on WhatsApp</button>
+  <button onclick="closeFollowUp()" style="background:var(--gray-200);color:var(--text);border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;">Cancel</button>
+  </div>
+ </div>
+ </div>
 </div>
 
 <script src="js/main.js"></script>
@@ -473,21 +490,79 @@ function searchPrayers() {
  row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
  });
 }
+function prayerStatusLabel(s) {
+ return s==='pending'?'⏳ Pending':s==='praying'?'🙏 Prayed For':'✔ Answered';
+}
+function prayerRow(p) {
+ return `<tr id="prayer-row-${p.id}">
+ <td><strong>${escapeHtml(p.name)}</strong></td>
+ <td>${escapeHtml(p.phone||'-')}</td>
+ <td>${escapeHtml(p.country||'-')}</td>
+ <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(p.request)}">${escapeHtml(p.request)}</td>
+ <td><span class="badge badge-${p.status}">${prayerStatusLabel(p.status)}</span></td>
+ <td style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.8rem;color:var(--text-muted);" title="${escapeHtml(p.notes||'')}">${escapeHtml(p.notes||'—')}</td>
+ <td>${escapeHtml(p.date)}</td>
+ <td style="white-space:nowrap;">
+  <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${p.id},'praying')" title="Mark as Prayed For">🙏 Prayed</button>
+  <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${p.id},'completed')" style="margin-left:3px;" title="Mark as Answered">✔ Answered</button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;margin-left:3px;" onclick="openFollowUp(${p.id})" title="Send Follow-Up via WhatsApp">💬 Follow-Up</button>
+ </td></tr>`;
+}
 function filterPrayers(status) {
  const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
  const filtered = status === 'all' ? prayers : prayers.filter(p =>p.status === status);
  const tbody = document.getElementById('prayers-table-body');
  if (!tbody) return;
- tbody.innerHTML = filtered.length ? filtered.slice().reverse().map(p =>`
- <tr><td><strong>${escapeHtml(p.name)}</strong></td><td>${escapeHtml(p.phone||'-')}</td><td>${escapeHtml(p.country||'-')}</td>
- <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.request)}</td>
- <td><span class="badge badge-${p.status}">${p.status==='pending'?'⏳ Pending':p.status==='praying'?' Praying':' Completed'}</span></td>
- <td>${escapeHtml(p.date)}</td>
- <td style="white-space:nowrap;">
- <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${p.id},'praying')"></button>
- <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${p.id},'completed')" style="margin-left:3px;"></button>
- <button class="btn-xs btn-xs-purple" onclick="whatsappPrayer(${JSON.stringify(p.phone)},${JSON.stringify(p.name)})" style="margin-left:3px;">WA</button>
- </td></tr>`).join('') : '<tr><td colspan="7" class="text-center text-muted">No requests with this status.</td></tr>';
+ tbody.innerHTML = filtered.length
+  ? filtered.slice().reverse().map(prayerRow).join('')
+  : `<tr><td colspan="8" class="text-center text-muted">No requests with this status.</td></tr>`;
+}
+
+let _followupId = null;
+function openFollowUp(id) {
+ const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
+ const p = prayers.find(pr => pr.id === id);
+ if (!p) return;
+ _followupId = id;
+ let statusLine = '';
+ if (p.status === 'praying') {
+  statusLine = 'We want you to know that our prayer team is actively praying for you. Stay strong in faith — God is working on your behalf!';
+ } else if (p.status === 'completed') {
+  statusLine = 'Praise God! We believe your prayer has been heard and answered by our Heavenly Father. Give thanks to the Lord for His goodness and faithfulness!';
+ } else {
+  statusLine = 'Your prayer request has been received and recorded. Our dedicated prayer team will be lifting you up in prayer. Do not be discouraged — God hears every prayer!';
+ }
+ const msg = `*🙏 ${MINISTRY_NAME}*\n\nHello ${p.name},\n\n${statusLine}\n\n*"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."*\n— Philippians 4:6\n\nGod bless you!\n— Apostle MJ`;
+ const phone = (p.phone||'').replace(/[\s\-\(\)]/g,'');
+ document.getElementById('followup-to').textContent = `To: ${p.name}${p.phone ? ' · ' + p.phone : ' · (no phone number on file)'}`;
+ document.getElementById('followup-message').value = msg;
+ const modal = document.getElementById('prayer-followup-modal');
+ modal.classList.remove('hidden');
+ modal.style.display = 'flex';
+}
+function closeFollowUp() {
+ const modal = document.getElementById('prayer-followup-modal');
+ modal.classList.add('hidden');
+ modal.style.display = 'none';
+ _followupId = null;
+}
+function sendFollowUp() {
+ const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
+ const p = prayers.find(pr => pr.id === _followupId);
+ if (!p || !p.phone) { showToast('No phone number for this person. Cannot open WhatsApp.', true); return; }
+ const msg = document.getElementById('followup-message').value.trim();
+ if (!msg) { showToast('Message cannot be empty.', true); return; }
+ const clean = p.phone.replace(/[\s\-\(\)]/g,'');
+ window.open(`https://wa.me/${clean}?text=${encodeURIComponent(msg)}`, '_blank');
+ // Save message as note on the prayer
+ const idx = prayers.findIndex(pr => pr.id === _followupId);
+ if (idx > -1) {
+  prayers[idx].notes = 'Follow-up sent ' + new Date().toLocaleDateString('en-GB');
+  localStorage.setItem('mj_prayers', JSON.stringify(prayers));
+ }
+ closeFollowUp();
+ loadAdminData();
+ showToast('Follow-up sent via WhatsApp!');
 }
 
 function exportMembers() {
