@@ -529,7 +529,8 @@ function prayerStatusLabel(s) {
  return s==='pending'?'⏳ Pending':s==='praying'?'🙏 Prayed For':'✔ Answered';
 }
 function prayerRow(p) {
- return `<tr id="prayer-row-${p.id}">
+ const pid = parseInt(p.id, 10);
+ return `<tr id="prayer-row-${pid}">
  <td><strong>${escapeHtml(p.name)}</strong></td>
  <td>${escapeHtml(p.phone||'-')}</td>
  <td>${escapeHtml(p.country||'-')}</td>
@@ -538,9 +539,9 @@ function prayerRow(p) {
  <td style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.8rem;color:var(--text-muted);" title="${escapeHtml(p.notes||'')}">${escapeHtml(p.notes||'—')}</td>
  <td>${escapeHtml(p.date)}</td>
  <td style="white-space:nowrap;">
-  <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${p.id},'praying')" title="Mark as Prayed For">🙏 Prayed</button>
-  <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${p.id},'completed')" style="margin-left:3px;" title="Mark as Answered">✔ Answered</button>
-  <button class="btn-xs" style="background:#25D366;color:#fff;margin-left:3px;" onclick="openFollowUp(${p.id})" title="Send Follow-Up via WhatsApp">💬 Follow-Up</button>
+  <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${pid},'praying')" title="Mark as Prayed For">🙏 Prayed</button>
+  <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${pid},'completed')" style="margin-left:3px;" title="Mark as Answered">✔ Answered</button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;margin-left:3px;" onclick="openFollowUp(${pid})" title="Send Follow-Up via WhatsApp">💬 Follow-Up</button>
  </td></tr>`;
 }
 function filterPrayers(status) {
@@ -587,7 +588,7 @@ function sendFollowUp() {
  if (!p || !p.phone) { showToast('No phone number for this person. Cannot open WhatsApp.', true); return; }
  const msg = document.getElementById('followup-message').value.trim();
  if (!msg) { showToast('Message cannot be empty.', true); return; }
- const clean = p.phone.replace(/[\s\-\(\)]/g,'');
+ const clean = p.phone.replace(/[^\d+]/g,'');
  window.open(`https://wa.me/${clean}?text=${encodeURIComponent(msg)}`, '_blank');
  // Save message as note on the prayer
  const idx = prayers.findIndex(pr => pr.id === _followupId);
@@ -777,11 +778,12 @@ function loadSermonsList() {
  const sermons = JSON.parse(localStorage.getItem('mj_sermons') || '[]');
  sermons.sort((a,b) =>(b.date||'').localeCompare(a.date||'') || b.id - a.id);
  el.innerHTML = sermons.length ? sermons.map(s =>{
+ const sid = parseInt(s.id, 10);
  const label = s.date ? new Date(s.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
  <div><strong>${escapeHtml(s.title)}</strong><span style="font-size:0.8rem;color:var(--primary);">[${escapeHtml(s.topic)}]</span><br>
- <span style="font-size:0.82rem;color:var(--text-muted);">${label} | ${escapeHtml(s.speaker||'Apostle MJ')} ${s.url?'| <a href="'+escapeHtml(s.url)+'" target="_blank" style="color:var(--primary);">Watch</a>':''}</span></div>
- <button class="btn-xs btn-xs-red" onclick="deleteSermon(${s.id})">Delete</button>
+ <span style="font-size:0.82rem;color:var(--text-muted);">${label} | ${escapeHtml(s.speaker||'Apostle MJ')} ${s.url && /^https?:\/\//i.test(s.url)?'| <a href="'+escapeHtml(s.url)+'" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Watch</a>':''}</span></div>
+ <button class="btn-xs btn-xs-red" onclick="deleteSermon(${sid})">Delete</button>
  </div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No sermons uploaded yet.</p>';
 }
@@ -875,11 +877,12 @@ function loadProphecyList() {
  const list = JSON.parse(localStorage.getItem('mj_prophecies') || '[]');
  list.sort((a,b) => (b.date||'').localeCompare(a.date||'') || b.id - a.id);
  el.innerHTML = list.length ? list.map(p => {
+  const pid = parseInt(p.id, 10);
   const label = p.date ? new Date(p.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div><strong>${escapeHtml(p.title)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.5rem;">[${escapeHtml(p.category||'General')}]</span><br>
   <span style="font-size:0.82rem;color:var(--text-muted);">${label}${p.scripture?' | '+escapeHtml(p.scripture):''}</span></div>
-  <button class="btn-xs btn-xs-red" onclick="deleteProphecy(${p.id})">Delete</button>
+  <button class="btn-xs btn-xs-red" onclick="deleteProphecy(${pid})">Delete</button>
   </div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No prophetic words published yet.</p>';
 }
@@ -924,11 +927,12 @@ function loadFulfillmentList() {
  const list = JSON.parse(localStorage.getItem('mj_fulfillments') || '[]');
  list.sort((a,b) => (b.fulfilledDate||'').localeCompare(a.fulfilledDate||'') || b.id - a.id);
  el.innerHTML = list.length ? list.map(f => {
+  const fid = parseInt(f.id, 10);
   const label = f.fulfilledDate ? new Date(f.fulfilledDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div><strong>${escapeHtml(f.title)}</strong><br>
   <span style="font-size:0.82rem;color:var(--text-muted);">Fulfilled: ${label}</span></div>
-  <button class="btn-xs btn-xs-red" onclick="deleteFulfillment(${f.id})">Delete</button>
+  <button class="btn-xs btn-xs-red" onclick="deleteFulfillment(${fid})">Delete</button>
   </div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No fulfillments recorded yet.</p>';
 }

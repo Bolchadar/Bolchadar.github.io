@@ -361,18 +361,34 @@ function togglePassVisibility() {
  }
 }
 
+let _loginAttempts = 0;
+let _loginLockedUntil = 0;
 async function adminLogin() {
+ const now = Date.now();
+ if (now < _loginLockedUntil) {
+  const secs = Math.ceil((_loginLockedUntil - now) / 1000);
+  showToast(`Too many attempts. Try again in ${secs}s.`, true);
+  return;
+ }
  const pass = document.getElementById('admin-pass');
  if (!pass) return;
  const entered = hashPassword(pass.value);
  if (entered === ADMIN_PASSWORD_HASH) {
- sessionStorage.setItem('mj_admin', '1');
- document.getElementById('admin-login-screen').classList.add('hidden');
- document.getElementById('admin-dashboard').classList.remove('hidden');
- loadAdminData();
+  _loginAttempts = 0;
+  sessionStorage.setItem('mj_admin', '1');
+  document.getElementById('admin-login-screen').classList.add('hidden');
+  document.getElementById('admin-dashboard').classList.remove('hidden');
+  loadAdminData();
  } else {
- showToast('Incorrect password. Please try again.', true);
- pass.value = '';
+  _loginAttempts++;
+  pass.value = '';
+  if (_loginAttempts >= 5) {
+   _loginLockedUntil = Date.now() + 30000;
+   _loginAttempts = 0;
+   showToast('Too many failed attempts. Locked for 30 seconds.', true);
+  } else {
+   showToast(`Incorrect password (${_loginAttempts}/5 attempts).`, true);
+  }
  }
 }
 
@@ -408,8 +424,8 @@ function loadAdminData() {
  const pTbl = document.getElementById('prayers-table-body');
  if (pTbl) {
  const prayerLabel = s => s==='pending'?'⏳ Pending':s==='praying'?'🙏 Prayed For':'✔ Answered';
- pTbl.innerHTML = prayers.length ? prayers.slice().reverse().map((p) =>`
- <tr id="prayer-row-${p.id}">
+ pTbl.innerHTML = prayers.length ? prayers.slice().reverse().map((p) =>{ const pid = parseInt(p.id, 10); return `
+ <tr id="prayer-row-${pid}">
  <td><strong>${escapeHtml(p.name)}</strong></td>
  <td>${escapeHtml(p.phone || '-')}</td>
  <td>${escapeHtml(p.country || '-')}</td>
@@ -418,11 +434,11 @@ function loadAdminData() {
  <td style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.8rem;color:var(--text-muted);" title="${escapeHtml(p.notes||'')}">${escapeHtml(p.notes||'—')}</td>
  <td>${escapeHtml(p.date)}</td>
  <td style="white-space:nowrap;">
- <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${p.id},'praying')" title="Mark as Prayed For">🙏 Prayed</button>
- <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${p.id},'completed')" style="margin-left:4px;" title="Mark as Answered">✔ Answered</button>
- <button class="btn-xs" style="background:#25D366;color:#fff;margin-left:4px;" onclick="openFollowUp(${p.id})" title="Send Follow-Up via WhatsApp">💬 Follow-Up</button>
+ <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${pid},'praying')" title="Mark as Prayed For">🙏 Prayed</button>
+ <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${pid},'completed')" style="margin-left:4px;" title="Mark as Answered">✔ Answered</button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;margin-left:4px;" onclick="openFollowUp(${pid})" title="Send Follow-Up via WhatsApp">💬 Follow-Up</button>
  </td>
- </tr>`).join('') : '<tr><td colspan="8" class="text-center text-muted">No prayer requests yet.</td></tr>';
+ </tr>`; }).join('') : '<tr><td colspan="8" class="text-center text-muted">No prayer requests yet.</td></tr>';
  // Update count badges
  const setCount = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
  setCount('count-all', prayers.length);
@@ -476,7 +492,7 @@ function updatePrayerStatus(id, status) {
 }
 function whatsappPrayer(phone, name) {
  if (!phone) { showToast('No phone number for this person.', true); return; }
- const clean = phone.replace(/[\s\-\(\)]/g, '');
+ const clean = phone.replace(/[^\d+]/g, '');
   const msg = `*🙏 Apostle MJ Ministries*\n\nDear ${name},\n\nWe want you to know that our team has been praying for you. God loves you and we believe your prayer has been heard. Stay blessed!\n\n— ${MINISTRY_NAME}`;
   window.open(`https://wa.me/${clean}?text=${encodeURIComponent(msg)}`, '_blank');
 }

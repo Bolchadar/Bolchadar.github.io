@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () =>{
  stored.slice().reverse().forEach(t =>{
  const div = document.createElement('div');
  div.className = 'testimony-card';
- div.innerHTML = `<p>"${escapeHtml(t.testimony)}"</p><div class="author"><div class="avatar">${escapeHtml(t.name[0].toUpperCase())}</div><div><div class="author-name">${escapeHtml(t.name)}</div><div class="author-location">${escapeHtml(t.location || 'Apostle MJ Ministries')}</div></div></div>`;
+ div.innerHTML = `<p>"${escapeHtml(t.testimony)}"</p><div class="author"><div class="avatar">${escapeHtml((t.name||'?')[0].toUpperCase())}</div><div><div class="author-name">${escapeHtml(t.name||'Anonymous')}</div><div class="author-location">${escapeHtml(t.location || 'Apostle MJ Ministries')}</div></div></div>`;
  container.appendChild(div);
  });
  }
