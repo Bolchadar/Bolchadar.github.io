@@ -134,6 +134,15 @@
  </div>
 </section>
 
+<!-- ANNOUNCEMENTS BANNER -->
+<div id="announcements-banner" style="display:none;background:linear-gradient(90deg,var(--primary),var(--primary-mid));color:var(--white);padding:0;overflow:hidden;">
+ <div style="display:flex;align-items:stretch;">
+ <div style="background:var(--gold);color:var(--primary);padding:0.75rem 1.25rem;font-weight:800;font-size:0.82rem;letter-spacing:1px;display:flex;align-items:center;gap:0.4rem;white-space:nowrap;flex-shrink:0;"><i class="fas fa-bullhorn"></i>ANNOUNCEMENTS</div>
+ <div id="ann-ticker" style="flex:1;padding:0.75rem 1.25rem;font-size:0.9rem;overflow:hidden;"></div>
+ <button onclick="document.getElementById('announcements-banner').style.display='none';" style="background:none;border:none;color:rgba(255,255,255,0.7);padding:0 1rem;font-size:1rem;cursor:pointer;flex-shrink:0;">✕</button>
+ </div>
+</div>
+
 <!-- QUICK LINKS -->
 <section class="section section-light">
  <div class="container">
@@ -328,6 +337,26 @@ document.addEventListener('DOMContentLoaded', () =>{
 </script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 <script>lucide.createIcons();</script>
+<script>
+(function showAnnouncements() {
+ const list = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
+ if (!list.length) return;
+ const banner = document.getElementById('announcements-banner');
+ const ticker = document.getElementById('ann-ticker');
+ banner.style.display = 'block';
+ if (list.length === 1) {
+  ticker.innerHTML = '<strong>' + escapeHtml(list[0].title) + ':</strong> ' + escapeHtml(list[0].text);
+ } else {
+  let i = 0;
+  function show() {
+   ticker.innerHTML = '<strong>' + escapeHtml(list[i].title) + ':</strong> ' + escapeHtml(list[i].text);
+   i = (i + 1) % list.length;
+  }
+  show();
+  setInterval(show, 5000);
+ }
+})();
+</script>
 </body>
 </html>
 

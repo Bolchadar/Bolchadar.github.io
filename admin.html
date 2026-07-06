@@ -107,6 +107,7 @@
  <a href="#" onclick="showAdminSection('sec-fulfillment');closeSidebar();"><i class="fas fa-check-circle"></i>Fulfillments</a>
  <a href="#" onclick="showAdminSection('sec-events');closeSidebar();"><i class="fas fa-calendar-alt"></i>Events</a>
  <a href="#" onclick="showAdminSection('sec-announcements');closeSidebar();"><i class="fas fa-bullhorn"></i>Announcements</a>
+ <a href="#" onclick="showAdminSection('sec-livestream');closeSidebar();"><i class="fas fa-tower-broadcast"></i>Livestream</a>
 
  <div class="sidebar-section">Finance</div>
  <a href="#" onclick="showAdminSection('sec-donations');closeSidebar();"><i class="fas fa-hand-holding-heart"></i>Donations</a>
@@ -155,6 +156,7 @@
  <div class="quick-action" onclick="showAdminSection('sec-fulfillment')"><i class="fas fa-check-circle"></i>Record Fulfillment</div>
  <div class="quick-action" onclick="showAdminSection('sec-events')"><i class="fas fa-calendar-alt"></i>Manage Events</div>
  <div class="quick-action" onclick="showAdminSection('sec-announcements')"><i class="fas fa-bullhorn"></i>Post Announcement</div>
+ <div class="quick-action" onclick="showAdminSection('sec-livestream')"><i class="fas fa-tower-broadcast"></i>Control Livestream</div>
  </div>
  </div>
  <div class="admin-card">
@@ -399,6 +401,39 @@
  <div class="admin-card mt-3">
   <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Recorded Fulfillments</h4>
   <div id="fulfillment-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">No fulfillments recorded yet.</p></div>
+ </div>
+ </div>
+
+ <!-- LIVESTREAM -->
+ <div id="sec-livestream" class="admin-section" data-title="Livestream Control">
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-tower-broadcast" style="color:var(--gold);"></i>Livestream Control</h4>
+ <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.5rem;">Use this panel to go live. Visitors on the Livestream page will see your YouTube video automatically when you set it here.</p>
+
+ <div class="form-group">
+ <label class="form-label">Are we LIVE right now?</label>
+ <div style="display:flex;gap:1rem;margin-top:0.5rem;">
+ <label style="display:flex;align-items:center;gap:0.5rem;font-weight:600;cursor:pointer;">
+  <input type="radio" name="live-status" id="live-yes" value="yes"> <span style="color:#16a34a;">🔴 YES — We are LIVE</span>
+ </label>
+ <label style="display:flex;align-items:center;gap:0.5rem;font-weight:600;cursor:pointer;">
+  <input type="radio" name="live-status" id="live-no" value="no" checked> <span style="color:var(--text-muted);">⚫ NO — Not live right now</span>
+ </label>
+ </div>
+ </div>
+
+ <div class="form-group">
+ <label class="form-label">YouTube Live Video URL <span style="font-size:0.8rem;color:var(--text-muted);">(paste the link when you go live)</span></label>
+ <input type="text" class="form-control" id="live-url" placeholder="https://youtube.com/watch?v=...  OR  https://youtu.be/...">
+ </div>
+
+ <div class="form-group">
+ <label class="form-label">Schedule / Next Service Info <span style="font-size:0.8rem;color:var(--text-muted);">(shown when not live)</span></label>
+ <input type="text" class="form-control" id="live-schedule" placeholder="e.g. Join us Sunday at 9:00 AM on YouTube & Facebook">
+ </div>
+
+ <button onclick="saveLivestream()" class="btn btn-primary"><i class="fas fa-save"></i>Save Livestream Settings</button>
+ <div id="live-status-msg" style="margin-top:1rem;font-size:0.9rem;color:var(--text-muted);"></div>
  </div>
  </div>
 
@@ -898,6 +933,25 @@ function loadFulfillmentList() {
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No fulfillments recorded yet.</p>';
 }
 
+function saveLivestream() {
+ const isLive = document.querySelector('input[name="live-status"]:checked').value === 'yes';
+ const url = document.getElementById('live-url').value.trim();
+ const schedule = document.getElementById('live-schedule').value.trim();
+ if (isLive && !url) { showToast('Please paste a YouTube URL when going live.', true); return; }
+ localStorage.setItem('mj_livestream', JSON.stringify({ isLive, url, schedule, updated: Date.now() }));
+ const msg = document.getElementById('live-status-msg');
+ msg.textContent = isLive ? '🔴 We are now LIVE on the website!' : '⚫ Livestream set to offline.';
+ msg.style.color = isLive ? '#16a34a' : 'var(--text-muted)';
+ showToast(isLive ? '🔴 Livestream activated!' : 'Livestream set to offline.');
+}
+function loadLivestreamAdmin() {
+ const d = JSON.parse(localStorage.getItem('mj_livestream') || '{}');
+ if (d.isLive) document.getElementById('live-yes').checked = true;
+ else document.getElementById('live-no').checked = true;
+ if (d.url) document.getElementById('live-url').value = d.url;
+ if (d.schedule) document.getElementById('live-schedule').value = d.schedule;
+}
+
 // Hook into loadAdminData
 const origLoad = loadAdminData;
 window.loadAdminData = function() {
@@ -909,6 +963,7 @@ window.loadAdminData = function() {
  loadSermonsList();
  loadProphecyList();
  loadFulfillmentList();
+ loadLivestreamAdmin();
 };
 </script>
 </body>
