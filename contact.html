@@ -67,7 +67,7 @@
  <div class="contact-item-icon"><i class="fas fa-clock"></i></div>
  <div class="contact-item-info">
  <h5>Service Times</h5>
- <p>Sunday Service: 9:00 AM<br>Wednesday Bible Study: 6:00 PM<br>Friday Prayer: 7:00 PM</p>
+ <p id="contact-service-times">Sunday Service: 9:00 AM<br>Wednesday Bible Study: 6:00 PM<br>Friday Prayer: 7:00 PM</p>
  </div>
  </div>
 
@@ -181,6 +181,21 @@ function prayerHotline() {
   const msg = `*🙏 PRAYER HOTLINE — ${MINISTRY_NAME}*\n\nHello! I need urgent prayer. Please connect me with the prayer team.\n\nName: [Your Name]\nRequest: [Brief description]\n\nThank you and God bless you!`;
   openWhatsApp(msg);
 }
+// Load dynamic site settings from admin
+(function() {
+ const s = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
+ if (s.sunday || s.wednesday || s.friday) {
+  const el = document.getElementById('contact-service-times');
+  if (el) {
+   let times = '';
+   if (s.sunday) times += 'Sunday Service: ' + s.sunday;
+   if (s.wednesday) times += (times ? '<br>' : '') + 'Wednesday Bible Study: ' + s.wednesday;
+   if (s.friday) times += (times ? '<br>' : '') + 'Friday Prayer: ' + s.friday;
+   if (s.other) times += (times ? '<br>' : '') + s.other;
+   el.innerHTML = times;
+  }
+ }
+})();
 </script>
 </body>
 </html>

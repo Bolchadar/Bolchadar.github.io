@@ -156,6 +156,75 @@ function openWhatsApp(message) {
  window.open(buildWhatsAppLink(message), '_blank');
 }
 
+/* ===== BROADCAST SHARING (any contact, not just ministry phone) ===== */
+let _broadcastMsg = '', _broadcastTitle = '', _broadcastUrl = '';
+
+function broadcastShare(title, waMsg, pageUrl) {
+ _broadcastTitle = title;
+ _broadcastMsg = waMsg;
+ _broadcastUrl = pageUrl || 'https://mjministries.org';
+ if (navigator.share) {
+  navigator.share({ title, text: waMsg, url: _broadcastUrl }).catch(() => _showBroadcastPanel());
+  return;
+ }
+ _showBroadcastPanel();
+}
+
+function _showBroadcastPanel() {
+ const old = document.getElementById('mj-share-panel');
+ if (old) old.remove();
+
+ const overlay = document.createElement('div');
+ overlay.id = 'mj-share-panel';
+ overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:flex-end;justify-content:center;';
+
+ const panel = document.createElement('div');
+ panel.style.cssText = 'background:#fff;border-radius:16px 16px 0 0;padding:1.5rem;width:100%;max-width:480px;box-shadow:0 -4px 24px rgba(0,0,0,0.15);';
+ panel.innerHTML = [
+  '<div style="width:40px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 1.25rem;"></div>',
+  '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">',
+   '<h4 style="margin:0;color:#4c1d95;font-size:1.05rem;"><i class="fas fa-share-alt" style="color:#d4a017;margin-right:0.4rem;"></i>Share</h4>',
+   '<button id="_sp-close" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#9ca3af;line-height:1;">&times;</button>',
+  '</div>',
+  '<div id="_sp-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;text-align:center;margin-bottom:1rem;"></div>',
+  '<button id="_sp-copy" style="width:100%;padding:0.75rem;background:#f3f4f6;border:none;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:inherit;"><i class="fas fa-copy" style="margin-right:0.4rem;"></i>Copy Text</button>',
+ ].join('');
+
+ overlay.appendChild(panel);
+ document.body.appendChild(overlay);
+
+ const platforms = [
+  { icon: 'fa-whatsapp', color: '#25D366', bg: '#f0fdf4', label: 'WhatsApp', url: 'https://wa.me/?text=' + encodeURIComponent(_broadcastMsg) },
+  { icon: 'fa-facebook', color: '#1877F2', bg: '#eff6ff', label: 'Facebook', url: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(_broadcastUrl) },
+  { icon: 'fa-twitter', color: '#1d9bf0', bg: '#f8fafc', label: 'Twitter', url: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(_broadcastTitle + '\n' + _broadcastUrl) },
+  { icon: 'fa-telegram', color: '#0088cc', bg: '#f0f9ff', label: 'Telegram', url: 'https://t.me/share/url?url=' + encodeURIComponent(_broadcastUrl) + '&text=' + encodeURIComponent(_broadcastMsg.substring(0, 200)) },
+ ];
+
+ const grid = document.getElementById('_sp-grid');
+ platforms.forEach(p => {
+  const btn = document.createElement('button');
+  btn.style.cssText = 'background:' + p.bg + ';border:none;border-radius:12px;padding:0.85rem 0.3rem;cursor:pointer;';
+  btn.innerHTML = '<i class="fab ' + p.icon + '" style="font-size:1.75rem;color:' + p.color + ';display:block;margin-bottom:0.25rem;"></i><span style="font-size:0.7rem;color:#6b7280;">' + p.label + '</span>';
+  btn.addEventListener('click', () => { window.open(p.url, '_blank'); overlay.remove(); });
+  grid.appendChild(btn);
+ });
+
+ document.getElementById('_sp-copy').addEventListener('click', () => {
+  const text = _broadcastMsg;
+  if (navigator.clipboard) {
+   navigator.clipboard.writeText(text).then(() => { if (typeof showToast === 'function') showToast('Copied to clipboard!'); }).catch(() => {});
+  } else {
+   const ta = document.createElement('textarea'); ta.value = text;
+   document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+   if (typeof showToast === 'function') showToast('Copied!');
+  }
+  overlay.remove();
+ });
+
+ document.getElementById('_sp-close').addEventListener('click', () => overlay.remove());
+ overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+}
+
 /* ===== PRAYER FORM ===== */
 const prayerForm = document.getElementById('prayer-form');
 if (prayerForm) {

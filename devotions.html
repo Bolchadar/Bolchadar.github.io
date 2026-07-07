@@ -153,7 +153,7 @@ document.getElementById('today-date').textContent = new Date().toLocaleDateStrin
  ${prayerHtml}
  <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;">
  <a href="prayer.html" class="btn btn-primary"><i class="fas fa-hands-praying"></i>Submit Prayer Request</a>
- <button onclick="shareDevotional()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
+ <button onclick="shareDevotional()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share / Broadcast</button>
  </div>
  </div></div>`;
 
@@ -187,8 +187,8 @@ function shareDevotional() {
  const ref = d ? d.ref : 'Ephesians 2:10';
  const verse = d ? d.verse.substring(0,120) : 'For we are God\'s handiwork, created in Christ Jesus to do good works.';
  const preview = d ? d.message.substring(0,300) : 'You are not an accident. God created you with purpose and intention.';
-  const msg = `*📖 Daily Devotional — ${MINISTRY_NAME}*\n\n*Topic:* ${topic}\n*Scripture:* ${ref}\n\n_"${verse}..."_\n\n${preview}...\n\n🙏 Visit our website to read the full devotional.\n_— Apostle MJ Ministries_`;
-  openWhatsApp(msg);
+  const msg = `*📖 DAILY DEVOTIONAL — ${MINISTRY_NAME}*\n\n*Topic:* ${topic}\n*Scripture:* ${ref}\n\n_"${verse}..."_\n\n${preview}...\n\n🙏 Visit our website to read the full devotional.\nhttps://mjministries.org/devotions.html\n_— Apostle MJ_`;
+  broadcastShare(topic, msg, 'https://mjministries.org/devotions.html');
 }
 function subscribeDevotional() {
   const msg = `*📖 Subscribe to Daily Devotionals — ${MINISTRY_NAME}*\n\nHello! I would like to receive daily devotional messages. Please add me to your WhatsApp devotional list.\n\nName: [Your Name]\nCountry: [Your Country]\n\nGod bless you!`;

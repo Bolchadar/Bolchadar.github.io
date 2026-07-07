@@ -233,6 +233,14 @@ document.addEventListener('DOMContentLoaded', () =>{
  btnRow.style.cssText = 'display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;';
  btnRow.appendChild(watchBtn);
  btnRow.appendChild(ytLink);
+ const shareBtn = document.createElement('button');
+ shareBtn.className = 'btn btn-sm';
+ shareBtn.style.cssText = 'background:#f3f4f6;color:var(--primary);border:1px solid var(--gray-200);';
+ shareBtn.innerHTML = '<i class="fas fa-share-alt"></i>Share';
+ const _sTitle = s.title, _sSpeaker = s.speaker||'Apostle MJ', _sScrip = s.scripture||'', _sDate = dateLabel, _sDesc = s.desc||'', _sUrl = isSafeUrl(s.url)?s.url:'';
+ const _sMsg = `*🎤 SERMON — ${MINISTRY_NAME}*\n\n*"${_sTitle}"*\n👤 ${_sSpeaker}${_sScrip?'\n📖 '+_sScrip:''}\n📅 ${_sDate}\n\n${_sDesc.substring(0,300)}${_sDesc.length>300?'...':''}\n\n${_sUrl?'▶️ Watch: '+_sUrl+'\n':''}🌐 https://mjministries.org/sermons.html`;
+ shareBtn.addEventListener('click', () => broadcastShare(_sTitle, _sMsg, 'https://mjministries.org/sermons.html'));
+ btnRow.appendChild(shareBtn);
  cardBody.appendChild(btnRow);
  card.appendChild(thumb);
  card.appendChild(cardBody);

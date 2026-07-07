@@ -114,7 +114,8 @@
  <div class="sidebar-section">Finance</div>
  <a href="#" onclick="showAdminSection('sec-donations');closeSidebar();"><i class="fas fa-hand-holding-heart"></i>Donations</a>
 
- <div class="sidebar-section">Account</div>
+ <div class="sidebar-section">Admin</div>
+ <a href="#" onclick="showAdminSection('sec-settings');closeSidebar();"><i class="fas fa-cog"></i>Site Settings</a>
  <a href="index.html"><i class="fas fa-globe"></i>View Website</a>
  <a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
  </nav>
@@ -161,6 +162,7 @@
  <div class="quick-action" onclick="showAdminSection('sec-events')"><i class="fas fa-calendar-alt"></i>Manage Events</div>
  <div class="quick-action" onclick="showAdminSection('sec-announcements')"><i class="fas fa-bullhorn"></i>Post Announcement</div>
  <div class="quick-action" onclick="showAdminSection('sec-livestream')"><i class="fas fa-tower-broadcast"></i>Control Livestream</div>
+ <div class="quick-action" onclick="showAdminSection('sec-settings')"><i class="fas fa-cog"></i>Site Settings</div>
  </div>
  </div>
  <div class="admin-card">
@@ -224,7 +226,7 @@
  <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-id-card" style="color:var(--gold);"></i>Add to Public Member Directory</h4>
  <div class="form-row">
  <div class="form-group"><label class="form-label">Full Name <span class="required">*</span></label><input type="text" class="form-control" id="mp-name" placeholder="Member's full name"></div>
- <div class="form-group"><label class="form-label">Photo URL</label><input type="url" class="form-control" id="mp-photo" placeholder="https://... (hosted photo link)"></div>
+ <div class="form-group"><label class="form-label">Photo URL</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" id="mp-photo" placeholder="https://... (paste or upload)" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('mp-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
  </div>
  <div class="form-row">
  <div class="form-group"><label class="form-label">Gender</label><select class="form-control" id="mp-gender"><option>Male</option><option>Female</option></select></div>
@@ -234,7 +236,10 @@
  <div class="form-group"><label class="form-label">Position / Role</label><input type="text" class="form-control" id="mp-position" placeholder="e.g. Elder, Deacon, Choir Leader"></div>
  <div class="form-group"><label class="form-label">Membership Status</label><select class="form-control" id="mp-status"><option>Active Member</option><option>Leadership</option><option>Elder</option><option>Deacon</option><option>Minister</option><option>New Member</option></select></div>
  </div>
- <button onclick="saveMemberProfile()" class="btn btn-primary"><i class="fas fa-plus"></i>Add to Directory</button>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+ <button id="mp-save-btn" onclick="saveMemberProfile()" class="btn btn-primary"><i class="fas fa-plus"></i>Add to Directory</button>
+ <button id="mp-cancel-btn" onclick="cancelEdit('memberProfile')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
+ </div>
  </div>
  <div class="admin-card mt-3">
  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-address-book" style="color:var(--gold);"></i>Public Directory</h4>
@@ -269,12 +274,15 @@
  </div>
  <div class="form-group"><label class="form-label">YouTube Video URL</label><input type="url" class="form-control" placeholder="https://youtube.com/watch?v=..." id="sermon-url"></div>
  <div class="form-row">
- <div class="form-group"><label class="form-label">Preacher Photo URL</label><input type="url" class="form-control" placeholder="https://... (paste hosted image link)" id="sermon-preacher-photo"></div>
+ <div class="form-group"><label class="form-label">Preacher Photo URL</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" placeholder="https://... (paste or upload)" id="sermon-preacher-photo" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('sermon-preacher-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
  <div class="form-group"><label class="form-label">Scripture Reference</label><input type="text" class="form-control" placeholder="e.g. Romans 8:28" id="sermon-scripture"></div>
  </div>
  <div class="form-group"><label class="form-label">Sermon Description</label><textarea class="form-control" rows="4" placeholder="Brief description of the sermon..." id="sermon-desc"></textarea></div>
  <div class="form-group"><label class="form-label">Audio URL <span style="font-size:0.8rem;color:var(--text-muted);">(SoundCloud, Dropbox, or direct MP3 link — leave blank if none)</span></label><input type="url" class="form-control" placeholder="https://soundcloud.com/..." id="sermon-audio"></div>
- <button onclick="saveSermon()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save & Publish Sermon</button>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
+ <button id="sermon-save-btn" onclick="saveSermon()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish Sermon</button>
+ <button id="sermon-cancel-btn" onclick="cancelEdit('sermon')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
+ </div>
  </div>
  </div>
  <div class="admin-card mt-3">
@@ -296,9 +304,10 @@
  <div class="form-group"><label class="form-label">Scripture Text</label><textarea class="form-control" rows="3" placeholder="Type the scripture verse here..." id="dev-verse"></textarea></div>
  <div class="form-group"><label class="form-label">Devotional Message</label><textarea class="form-control" rows="10" placeholder="Write the full devotional message here..." id="dev-message"></textarea></div>
  <div class="form-group"><label class="form-label">Prayer Points (one per line)</label><textarea class="form-control" rows="4" placeholder="1. Thank God for...\n2. Ask for...\n3. Pray for..." id="dev-prayers"></textarea></div>
- <div style="display:flex;gap:1rem;flex-wrap:wrap;">
- <button onclick="saveDevotional()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
- <button onclick="shareDevotionalWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+ <button id="dev-save-btn" onclick="saveDevotional()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
+ <button id="dev-cancel-btn" onclick="cancelEdit('devotional')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
+ <button onclick="shareDevotionalWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share on WhatsApp / More</button>
  </div>
  </div>
  </div>
@@ -325,7 +334,10 @@
  <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="evt-category"><option>Revival</option><option>Conference</option><option>Youth</option><option>Outreach</option><option>Charity</option><option>Seminar</option><option>Worship</option><option>Other</option></select></div>
  </div>
  <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" rows="4" placeholder="Describe the event..." id="evt-desc"></textarea></div>
- <button onclick="saveEvent()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish Event</button>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+ <button id="evt-save-btn" onclick="saveEvent()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish Event</button>
+ <button id="evt-cancel-btn" onclick="cancelEdit('event')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
+ </div>
  </div>
  <div class="admin-card mt-3">
  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Upcoming Events</h4>
@@ -341,7 +353,7 @@
  <div class="form-group"><label class="form-label">Announcement Text</label><textarea class="form-control" rows="5" placeholder="Write your announcement here..." id="ann-text"></textarea></div>
  <div class="form-row">
  <div class="form-group"><label class="form-label">Event Date (optional)</label><input type="date" class="form-control" id="ann-event-date"></div>
- <div class="form-group"><label class="form-label">Featured Photo URL</label><input type="url" class="form-control" placeholder="https://... (image URL)" id="ann-photo"></div>
+ <div class="form-group"><label class="form-label">Featured Photo URL</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" placeholder="https://... (paste or upload)" id="ann-photo" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('ann-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
  </div>
  <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" placeholder="https://youtube.com/..." id="ann-video"></div>
  <div class="form-group"><label class="form-label">Share To</label>
@@ -351,7 +363,10 @@
  <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.9rem;"><input type="checkbox">Facebook</label>
  </div>
  </div>
- <button onclick="postAnnouncement()" class="btn btn-primary"><i class="fas fa-paper-plane"></i>Post Announcement</button>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+ <button id="ann-save-btn" onclick="postAnnouncement()" class="btn btn-primary"><i class="fas fa-paper-plane"></i>Post Announcement</button>
+ <button id="ann-cancel-btn" onclick="cancelEdit('announcement')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
+ </div>
  </div>
 
  <!-- CURRENT ANNOUNCEMENTS -->
@@ -375,12 +390,13 @@
   </div>
   <div class="form-group"><label class="form-label">Prophetic Word <span class="required">*</span></label><textarea class="form-control" rows="10" placeholder="Type the prophetic word here..." id="proph-word"></textarea></div>
   <div class="form-row">
-  <div class="form-group"><label class="form-label">Prophet Photo URL</label><input type="url" class="form-control" placeholder="https://... (paste hosted photo link)" id="proph-photo"></div>
+  <div class="form-group"><label class="form-label">Prophet Photo URL</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" placeholder="https://... (paste or upload)" id="proph-photo" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('proph-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
   <div class="form-group"><label class="form-label">Prophecy Video URL (YouTube)</label><input type="url" class="form-control" placeholder="https://youtube.com/..." id="proph-video"></div>
   </div>
-  <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-  <button onclick="saveProphecy()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
-  <button onclick="shareProphecyWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+  <button id="proph-save-btn" onclick="saveProphecy()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
+  <button id="proph-cancel-btn" onclick="cancelEdit('prophecy')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
+  <button onclick="shareProphecyWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share on WhatsApp / More</button>
   </div>
  </div>
  <div class="admin-card mt-3">
@@ -405,9 +421,10 @@
   <div class="form-group"><label class="form-label">How It Was Fulfilled <span class="required">*</span></label><textarea class="form-control" rows="8" placeholder="Describe how this prophecy came to pass..." id="ful-how"></textarea></div>
   <div class="form-group"><label class="form-label">Photos <span style="font-size:0.8rem;color:var(--text-muted);">(paste image URLs, one per line)</span></label><textarea class="form-control" rows="3" placeholder="https://image1.jpg&#10;https://image2.jpg" id="ful-photos"></textarea></div>
   <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" placeholder="https://youtube.com/..." id="ful-video"></div>
-  <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-  <button onclick="saveFulfillment()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
-  <button onclick="shareFulfillmentAdminWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share via WhatsApp</button>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+  <button id="ful-save-btn" onclick="saveFulfillment()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
+  <button id="ful-cancel-btn" onclick="cancelEdit('fulfillment')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
+  <button onclick="shareFulfillmentAdminWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share on WhatsApp / More</button>
   </div>
  </div>
  <div class="admin-card mt-3">
@@ -488,10 +505,13 @@
  </div>
  <div class="form-group"><label class="form-label">Testimony <span class="required">*</span></label><textarea class="form-control" rows="8" id="ct-testimony" placeholder="Write the full testimony here..."></textarea></div>
  <div class="form-row">
- <div class="form-group"><label class="form-label">Featured Photo URL</label><input type="url" class="form-control" id="ct-photo" placeholder="https://... (hosted image link)"></div>
+ <div class="form-group"><label class="form-label">Featured Photo URL</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" id="ct-photo" placeholder="https://... (paste or upload)" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('ct-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
  <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" id="ct-video" placeholder="https://youtube.com/..."></div>
  </div>
- <button onclick="saveChurchTestimony()" class="btn btn-primary"><i class="fas fa-save"></i>Publish Testimony</button>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+ <button id="ct-save-btn" onclick="saveChurchTestimony()" class="btn btn-primary"><i class="fas fa-save"></i>Publish Testimony</button>
+ <button id="ct-cancel-btn" onclick="cancelEdit('churchTestimony')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
+ </div>
  </div>
  <div class="admin-card mt-3">
  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Published Church Testimonies</h4>
@@ -512,7 +532,10 @@
  <div class="form-group"><label class="form-label">Photos <span style="font-size:0.8rem;color:var(--text-muted);">(paste image URLs, one per line)</span></label><textarea class="form-control" rows="3" id="ch-photos" placeholder="https://image1.jpg&#10;https://image2.jpg"></textarea></div>
  <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" id="ch-video" placeholder="https://youtube.com/..."></div>
  <div class="form-group"><label class="form-label">Donation Info <span style="font-size:0.8rem;color:var(--text-muted);">(optional — how people can contribute)</span></label><input type="text" class="form-control" id="ch-donation" placeholder="e.g. Give via M-Pesa 0712345678 — Ref: BACKTOSCHOOL"></div>
- <button onclick="saveCharity()" class="btn btn-primary"><i class="fas fa-save"></i>Publish Project</button>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+ <button id="ch-save-btn" onclick="saveCharity()" class="btn btn-primary"><i class="fas fa-save"></i>Publish Project</button>
+ <button id="ch-cancel-btn" onclick="cancelEdit('charity')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
+ </div>
  </div>
  <div class="admin-card mt-3">
  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Charity Projects</h4>
@@ -520,8 +543,67 @@
  </div>
  </div>
 
+ <!-- SITE SETTINGS -->
+ <div id="sec-settings" class="admin-section" data-title="Site Settings">
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-cog" style="color:var(--gold);"></i>Site Settings</h4>
+ <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">These settings update the contact page and footer. You can change service times, address, phone number display, and description.</p>
+
+ <div class="form-row">
+  <div class="form-group"><label class="form-label">Church Address / Location</label><input type="text" class="form-control" id="set-address" placeholder="e.g. Juba, South Sudan"></div>
+  <div class="form-group"><label class="form-label">Display Phone Number</label><input type="text" class="form-control" id="set-phone-display" placeholder="e.g. +211 921 444 658"></div>
+ </div>
+ <div class="form-group"><label class="form-label">Ministry Email</label><input type="email" class="form-control" id="set-email" placeholder="e.g. info@mjministries.org"></div>
+
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Service Schedule</h5>
+ <div class="form-row">
+  <div class="form-group"><label class="form-label">Sunday Service</label><input type="text" class="form-control" id="set-sunday" placeholder="e.g. 9:00 AM – 12:00 PM"></div>
+  <div class="form-group"><label class="form-label">Wednesday Bible Study</label><input type="text" class="form-control" id="set-wednesday" placeholder="e.g. 6:00 PM – 8:00 PM"></div>
+ </div>
+ <div class="form-row">
+  <div class="form-group"><label class="form-label">Friday Prayer Night</label><input type="text" class="form-control" id="set-friday" placeholder="e.g. 7:00 PM – 9:00 PM"></div>
+  <div class="form-group"><label class="form-label">Other Service Info</label><input type="text" class="form-control" id="set-other" placeholder="e.g. Special Saturday meetings announced weekly"></div>
+ </div>
+
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Social Media Links</h5>
+ <div class="form-row">
+  <div class="form-group"><label class="form-label">Facebook Page URL</label><input type="url" class="form-control" id="set-facebook" placeholder="https://facebook.com/..."></div>
+  <div class="form-group"><label class="form-label">YouTube Channel URL</label><input type="url" class="form-control" id="set-youtube" placeholder="https://youtube.com/@..."></div>
+ </div>
+ <div class="form-row">
+  <div class="form-group"><label class="form-label">TikTok URL</label><input type="url" class="form-control" id="set-tiktok" placeholder="https://tiktok.com/..."></div>
+  <div class="form-group"><label class="form-label">Website Description (short)</label><input type="text" class="form-control" id="set-desc" placeholder="e.g. Spreading the Gospel of Jesus Christ"></div>
+ </div>
+
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-cloud-upload-alt" style="color:var(--gold);"></i> File Upload (Cloudflare)</h5>
+ <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:1rem;">Paste your Cloudflare Worker URL and secret token here to enable direct file uploads on image fields.</p>
+ <div class="form-row">
+  <div class="form-group"><label class="form-label">Cloudflare Worker URL</label><input type="url" class="form-control" id="set-worker-url" placeholder="https://mj-upload.YOUR-ACCOUNT.workers.dev"></div>
+  <div class="form-group"><label class="form-label">Upload Token (secret)</label><input type="text" class="form-control" id="set-upload-token" placeholder="Your UPLOAD_SECRET value"></div>
+ </div>
+
+ <button onclick="saveSiteSettings()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save Settings</button>
+ </div>
+ </div>
+
  </div><!-- end admin-content -->
  </main>
+ </div>
+
+ <!-- SHARE MODAL -->
+ <div id="share-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:600;display:flex;align-items:center;justify-content:center;padding:1rem;">
+ <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:420px;width:100%;box-shadow:var(--shadow-lg);position:relative;">
+  <button onclick="closeShareModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">&times;</button>
+  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-share-alt" style="color:var(--gold);"></i> Share This</h4>
+  <p id="share-preview" style="font-size:0.82rem;color:var(--text-muted);background:var(--light);padding:0.75rem;border-radius:8px;margin-bottom:1.25rem;max-height:90px;overflow:hidden;white-space:pre-wrap;"></p>
+  <div style="display:flex;flex-direction:column;gap:0.6rem;">
+  <button onclick="_doShare('wa')" class="btn" style="background:#25D366;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-whatsapp" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on WhatsApp (any contact)</button>
+  <button onclick="_doShare('fb')" class="btn" style="background:#1877F2;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-facebook" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Facebook</button>
+  <button onclick="_doShare('tw')" class="btn" style="background:#1d9bf0;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-twitter" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Twitter</button>
+  <button onclick="_doShare('tg')" class="btn" style="background:#0088cc;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-telegram" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Telegram</button>
+  <button onclick="_doShare('copy')" class="btn" style="background:var(--light);color:var(--primary);border:1px solid var(--gray-200);justify-content:flex-start;gap:0.85rem;"><i class="fas fa-copy" style="font-size:1.1rem;width:20px;text-align:center;"></i>Copy Text to Clipboard</button>
+  </div>
+ </div>
  </div>
 
  <!-- ENRICH APPROVE MODAL -->
@@ -673,6 +755,126 @@ function sendFollowUp() {
  showToast('Follow-up sent via WhatsApp!');
 }
 
+// ===== EDIT STATE & HELPERS =====
+const _EDIT = { sermon: null, devotional: null, announcement: null, event: null, prophecy: null, fulfillment: null, churchTestimony: null, charity: null, memberProfile: null };
+const _EDIT_SAVE_IDS = { sermon:'sermon-save-btn', devotional:'dev-save-btn', announcement:'ann-save-btn', event:'evt-save-btn', prophecy:'proph-save-btn', fulfillment:'ful-save-btn', churchTestimony:'ct-save-btn', charity:'ch-save-btn', memberProfile:'mp-save-btn' };
+const _EDIT_CANCEL_IDS = { sermon:'sermon-cancel-btn', devotional:'dev-cancel-btn', announcement:'ann-cancel-btn', event:'evt-cancel-btn', prophecy:'proph-cancel-btn', fulfillment:'ful-cancel-btn', churchTestimony:'ct-cancel-btn', charity:'ch-cancel-btn', memberProfile:'mp-cancel-btn' };
+const _EDIT_ORIG_LABELS = { sermon:'<i class="fas fa-save"></i>Save &amp; Publish Sermon', devotional:'<i class="fas fa-save"></i>Save &amp; Publish', announcement:'<i class="fas fa-paper-plane"></i>Post Announcement', event:'<i class="fas fa-save"></i>Save &amp; Publish Event', prophecy:'<i class="fas fa-save"></i>Save &amp; Publish', fulfillment:'<i class="fas fa-save"></i>Save &amp; Publish', churchTestimony:'<i class="fas fa-save"></i>Publish Testimony', charity:'<i class="fas fa-save"></i>Publish Project', memberProfile:'<i class="fas fa-plus"></i>Add to Directory' };
+
+function cancelEdit(type) {
+ _EDIT[type] = null;
+ const sb = document.getElementById(_EDIT_SAVE_IDS[type]);
+ const cb = document.getElementById(_EDIT_CANCEL_IDS[type]);
+ if (sb) sb.innerHTML = _EDIT_ORIG_LABELS[type];
+ if (cb) cb.style.display = 'none';
+}
+function _enterEdit(type, label) {
+ const sb = document.getElementById(_EDIT_SAVE_IDS[type]);
+ const cb = document.getElementById(_EDIT_CANCEL_IDS[type]);
+ if (sb) sb.innerHTML = '<i class="fas fa-save"></i>' + label;
+ if (cb) cb.style.display = '';
+ window.scrollTo({ top: 0, behavior: 'smooth' });
+ showToast('Editing — make changes then click "' + label + '".');
+}
+
+// ===== SHARE MODAL =====
+let _shareTitleData = '', _shareMsgData = '', _shareUrlData = '';
+function openShareModal(title, waMsg, url) {
+ _shareTitleData = title;
+ _shareMsgData = waMsg;
+ _shareUrlData = url || 'https://mjministries.org';
+ const preview = document.getElementById('share-preview');
+ if (preview) preview.textContent = waMsg.replace(/\*/g,'').substring(0, 220);
+ const modal = document.getElementById('share-modal');
+ if (modal) { modal.classList.remove('hidden'); modal.style.display='flex'; }
+}
+function closeShareModal() {
+ const modal = document.getElementById('share-modal');
+ if (modal) { modal.classList.add('hidden'); modal.style.display='none'; }
+}
+function _doShare(platform) {
+ const fu = encodeURIComponent(_shareUrlData);
+ const wt = encodeURIComponent(_shareMsgData);
+ const tw = encodeURIComponent(_shareTitleData + '\n' + _shareUrlData);
+ const tg = encodeURIComponent(_shareMsgData.substring(0,300));
+ const urls = { wa:'https://wa.me/?text='+wt, fb:'https://www.facebook.com/sharer/sharer.php?u='+fu, tw:'https://twitter.com/intent/tweet?text='+tw, tg:'https://t.me/share/url?url='+fu+'&text='+tg };
+ if (urls[platform]) { window.open(urls[platform], '_blank'); closeShareModal(); return; }
+ if (platform === 'copy') {
+  if (navigator.clipboard) {
+   navigator.clipboard.writeText(_shareMsgData).then(() => showToast('Copied to clipboard!')).catch(() => showToast('Could not copy.', true));
+  } else {
+   const ta = document.createElement('textarea'); ta.value = _shareMsgData;
+   document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); showToast('Copied!');
+  }
+  closeShareModal();
+ }
+}
+
+// ===== SITE SETTINGS =====
+function saveSiteSettings() {
+ const settings = {
+  address: document.getElementById('set-address').value.trim(),
+  phoneDisplay: document.getElementById('set-phone-display').value.trim(),
+  email: document.getElementById('set-email').value.trim(),
+  sunday: document.getElementById('set-sunday').value.trim(),
+  wednesday: document.getElementById('set-wednesday').value.trim(),
+  friday: document.getElementById('set-friday').value.trim(),
+  other: document.getElementById('set-other').value.trim(),
+  facebook: document.getElementById('set-facebook').value.trim(),
+  youtube: document.getElementById('set-youtube').value.trim(),
+  tiktok: document.getElementById('set-tiktok').value.trim(),
+  desc: document.getElementById('set-desc').value.trim(),
+  workerUrl: document.getElementById('set-worker-url').value.trim(),
+  uploadToken: document.getElementById('set-upload-token').value.trim(),
+  updated: Date.now()
+ };
+ localStorage.setItem('mj_site_settings', JSON.stringify(settings));
+ showToast('Site settings saved! Changes will reflect on Contact and other pages.');
+}
+function loadSiteSettings() {
+ const settings = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
+ const map = { 'set-address': settings.address, 'set-phone-display': settings.phoneDisplay, 'set-email': settings.email, 'set-sunday': settings.sunday, 'set-wednesday': settings.wednesday, 'set-friday': settings.friday, 'set-other': settings.other, 'set-facebook': settings.facebook, 'set-youtube': settings.youtube, 'set-tiktok': settings.tiktok, 'set-desc': settings.desc, 'set-worker-url': settings.workerUrl, 'set-upload-token': settings.uploadToken };
+ Object.entries(map).forEach(([id, val]) => { const el = document.getElementById(id); if (el && val) el.value = val; });
+}
+
+async function uploadFile(inputId, accept) {
+ const settings = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
+ const workerUrl = (settings.workerUrl || '').trim();
+ const uploadToken = (settings.uploadToken || '').trim();
+ if (!workerUrl || !uploadToken) {
+  showToast('Enter your Worker URL and Upload Token in Site Settings first.', true);
+  showAdminSection('sec-settings');
+  return;
+ }
+ const picker = document.createElement('input');
+ picker.type = 'file';
+ picker.accept = accept || 'image/*';
+ picker.style.display = 'none';
+ document.body.appendChild(picker);
+ picker.addEventListener('change', async () => {
+  const file = picker.files[0];
+  picker.remove();
+  if (!file) return;
+  showToast('Uploading ' + file.name + '…');
+  const fd = new FormData();
+  fd.append('file', file);
+  try {
+   const res = await fetch(workerUrl, { method: 'POST', headers: { 'X-Upload-Token': uploadToken }, body: fd });
+   const data = await res.json();
+   if (data.url) {
+    const field = document.getElementById(inputId);
+    if (field) field.value = data.url;
+    showToast('Upload complete!');
+   } else {
+    showToast('Upload failed: ' + (data.error || 'Unknown error'), true);
+   }
+  } catch (e) {
+   showToast('Upload error: ' + e.message, true);
+  }
+ });
+ picker.click();
+}
+
 function exportMembers() {
  const members = JSON.parse(localStorage.getItem('mj_members') || '[]');
  if (!members.length) { showToast('No members to export yet.', true); return; }
@@ -686,47 +888,71 @@ function exportMembers() {
  showToast('Members exported as CSV!');
 }
 
+function editSermon(id) {
+ const sermons = JSON.parse(localStorage.getItem('mj_sermons') || '[]');
+ const s = sermons.find(x => x.id === id); if (!s) return;
+ _EDIT.sermon = id;
+ document.getElementById('sermon-title').value = s.title || '';
+ document.getElementById('sermon-speaker').value = s.speaker || '';
+ document.getElementById('sermon-topic').value = s.topic || '';
+ document.getElementById('sermon-date').value = s.date || '';
+ document.getElementById('sermon-url').value = s.url || '';
+ document.getElementById('sermon-preacher-photo').value = s.preacherPhoto || '';
+ document.getElementById('sermon-scripture').value = s.scripture || '';
+ document.getElementById('sermon-desc').value = s.desc || '';
+ document.getElementById('sermon-audio').value = s.audio || '';
+ showAdminSection('sec-sermons');
+ _enterEdit('sermon', 'Update Sermon');
+}
+
 function saveSermon() {
  const title = document.getElementById('sermon-title').value;
  if (!title) { showToast('Please enter a sermon title.', true); return; }
  const sermons = JSON.parse(localStorage.getItem('mj_sermons') || '[]');
- sermons.push({
- id: Date.now(),
- title,
- speaker: document.getElementById('sermon-speaker').value,
- topic: document.getElementById('sermon-topic').value,
- date: document.getElementById('sermon-date').value,
- url: document.getElementById('sermon-url').value,
- preacherPhoto: document.getElementById('sermon-preacher-photo').value.trim(),
- scripture: document.getElementById('sermon-scripture').value.trim(),
- desc: document.getElementById('sermon-desc').value,
- audio: document.getElementById('sermon-audio').value.trim()
- });
+ const record = {
+  title, speaker: document.getElementById('sermon-speaker').value,
+  topic: document.getElementById('sermon-topic').value, date: document.getElementById('sermon-date').value,
+  url: document.getElementById('sermon-url').value, preacherPhoto: document.getElementById('sermon-preacher-photo').value.trim(),
+  scripture: document.getElementById('sermon-scripture').value.trim(), desc: document.getElementById('sermon-desc').value,
+  audio: document.getElementById('sermon-audio').value.trim()
+ };
+ if (_EDIT.sermon) {
+  const idx = sermons.findIndex(s => s.id === _EDIT.sermon);
+  if (idx > -1) sermons[idx] = { ...sermons[idx], ...record };
+  cancelEdit('sermon'); showToast('Sermon updated!');
+ } else { sermons.push({ id: Date.now(), ...record }); showToast('Sermon saved and published!'); }
  localStorage.setItem('mj_sermons', JSON.stringify(sermons));
  ['sermon-title','sermon-speaker','sermon-url','sermon-desc','sermon-date','sermon-preacher-photo','sermon-scripture','sermon-audio'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadSermonsList();
- showToast('Sermon saved and published!');
+}
+
+function editDevotional(id) {
+ const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
+ const d = devs.find(x => x.id === id); if (!d) return;
+ _EDIT.devotional = id;
+ document.getElementById('dev-date').value = d.date || '';
+ document.getElementById('dev-topic').value = d.topic || '';
+ document.getElementById('dev-ref').value = d.ref || '';
+ document.getElementById('dev-verse').value = d.verse || '';
+ document.getElementById('dev-message').value = d.message || '';
+ document.getElementById('dev-prayers').value = d.prayers || '';
+ showAdminSection('sec-devotionals');
+ _enterEdit('devotional', 'Update Devotional');
 }
 
 function saveDevotional() {
  const topic = document.getElementById('dev-topic').value;
  if (!topic) { showToast('Please enter a devotional topic.', true); return; }
  const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
- devs.push({
- id: Date.now(),
- date: document.getElementById('dev-date').value,
- topic,
- ref: document.getElementById('dev-ref').value,
- verse: document.getElementById('dev-verse').value,
- message: document.getElementById('dev-message').value,
- prayers: document.getElementById('dev-prayers').value
- });
+ const record = { date: document.getElementById('dev-date').value, topic, ref: document.getElementById('dev-ref').value, verse: document.getElementById('dev-verse').value, message: document.getElementById('dev-message').value, prayers: document.getElementById('dev-prayers').value };
+ if (_EDIT.devotional) {
+  const idx = devs.findIndex(d => d.id === _EDIT.devotional);
+  if (idx > -1) devs[idx] = { ...devs[idx], ...record };
+  cancelEdit('devotional'); showToast('Devotional updated!');
+ } else { devs.push({ id: Date.now(), ...record }); showToast('Devotional saved and published!'); }
  localStorage.setItem('mj_devotionals', JSON.stringify(devs));
- ['dev-date','dev-topic','dev-ref','dev-verse','dev-message','dev-prayers'].forEach(id =>{
- const el = document.getElementById(id); if (el) el.value = '';
- });
+ ['dev-date','dev-topic','dev-ref','dev-verse','dev-message','dev-prayers'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadDevotionalsList();
- showToast('Devotional saved and published!');
 }
 
 function shareDevotionalWA() {
@@ -734,8 +960,21 @@ function shareDevotionalWA() {
  const verse = document.getElementById('dev-verse').value || '';
  const ref = document.getElementById('dev-ref').value || '';
  const message = document.getElementById('dev-message').value || '';
-  const msg = `*📖 DAILY DEVOTIONAL — ${MINISTRY_NAME}*\n\n*Topic:* ${topic}\n*Scripture:* ${ref}\n\n_"${verse}"_\n\n${message.substring(0,400)}...\n\n🙏 God bless you today!\n— Apostle MJ`;
-  openWhatsApp(msg);
+ const msg = `*📖 DAILY DEVOTIONAL — ${MINISTRY_NAME}*\n\n*Topic:* ${topic}\n*Scripture:* ${ref}\n\n_"${verse}"_\n\n${message.substring(0,400)}...\n\n🙏 God bless you today!\n— Apostle MJ\n\nhttps://mjministries.org/devotions.html`;
+ openShareModal(topic, msg, 'https://mjministries.org/devotions.html');
+}
+
+function editAnnouncement(id) {
+ const list = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
+ const a = list.find(x => x.id === id); if (!a) return;
+ _EDIT.announcement = id;
+ document.getElementById('ann-title').value = a.title || '';
+ document.getElementById('ann-text').value = a.text || '';
+ document.getElementById('ann-event-date').value = a.eventDate || '';
+ document.getElementById('ann-photo').value = a.photo || '';
+ document.getElementById('ann-video').value = a.video || '';
+ showAdminSection('sec-announcements');
+ _enterEdit('announcement', 'Update Announcement');
 }
 
 function postAnnouncement() {
@@ -743,19 +982,20 @@ function postAnnouncement() {
  const text = document.getElementById('ann-text').value.trim();
  if (!title || !text) { showToast('Please fill in the announcement.', true); return; }
  const announcements = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
- announcements.push({
- id: Date.now(), title, text,
- date: new Date().toLocaleDateString('en-GB'),
- eventDate: document.getElementById('ann-event-date').value,
- photo: document.getElementById('ann-photo').value.trim(),
- video: document.getElementById('ann-video').value.trim()
- });
+ const record = { title, text, date: new Date().toLocaleDateString('en-GB'), eventDate: document.getElementById('ann-event-date').value, photo: document.getElementById('ann-photo').value.trim(), video: document.getElementById('ann-video').value.trim() };
+ if (_EDIT.announcement) {
+  const idx = announcements.findIndex(a => a.id === _EDIT.announcement);
+  if (idx > -1) announcements[idx] = { ...announcements[idx], ...record };
+  cancelEdit('announcement'); showToast('Announcement updated!');
+ } else {
+  announcements.push({ id: Date.now(), ...record });
+  const msg = `*📢 ANNOUNCEMENT — ${MINISTRY_NAME}*\n\n*${title}*\n\n${text}\n\n_God bless you all!_\n\nhttps://mjministries.org/media.html`;
+  openShareModal(title, msg, 'https://mjministries.org/media.html');
+  showToast('Announcement posted!');
+ }
  localStorage.setItem('mj_announcements', JSON.stringify(announcements));
  ['ann-title','ann-text','ann-event-date','ann-photo','ann-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadAnnouncements();
-  const msg = `*📢 ANNOUNCEMENT — ${MINISTRY_NAME}*\n\n*${title}*\n\n${text}\n\n_God bless you all!_`;
-  openWhatsApp(msg);
- showToast('Announcement posted!');
 }
 
 function deleteAnnouncement(id) {
@@ -770,12 +1010,33 @@ function loadAnnouncements() {
  const el = document.getElementById('announcements-list');
  if (!el) return;
  const list = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
- el.innerHTML = list.length ? list.slice().reverse().map(a =>`
- <div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+ el.innerHTML = list.length ? list.slice().reverse().map(a => {
+  const aid = parseInt(a.id, 10);
+  const waMsg = `*📢 ANNOUNCEMENT — ${MINISTRY_NAME}*\n\n*${a.title}*\n\n${a.text}\n\n_God bless you all!_\n\nhttps://mjministries.org/media.html`;
+  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
  <div><strong>${escapeHtml(a.title)}</strong><span style="font-size:0.8rem;color:var(--text-muted);margin-left:0.5rem;">${escapeHtml(a.date)}</span><br>
  <span style="font-size:0.82rem;color:var(--text-muted);">${escapeHtml(a.text.substring(0,100))}${a.text.length>100?'...':''}</span></div>
- <button class="btn-xs btn-xs-red" onclick="deleteAnnouncement(${a.id})">Delete</button>
- </div>`).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No announcements yet. Post one above!</p>';
+ <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+ <button class="btn-xs btn-xs-blue" onclick="editAnnouncement(${aid})"><i class="fas fa-edit"></i> Edit</button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(a.title))},${JSON.stringify(waMsg)},'https://mjministries.org/media.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs btn-xs-red" onclick="deleteAnnouncement(${aid})">Delete</button>
+ </div></div>`;
+ }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No announcements yet. Post one above!</p>';
+}
+
+function editEvent(id) {
+ const events = JSON.parse(localStorage.getItem('mj_events') || '[]');
+ const e = events.find(x => x.id === id); if (!e) return;
+ _EDIT.event = id;
+ document.getElementById('evt-name').value = e.name || '';
+ document.getElementById('evt-date').value = e.date || '';
+ document.getElementById('evt-time').value = e.time || '';
+ document.getElementById('evt-venue').value = e.venue || '';
+ document.getElementById('evt-ticket').value = e.ticket || '';
+ document.getElementById('evt-category').value = e.category || '';
+ document.getElementById('evt-desc').value = e.desc || '';
+ showAdminSection('sec-events');
+ _enterEdit('event', 'Update Event');
 }
 
 function saveEvent() {
@@ -783,18 +1044,15 @@ function saveEvent() {
  const date = document.getElementById('evt-date').value;
  if (!name || !date) { showToast('Please enter event name and date.', true); return; }
  const events = JSON.parse(localStorage.getItem('mj_events') || '[]');
- events.push({
- id: Date.now(), name, date,
- time: document.getElementById('evt-time').value,
- venue: document.getElementById('evt-venue').value,
- ticket: document.getElementById('evt-ticket').value,
- category: document.getElementById('evt-category').value,
- desc: document.getElementById('evt-desc').value
- });
+ const record = { name, date, time: document.getElementById('evt-time').value, venue: document.getElementById('evt-venue').value, ticket: document.getElementById('evt-ticket').value, category: document.getElementById('evt-category').value, desc: document.getElementById('evt-desc').value };
+ if (_EDIT.event) {
+  const idx = events.findIndex(e => e.id === _EDIT.event);
+  if (idx > -1) events[idx] = { ...events[idx], ...record };
+  cancelEdit('event'); showToast('Event updated!');
+ } else { events.push({ id: Date.now(), ...record }); showToast('Event saved and published!'); }
  localStorage.setItem('mj_events', JSON.stringify(events));
  ['evt-name','evt-date','evt-time','evt-venue','evt-ticket','evt-desc'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadEventsAdmin();
- showToast('Event saved and published!');
 }
 
 function deleteEvent(id) {
@@ -810,14 +1068,19 @@ function loadEventsAdmin() {
  if (!el) return;
  const events = JSON.parse(localStorage.getItem('mj_events') || '[]');
  events.sort((a,b) =>a.date.localeCompare(b.date));
- el.innerHTML = events.length ? events.map(e =>{
- const d = e.date ? new Date(e.date) : null;
- const label = d ? d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
- return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
- <div><strong>${escapeHtml(e.name)}</strong><span style="font-size:0.8rem;color:var(--primary);">[${escapeHtml(e.category)}]</span><br>
+ el.innerHTML = events.length ? events.map(e => {
+  const eid = parseInt(e.id, 10);
+  const d = e.date ? new Date(e.date) : null;
+  const label = d ? d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+  const waMsg = `*📅 EVENT — ${MINISTRY_NAME}*\n\n*${e.name}*\n📅 ${label}${e.time?' | ⏰ '+e.time:''}${e.venue?'\n📍 '+e.venue:''}\n\n${e.desc||''}\n\n_All are welcome!_\nhttps://mjministries.org/events.html`;
+  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+ <div><strong>${escapeHtml(e.name)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.4rem;">[${escapeHtml(e.category)}]</span><br>
  <span style="font-size:0.82rem;color:var(--text-muted);">${label} ${e.time?'| ⏰ '+escapeHtml(e.time):''} ${e.venue?'| '+escapeHtml(e.venue):''}</span></div>
- <button class="btn-xs btn-xs-red" onclick="deleteEvent(${e.id})">Delete</button>
- </div>`;
+ <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+ <button class="btn-xs btn-xs-blue" onclick="editEvent(${eid})"><i class="fas fa-edit"></i> Edit</button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(e.name))},${JSON.stringify(waMsg)},'https://mjministries.org/events.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs btn-xs-red" onclick="deleteEvent(${eid})">Delete</button>
+ </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No events yet. Add one above!</p>';
 }
 
@@ -826,13 +1089,18 @@ function loadDevotionalsList() {
  if (!el) return;
  const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
  devs.sort((a,b) =>(b.date||'').localeCompare(a.date||'') || b.id - a.id);
- el.innerHTML = devs.length ? devs.map(d =>{
- const label = d.date ? new Date(d.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
- return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+ el.innerHTML = devs.length ? devs.map(d => {
+  const did = parseInt(d.id, 10);
+  const label = d.date ? new Date(d.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
+  const waMsg = `*📖 DAILY DEVOTIONAL — ${MINISTRY_NAME}*\n\n*Topic:* ${d.topic}\n*Scripture:* ${d.ref||''}\n\n_"${d.verse||''}"_\n\n${(d.message||'').substring(0,400)}...\n\n🙏 God bless you!\n— Apostle MJ\n\nhttps://mjministries.org/devotions.html`;
+  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
  <div><strong>${escapeHtml(d.topic)}</strong><br>
  <span style="font-size:0.82rem;color:var(--text-muted);">${label} ${d.ref?'| '+escapeHtml(d.ref):''}</span></div>
- <button class="btn-xs btn-xs-red" onclick="deleteDevotional(${d.id})">Delete</button>
- </div>`;
+ <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+ <button class="btn-xs btn-xs-blue" onclick="editDevotional(${did})"><i class="fas fa-edit"></i> Edit</button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(d.topic))},${JSON.stringify(waMsg)},'https://mjministries.org/devotions.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs btn-xs-red" onclick="deleteDevotional(${did})">Delete</button>
+ </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No devotionals published yet.</p>';
 }
 
@@ -857,14 +1125,18 @@ function loadSermonsList() {
  if (!el) return;
  const sermons = JSON.parse(localStorage.getItem('mj_sermons') || '[]');
  sermons.sort((a,b) =>(b.date||'').localeCompare(a.date||'') || b.id - a.id);
- el.innerHTML = sermons.length ? sermons.map(s =>{
- const sid = parseInt(s.id, 10);
- const label = s.date ? new Date(s.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
- return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
- <div><strong>${escapeHtml(s.title)}</strong><span style="font-size:0.8rem;color:var(--primary);">[${escapeHtml(s.topic)}]</span><br>
+ el.innerHTML = sermons.length ? sermons.map(s => {
+  const sid = parseInt(s.id, 10);
+  const label = s.date ? new Date(s.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
+  const waMsg = `*🎤 SERMON — ${MINISTRY_NAME}*\n\n*"${s.title}"*\n👤 ${s.speaker||'Apostle MJ'}${s.scripture?'\n📖 '+s.scripture:''}\n📅 ${label}\n\n${(s.desc||'').substring(0,300)}${s.desc&&s.desc.length>300?'...':''}\n\n${s.url && /^https?:\/\//i.test(s.url)?'▶️ Watch: '+s.url+'\n':''}🌐 More sermons: https://mjministries.org/sermons.html`;
+  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+ <div><strong>${escapeHtml(s.title)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.4rem;">[${escapeHtml(s.topic)}]</span><br>
  <span style="font-size:0.82rem;color:var(--text-muted);">${label} | ${escapeHtml(s.speaker||'Apostle MJ')} ${s.url && /^https?:\/\//i.test(s.url)?'| <a href="'+escapeHtml(s.url)+'" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Watch</a>':''}</span></div>
+ <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+ <button class="btn-xs btn-xs-blue" onclick="editSermon(${sid})"><i class="fas fa-edit"></i> Edit</button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(s.title))},${JSON.stringify(waMsg)},'https://mjministries.org/sermons.html')"><i class="fas fa-share-alt"></i></button>
  <button class="btn-xs btn-xs-red" onclick="deleteSermon(${sid})">Delete</button>
- </div>`;
+ </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No sermons uploaded yet.</p>';
 }
 
@@ -916,33 +1188,43 @@ function refreshActivity() {
  const badge = document.getElementById('badge-prayers');
  if (badge) badge.textContent = pending;
 }
+function editProphecy(id) {
+ const list = JSON.parse(localStorage.getItem('mj_prophecies') || '[]');
+ const p = list.find(x => x.id === id); if (!p) return;
+ _EDIT.prophecy = id;
+ document.getElementById('proph-title').value = p.title || '';
+ document.getElementById('proph-date').value = p.date || '';
+ document.getElementById('proph-category').value = p.category || '';
+ document.getElementById('proph-scripture').value = p.scripture || '';
+ document.getElementById('proph-word').value = p.word || '';
+ document.getElementById('proph-photo').value = p.photo || '';
+ document.getElementById('proph-video').value = p.video || '';
+ showAdminSection('sec-prophecy');
+ _enterEdit('prophecy', 'Update Prophecy');
+}
+
 function saveProphecy() {
  const title = document.getElementById('proph-title').value.trim();
  const word = document.getElementById('proph-word').value.trim();
  if (!title || !word) { showToast('Please enter a title and the prophetic word.', true); return; }
  const list = JSON.parse(localStorage.getItem('mj_prophecies') || '[]');
- list.push({
-  id: Date.now(),
-  title,
-  date: document.getElementById('proph-date').value,
-  category: document.getElementById('proph-category').value,
-  scripture: document.getElementById('proph-scripture').value,
-  word,
-  photo: document.getElementById('proph-photo').value.trim(),
-  video: document.getElementById('proph-video').value.trim()
- });
+ const record = { title, date: document.getElementById('proph-date').value, category: document.getElementById('proph-category').value, scripture: document.getElementById('proph-scripture').value, word, photo: document.getElementById('proph-photo').value.trim(), video: document.getElementById('proph-video').value.trim() };
+ if (_EDIT.prophecy) {
+  const idx = list.findIndex(p => p.id === _EDIT.prophecy);
+  if (idx > -1) list[idx] = { ...list[idx], ...record };
+  cancelEdit('prophecy'); showToast('Prophecy updated!');
+ } else { list.push({ id: Date.now(), ...record }); showToast('Prophetic word saved and published!'); }
  localStorage.setItem('mj_prophecies', JSON.stringify(list));
  ['proph-title','proph-date','proph-scripture','proph-word','proph-photo','proph-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadProphecyList();
- showToast('Prophetic word saved and published!');
 }
 
 function shareProphecyWA() {
  const title = document.getElementById('proph-title').value || 'Prophetic Word';
  const word = document.getElementById('proph-word').value || '';
  const ref = document.getElementById('proph-scripture').value || '';
- const msg = `*🔥 PROPHETIC WORD — ${MINISTRY_NAME}*\n\n*${title}*${ref ? '\n_Scripture: ' + ref + '_' : ''}\n\n${word.substring(0,500)}...\n\n— Apostle MJ\n_Shared via Ministry Website_`;
- openWhatsApp(msg);
+ const msg = `*🔥 PROPHETIC WORD — ${MINISTRY_NAME}*\n\n*${title}*${ref ? '\n_Scripture: ' + ref + '_' : ''}\n\n${word.substring(0,500)}...\n\n— Apostle MJ\n\nhttps://mjministries.org/prophecy.html`;
+ openShareModal(title, msg, 'https://mjministries.org/prophecy.html');
 }
 
 function deleteProphecy(id) {
@@ -961,12 +1243,31 @@ function loadProphecyList() {
  el.innerHTML = list.length ? list.map(p => {
   const pid = parseInt(p.id, 10);
   const label = p.date ? new Date(p.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
+  const waMsg = `*🔥 PROPHETIC WORD — ${MINISTRY_NAME}*\n\n*${p.title}*${p.scripture?'\n_Scripture: '+p.scripture+'_':''}\n\n${(p.word||'').substring(0,500)}...\n\n— Apostle MJ\n\nhttps://mjministries.org/prophecy.html`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div><strong>${escapeHtml(p.title)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.5rem;">[${escapeHtml(p.category||'General')}]</span><br>
   <span style="font-size:0.82rem;color:var(--text-muted);">${label}${p.scripture?' | '+escapeHtml(p.scripture):''}</span></div>
+  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+  <button class="btn-xs btn-xs-blue" onclick="editProphecy(${pid})"><i class="fas fa-edit"></i> Edit</button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(p.title))},${JSON.stringify(waMsg)},'https://mjministries.org/prophecy.html')"><i class="fas fa-share-alt"></i></button>
   <button class="btn-xs btn-xs-red" onclick="deleteProphecy(${pid})">Delete</button>
-  </div>`;
+  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No prophetic words published yet.</p>';
+}
+
+function editFulfillment(id) {
+ const list = JSON.parse(localStorage.getItem('mj_fulfillments') || '[]');
+ const f = list.find(x => x.id === id); if (!f) return;
+ _EDIT.fulfillment = id;
+ document.getElementById('ful-title').value = f.title || '';
+ document.getElementById('ful-date').value = f.fulfilledDate || '';
+ document.getElementById('ful-propdate').value = f.prophecyDate || '';
+ document.getElementById('ful-original').value = f.originalWord || '';
+ document.getElementById('ful-how').value = f.howFulfilled || '';
+ document.getElementById('ful-photos').value = (f.photos||[]).join('\n');
+ document.getElementById('ful-video').value = f.video || '';
+ showAdminSection('sec-fulfillment');
+ _enterEdit('fulfillment', 'Update Fulfillment');
 }
 
 function saveFulfillment() {
@@ -975,27 +1276,22 @@ function saveFulfillment() {
  if (!title || !how) { showToast('Please enter a title and how it was fulfilled.', true); return; }
  const list = JSON.parse(localStorage.getItem('mj_fulfillments') || '[]');
  const photosRaw = document.getElementById('ful-photos').value.trim();
- list.push({
-  id: Date.now(),
-  title,
-  fulfilledDate: document.getElementById('ful-date').value,
-  prophecyDate: document.getElementById('ful-propdate').value,
-  originalWord: document.getElementById('ful-original').value,
-  howFulfilled: how,
-  photos: photosRaw ? photosRaw.split('\n').map(u=>u.trim()).filter(u=>u && /^https?:\/\//i.test(u)) : [],
-  video: document.getElementById('ful-video').value.trim()
- });
+ const record = { title, fulfilledDate: document.getElementById('ful-date').value, prophecyDate: document.getElementById('ful-propdate').value, originalWord: document.getElementById('ful-original').value, howFulfilled: how, photos: photosRaw ? photosRaw.split('\n').map(u=>u.trim()).filter(u=>u && /^https?:\/\//i.test(u)) : [], video: document.getElementById('ful-video').value.trim() };
+ if (_EDIT.fulfillment) {
+  const idx = list.findIndex(f => f.id === _EDIT.fulfillment);
+  if (idx > -1) list[idx] = { ...list[idx], ...record };
+  cancelEdit('fulfillment'); showToast('Fulfillment updated!');
+ } else { list.push({ id: Date.now(), ...record }); showToast('Fulfillment recorded and published!'); }
  localStorage.setItem('mj_fulfillments', JSON.stringify(list));
  ['ful-title','ful-date','ful-propdate','ful-original','ful-how','ful-photos','ful-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadFulfillmentList();
- showToast('Fulfillment recorded and published!');
 }
 
 function shareFulfillmentAdminWA() {
  const title = document.getElementById('ful-title').value || 'Fulfilled Prophecy';
  const how = document.getElementById('ful-how').value || '';
- const msg = `*✅ FULFILLED PROPHECY — ${MINISTRY_NAME}*\n\n*${title}*\n\n${how.substring(0,500)}...\n\nTo God be all the glory!\n— Apostle MJ`;
- openWhatsApp(msg);
+ const msg = `*✅ FULFILLED PROPHECY — ${MINISTRY_NAME}*\n\n*${title}*\n\n${how.substring(0,500)}...\n\nTo God be all the glory!\n— Apostle MJ\n\nhttps://mjministries.org/fulfillment.html`;
+ openShareModal(title, msg, 'https://mjministries.org/fulfillment.html');
 }
 
 function deleteFulfillment(id) {
@@ -1014,11 +1310,15 @@ function loadFulfillmentList() {
  el.innerHTML = list.length ? list.map(f => {
   const fid = parseInt(f.id, 10);
   const label = f.fulfilledDate ? new Date(f.fulfilledDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
+  const waMsg = `*✅ FULFILLED PROPHECY — ${MINISTRY_NAME}*\n\n*${f.title}*\nFulfilled: ${label}\n\n${(f.howFulfilled||'').substring(0,500)}...\n\nTo God be all the glory!\nhttps://mjministries.org/fulfillment.html`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div><strong>${escapeHtml(f.title)}</strong><br>
   <span style="font-size:0.82rem;color:var(--text-muted);">Fulfilled: ${label}</span></div>
+  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+  <button class="btn-xs btn-xs-blue" onclick="editFulfillment(${fid})"><i class="fas fa-edit"></i> Edit</button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(f.title))},${JSON.stringify(waMsg)},'https://mjministries.org/fulfillment.html')"><i class="fas fa-share-alt"></i></button>
   <button class="btn-xs btn-xs-red" onclick="deleteFulfillment(${fid})">Delete</button>
-  </div>`;
+  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No fulfillments recorded yet.</p>';
 }
 
@@ -1056,26 +1356,37 @@ window.loadAdminData = function() {
  loadMemberProfiles();
  loadChurchTestimonies();
  loadCharityList();
+ loadSiteSettings();
 };
 
 // MEMBER PROFILES
+function editMemberProfile(id) {
+ const list = JSON.parse(localStorage.getItem('mj_member_profiles') || '[]');
+ const m = list.find(x => x.id === id); if (!m) return;
+ _EDIT.memberProfile = id;
+ document.getElementById('mp-name').value = m.name || '';
+ document.getElementById('mp-photo').value = m.photo || '';
+ document.getElementById('mp-gender').value = m.gender || 'Male';
+ document.getElementById('mp-dept').value = m.dept || '';
+ document.getElementById('mp-position').value = m.position || '';
+ document.getElementById('mp-status').value = m.status || 'Active Member';
+ showAdminSection('sec-members');
+ _enterEdit('memberProfile', 'Update Member');
+}
+
 function saveMemberProfile() {
  const name = document.getElementById('mp-name').value.trim();
  if (!name) { showToast('Please enter the member name.', true); return; }
  const list = JSON.parse(localStorage.getItem('mj_member_profiles') || '[]');
- list.push({
-  id: Date.now(), name,
-  photo: document.getElementById('mp-photo').value.trim(),
-  gender: document.getElementById('mp-gender').value,
-  dept: document.getElementById('mp-dept').value.trim(),
-  position: document.getElementById('mp-position').value.trim(),
-  status: document.getElementById('mp-status').value,
-  date: new Date().toLocaleDateString('en-GB')
- });
+ const record = { name, photo: document.getElementById('mp-photo').value.trim(), gender: document.getElementById('mp-gender').value, dept: document.getElementById('mp-dept').value.trim(), position: document.getElementById('mp-position').value.trim(), status: document.getElementById('mp-status').value };
+ if (_EDIT.memberProfile) {
+  const idx = list.findIndex(m => m.id === _EDIT.memberProfile);
+  if (idx > -1) list[idx] = { ...list[idx], ...record };
+  cancelEdit('memberProfile'); showToast('Member profile updated!');
+ } else { list.push({ id: Date.now(), ...record, date: new Date().toLocaleDateString('en-GB') }); showToast('Member added to directory!'); }
  localStorage.setItem('mj_member_profiles', JSON.stringify(list));
  ['mp-name','mp-photo','mp-dept','mp-position'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadMemberProfiles();
- showToast('Member added to directory!');
 }
 function deleteMemberProfile(id) {
  if (!confirm('Remove this member from the public directory?')) return;
@@ -1096,29 +1407,43 @@ function loadMemberProfiles() {
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div style="display:flex;align-items:center;gap:0.75rem;">${avatar}<div><strong>${escapeHtml(m.name)}</strong><br>
   <span style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(m.position||'')}${m.dept?' | '+escapeHtml(m.dept):''} | ${escapeHtml(m.status)}</span></div></div>
-  <button class="btn-xs btn-xs-red" onclick="deleteMemberProfile(${mid})">Remove</button></div>`;
+  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+  <button class="btn-xs btn-xs-blue" onclick="editMemberProfile(${mid})"><i class="fas fa-edit"></i> Edit</button>
+  <button class="btn-xs btn-xs-red" onclick="deleteMemberProfile(${mid})">Remove</button>
+  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No member profiles in directory yet. Add one above!</p>';
 }
 
 // CHURCH TESTIMONIES
+function editChurchTestimony(id) {
+ const list = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
+ const t = list.find(x => x.id === id); if (!t) return;
+ _EDIT.churchTestimony = id;
+ document.getElementById('ct-title').value = t.title || '';
+ document.getElementById('ct-name').value = t.name || '';
+ document.getElementById('ct-date').value = t.date || '';
+ document.getElementById('ct-category').value = t.category || '';
+ document.getElementById('ct-testimony').value = t.testimony || '';
+ document.getElementById('ct-photo').value = t.photo || '';
+ document.getElementById('ct-video').value = t.video || '';
+ showAdminSection('sec-church-testimonies');
+ _enterEdit('churchTestimony', 'Update Testimony');
+}
+
 function saveChurchTestimony() {
  const title = document.getElementById('ct-title').value.trim();
  const testimony = document.getElementById('ct-testimony').value.trim();
  if (!title || !testimony) { showToast('Please enter title and testimony.', true); return; }
  const list = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
- list.push({
-  id: Date.now(), title,
-  name: document.getElementById('ct-name').value.trim(),
-  date: document.getElementById('ct-date').value,
-  category: document.getElementById('ct-category').value,
-  testimony,
-  photo: document.getElementById('ct-photo').value.trim(),
-  video: document.getElementById('ct-video').value.trim()
- });
+ const record = { title, name: document.getElementById('ct-name').value.trim(), date: document.getElementById('ct-date').value, category: document.getElementById('ct-category').value, testimony, photo: document.getElementById('ct-photo').value.trim(), video: document.getElementById('ct-video').value.trim() };
+ if (_EDIT.churchTestimony) {
+  const idx = list.findIndex(t => t.id === _EDIT.churchTestimony);
+  if (idx > -1) list[idx] = { ...list[idx], ...record };
+  cancelEdit('churchTestimony'); showToast('Testimony updated!');
+ } else { list.push({ id: Date.now(), ...record }); showToast('Church testimony published!'); }
  localStorage.setItem('mj_church_testimonies', JSON.stringify(list));
  ['ct-title','ct-name','ct-date','ct-testimony','ct-photo','ct-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadChurchTestimonies();
- showToast('Church testimony published!');
 }
 function deleteChurchTestimony(id) {
  if (!confirm('Delete this church testimony?')) return;
@@ -1135,33 +1460,49 @@ function loadChurchTestimonies() {
  el.innerHTML = list.length ? list.map(t => {
   const tid = parseInt(t.id, 10);
   const label = t.date ? new Date(t.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
+  const waMsg = `*🌟 TESTIMONY — ${MINISTRY_NAME}*\n\n*${t.title}*\n[${t.category||'Testimony'}] | ${label}\n\n"${(t.testimony||'').substring(0,500)}..."\n\n${t.name?'— '+t.name:'— Anonymous'}\n\nhttps://mjministries.org/testimony.html`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div><strong>${escapeHtml(t.title)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.5rem;">[${escapeHtml(t.category||'General')}]</span><br>
   <span style="font-size:0.82rem;color:var(--text-muted);">${label}${t.name?' | '+escapeHtml(t.name):' | Anonymous'}</span></div>
-  <button class="btn-xs btn-xs-red" onclick="deleteChurchTestimony(${tid})">Delete</button></div>`;
+  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+  <button class="btn-xs btn-xs-blue" onclick="editChurchTestimony(${tid})"><i class="fas fa-edit"></i> Edit</button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(t.title))},${JSON.stringify(waMsg)},'https://mjministries.org/testimony.html')"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs btn-xs-red" onclick="deleteChurchTestimony(${tid})">Delete</button>
+  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No church testimonies posted yet.</p>';
 }
 
 // CHARITY
+function editCharity(id) {
+ const list = JSON.parse(localStorage.getItem('mj_charity') || '[]');
+ const c = list.find(x => x.id === id); if (!c) return;
+ _EDIT.charity = id;
+ document.getElementById('ch-title').value = c.title || '';
+ document.getElementById('ch-date').value = c.date || '';
+ document.getElementById('ch-location').value = c.location || '';
+ document.getElementById('ch-desc').value = c.desc || '';
+ document.getElementById('ch-photos').value = (c.photos||[]).join('\n');
+ document.getElementById('ch-video').value = c.video || '';
+ document.getElementById('ch-donation').value = c.donation || '';
+ showAdminSection('sec-charity');
+ _enterEdit('charity', 'Update Project');
+}
+
 function saveCharity() {
  const title = document.getElementById('ch-title').value.trim();
  const desc = document.getElementById('ch-desc').value.trim();
  if (!title || !desc) { showToast('Please enter project title and description.', true); return; }
  const list = JSON.parse(localStorage.getItem('mj_charity') || '[]');
  const photosRaw = document.getElementById('ch-photos').value.trim();
- list.push({
-  id: Date.now(), title,
-  date: document.getElementById('ch-date').value,
-  location: document.getElementById('ch-location').value.trim(),
-  desc,
-  photos: photosRaw ? photosRaw.split('\n').map(u=>u.trim()).filter(u=>u && /^https?:\/\//i.test(u)) : [],
-  video: document.getElementById('ch-video').value.trim(),
-  donation: document.getElementById('ch-donation').value.trim()
- });
+ const record = { title, date: document.getElementById('ch-date').value, location: document.getElementById('ch-location').value.trim(), desc, photos: photosRaw ? photosRaw.split('\n').map(u=>u.trim()).filter(u=>u && /^https?:\/\//i.test(u)) : [], video: document.getElementById('ch-video').value.trim(), donation: document.getElementById('ch-donation').value.trim() };
+ if (_EDIT.charity) {
+  const idx = list.findIndex(c => c.id === _EDIT.charity);
+  if (idx > -1) list[idx] = { ...list[idx], ...record };
+  cancelEdit('charity'); showToast('Charity project updated!');
+ } else { list.push({ id: Date.now(), ...record }); showToast('Charity project published!'); }
  localStorage.setItem('mj_charity', JSON.stringify(list));
  ['ch-title','ch-date','ch-location','ch-desc','ch-photos','ch-video','ch-donation'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadCharityList();
- showToast('Charity project published!');
 }
 function deleteCharity(id) {
  if (!confirm('Delete this charity project?')) return;
@@ -1178,10 +1519,15 @@ function loadCharityList() {
  el.innerHTML = list.length ? list.map(c => {
   const cid = parseInt(c.id, 10);
   const label = c.date ? new Date(c.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
+  const waMsg = `*❤️ CHARITY — ${MINISTRY_NAME}*\n\n*${c.title}*\n📅 ${label}${c.location?' | 📍 '+c.location:''}\n\n${(c.desc||'').substring(0,400)}...\n\n${c.donation?'💝 '+c.donation+'\n':''}https://mjministries.org/charity.html`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div><strong>${escapeHtml(c.title)}</strong><br>
   <span style="font-size:0.82rem;color:var(--text-muted);">${label}${c.location?' | '+escapeHtml(c.location):''}</span></div>
-  <button class="btn-xs btn-xs-red" onclick="deleteCharity(${cid})">Delete</button></div>`;
+  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+  <button class="btn-xs btn-xs-blue" onclick="editCharity(${cid})"><i class="fas fa-edit"></i> Edit</button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(c.title))},${JSON.stringify(waMsg)},'https://mjministries.org/charity.html')"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs btn-xs-red" onclick="deleteCharity(${cid})">Delete</button>
+  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No charity projects yet. Post one above!</p>';
 }
 

@@ -150,6 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
    if (embedUrl) {
     html += `<div style="position:relative;aspect-ratio:16/9;margin-top:1.25rem;"><iframe src="${escapeHtml(embedUrl)}" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:8px;" allow="fullscreen" allowfullscreen></iframe></div>`;
    }
+   const waMsg = `*✅ FULFILLED PROPHECY — ${MINISTRY_NAME}*\n\n*${f.title}*\nFulfilled: ${fLabel}\n\n${(f.howFulfilled||'').substring(0,500)}...\n\nTo God be all the glory!\nhttps://mjministries.org/fulfillment.html`;
+   html += `<div style="margin-top:1rem;"><button onclick="broadcastShare(${JSON.stringify(f.title)},${JSON.stringify(waMsg)},'https://mjministries.org/fulfillment.html')" style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;font-size:0.85rem;color:var(--primary);font-family:inherit;"><i class='fas fa-share-alt' style='margin-right:0.4rem;'></i>Share</button></div>`;
    div.innerHTML = html;
    list.appendChild(div);
   });

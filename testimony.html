@@ -211,6 +211,8 @@ document.addEventListener('DOMContentLoaded', () =>{
    }
    const label = t.date ? new Date(t.date).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) : '';
    html += `<div style="display:flex;align-items:center;gap:0.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-200);"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem;flex-shrink:0;">${escapeHtml((t.name||'C')[0].toUpperCase())}</div><div><div style="font-weight:600;font-size:0.92rem;color:var(--primary);">${escapeHtml(t.name||'Church')}</div><div style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(label||'Apostle MJ Ministries')}</div></div></div>`;
+   const ctWaMsg = `*🌟 TESTIMONY — ${MINISTRY_NAME}*\n\n*${t.title||''}*\n[${t.category||'Testimony'}]\n\n"${(t.testimony||'').substring(0,500)}..."\n\n${t.name?'— '+t.name:'— Anonymous'}\n\nhttps://mjministries.org/testimony.html`;
+   html += `<div style="margin-top:0.75rem;"><button onclick="broadcastShare(${JSON.stringify(t.title||'Testimony')},${JSON.stringify(ctWaMsg)},'https://mjministries.org/testimony.html')" style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:50px;padding:0.35rem 0.85rem;cursor:pointer;font-size:0.82rem;color:var(--primary);font-family:inherit;"><i class='fas fa-share-alt' style='margin-right:0.35rem;'></i>Share</button></div>`;
    html += `</div>`;
    div.innerHTML = html;
    churchContainer.appendChild(div);
@@ -236,6 +238,8 @@ document.addEventListener('DOMContentLoaded', () =>{
     html += `<div style="position:relative;aspect-ratio:16/9;margin-top:1rem;"><iframe src="${escapeHtml(embedUrl)}" style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:8px;" allow="fullscreen" allowfullscreen></iframe></div>`;
    }
    html += `<div style="display:flex;align-items:center;gap:0.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-200);"><div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem;flex-shrink:0;">${escapeHtml((t.name||'?')[0].toUpperCase())}</div><div><div style="font-weight:600;font-size:0.92rem;color:var(--primary);">${escapeHtml(t.name||'Anonymous')}</div><div style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(t.location||'Apostle MJ Ministries')}</div></div></div>`;
+   const stWaMsg = `*🌟 TESTIMONY — ${MINISTRY_NAME}*\n\n${t.title?'*'+t.title+'*\n\n':''}"${(t.testimony||'').substring(0,500)}..."\n\n${t.name?'— '+t.name+(t.location?', '+t.location:''):'— Anonymous'}\n\nhttps://mjministries.org/testimony.html`;
+   html += `<div style="margin-top:0.75rem;"><button onclick="broadcastShare(${JSON.stringify(t.title||t.name||'Testimony')},${JSON.stringify(stWaMsg)},'https://mjministries.org/testimony.html')" style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:50px;padding:0.35rem 0.85rem;cursor:pointer;font-size:0.82rem;color:var(--primary);font-family:inherit;"><i class='fas fa-share-alt' style='margin-right:0.35rem;'></i>Share</button></div>`;
    html += `</div>`;
    div.innerHTML = html;
    container.appendChild(div);
