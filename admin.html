@@ -601,7 +601,10 @@
   <button onclick="_doShare('fb')" class="btn" style="background:#1877F2;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-facebook" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Facebook</button>
   <button onclick="_doShare('tw')" class="btn" style="background:#1d9bf0;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-twitter" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Twitter</button>
   <button onclick="_doShare('tg')" class="btn" style="background:#0088cc;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-telegram" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Telegram</button>
-  <button onclick="_doShare('copy')" class="btn" style="background:var(--light);color:var(--primary);border:1px solid var(--gray-200);justify-content:flex-start;gap:0.85rem;"><i class="fas fa-copy" style="font-size:1.1rem;width:20px;text-align:center;"></i>Copy Text to Clipboard</button>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.1rem;">
+   <button onclick="_doShare('copylink')" class="btn" style="background:#ede9fe;color:var(--primary);border:none;gap:0.6rem;"><i class="fas fa-link" style="font-size:1rem;"></i>Copy Link</button>
+   <button onclick="_doShare('copy')" class="btn" style="background:var(--light);color:var(--primary);border:1px solid var(--gray-200);gap:0.6rem;"><i class="fas fa-copy" style="font-size:1rem;"></i>Copy Message</button>
+  </div>
   </div>
  </div>
  </div>
@@ -794,19 +797,27 @@ function closeShareModal() {
 }
 function _doShare(platform) {
  const fu = encodeURIComponent(_shareUrlData);
- const wt = encodeURIComponent(_shareMsgData);
- const tw = encodeURIComponent(_shareTitleData + '\n' + _shareUrlData);
- const tg = encodeURIComponent(_shareMsgData.substring(0,300));
- const urls = { wa:'https://wa.me/?text='+wt, fb:'https://www.facebook.com/sharer/sharer.php?u='+fu, tw:'https://twitter.com/intent/tweet?text='+tw, tg:'https://t.me/share/url?url='+fu+'&text='+tg };
+ const waText = encodeURIComponent(_shareTitleData + '\n\n' + _shareUrlData);
+ const urls = {
+  wa: 'https://wa.me/?text=' + waText,
+  fb: 'https://www.facebook.com/sharer/sharer.php?u=' + fu,
+  tw: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(_shareTitleData) + '&url=' + fu,
+  tg: 'https://t.me/share/url?url=' + fu + '&text=' + encodeURIComponent(_shareTitleData)
+ };
  if (urls[platform]) { window.open(urls[platform], '_blank'); closeShareModal(); return; }
- if (platform === 'copy') {
+ const _copyAndClose = (text) => {
   if (navigator.clipboard) {
-   navigator.clipboard.writeText(_shareMsgData).then(() => showToast('Copied to clipboard!')).catch(() => showToast('Could not copy.', true));
+   navigator.clipboard.writeText(text).then(() => showToast('Copied!')).catch(() => showToast('Could not copy.', true));
   } else {
-   const ta = document.createElement('textarea'); ta.value = _shareMsgData;
+   const ta = document.createElement('textarea'); ta.value = text;
    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); showToast('Copied!');
   }
   closeShareModal();
+ };
+ if (platform === 'copylink') { _copyAndClose(_shareUrlData); return; }
+ if (platform === 'copy') {
+  _copyAndClose(_shareMsgData);
+  return;
  }
 }
 

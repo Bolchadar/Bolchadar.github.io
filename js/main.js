@@ -187,17 +187,21 @@ function _showBroadcastPanel() {
    '<button id="_sp-close" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#9ca3af;line-height:1;">&times;</button>',
   '</div>',
   '<div id="_sp-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;text-align:center;margin-bottom:1rem;"></div>',
-  '<button id="_sp-copy" style="width:100%;padding:0.75rem;background:#f3f4f6;border:none;border-radius:10px;cursor:pointer;font-size:0.9rem;font-family:inherit;"><i class="fas fa-copy" style="margin-right:0.4rem;"></i>Copy Text</button>',
+  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">',
+   '<button id="_sp-copylink" style="padding:0.75rem;background:#ede9fe;border:none;border-radius:10px;cursor:pointer;font-size:0.85rem;font-family:inherit;color:#4c1d95;"><i class="fas fa-link" style="margin-right:0.35rem;"></i>Copy Link</button>',
+   '<button id="_sp-copy" style="padding:0.75rem;background:#f3f4f6;border:none;border-radius:10px;cursor:pointer;font-size:0.85rem;font-family:inherit;"><i class="fas fa-copy" style="margin-right:0.35rem;"></i>Copy Message</button>',
+  '</div>',
  ].join('');
 
  overlay.appendChild(panel);
  document.body.appendChild(overlay);
 
+ const _waText = _broadcastTitle + '\n\n' + _broadcastUrl;
  const platforms = [
-  { icon: 'fa-whatsapp', color: '#25D366', bg: '#f0fdf4', label: 'WhatsApp', url: 'https://wa.me/?text=' + encodeURIComponent(_broadcastMsg) },
+  { icon: 'fa-whatsapp', color: '#25D366', bg: '#f0fdf4', label: 'WhatsApp', url: 'https://wa.me/?text=' + encodeURIComponent(_waText) },
   { icon: 'fa-facebook', color: '#1877F2', bg: '#eff6ff', label: 'Facebook', url: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(_broadcastUrl) },
-  { icon: 'fa-twitter', color: '#1d9bf0', bg: '#f8fafc', label: 'Twitter', url: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(_broadcastTitle + '\n' + _broadcastUrl) },
-  { icon: 'fa-telegram', color: '#0088cc', bg: '#f0f9ff', label: 'Telegram', url: 'https://t.me/share/url?url=' + encodeURIComponent(_broadcastUrl) + '&text=' + encodeURIComponent(_broadcastMsg.substring(0, 200)) },
+  { icon: 'fa-twitter', color: '#1d9bf0', bg: '#f8fafc', label: 'Twitter', url: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(_broadcastTitle) + '&url=' + encodeURIComponent(_broadcastUrl) },
+  { icon: 'fa-telegram', color: '#0088cc', bg: '#f0f9ff', label: 'Telegram', url: 'https://t.me/share/url?url=' + encodeURIComponent(_broadcastUrl) + '&text=' + encodeURIComponent(_broadcastTitle) },
  ];
 
  const grid = document.getElementById('_sp-grid');
@@ -209,18 +213,19 @@ function _showBroadcastPanel() {
   grid.appendChild(btn);
  });
 
- document.getElementById('_sp-copy').addEventListener('click', () => {
-  const text = _broadcastMsg;
+ function _doCopy(text) {
   if (navigator.clipboard) {
-   navigator.clipboard.writeText(text).then(() => { if (typeof showToast === 'function') showToast('Copied to clipboard!'); }).catch(() => {});
+   navigator.clipboard.writeText(text).then(() => { if (typeof showToast === 'function') showToast('Copied!'); }).catch(() => {});
   } else {
    const ta = document.createElement('textarea'); ta.value = text;
    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
    if (typeof showToast === 'function') showToast('Copied!');
   }
   overlay.remove();
- });
+ }
 
+ document.getElementById('_sp-copylink').addEventListener('click', () => _doCopy(_broadcastUrl));
+ document.getElementById('_sp-copy').addEventListener('click', () => _doCopy(_broadcastMsg));
  document.getElementById('_sp-close').addEventListener('click', () => overlay.remove());
  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
 }
