@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () =>{
   const d = next.date ? new Date(next.date) : null;
   const dateStr = d ? d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}) : '';
   featuredCard.style.display = 'block';
+  const _featMsg = '*📅 EVENT — ' + MINISTRY_NAME + '*\n\n*' + next.name + '*' + (dateStr?'\n📅 '+dateStr:'') + (next.time?'\n⏰ '+next.time:'') + (next.venue?'\n📍 '+next.venue:'') + '\n\n' + (next.desc||'').substring(0,300) + '\n\n_All are welcome!_\nhttps://mjministries.org/events.html';
   featuredCard.innerHTML = `
   <img src="WhatsApp Image 2026-06-24 at 09.09.26.jpeg" alt="Event">
   <div class="event-hero-overlay">
@@ -167,7 +168,10 @@ document.addEventListener('DOMContentLoaded', () =>{
     ${next.venue?`<span><i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:0.35rem;"></i>${escapeHtml(next.venue)}</span>`:''}
     ${next.ticket?`<span><i class="fas fa-users" style="color:var(--gold);margin-right:0.35rem;"></i>${escapeHtml(next.ticket)}</span>`:''}
    </div>
+   <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
    <button onclick="scrollToRegister()" class="btn btn-primary"><i class="fas fa-edit"></i>Register Now</button>
+   <button onclick="broadcastShare(${JSON.stringify(next.name)},${JSON.stringify(_featMsg)},'https://mjministries.org/events.html')" class="btn" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff;"><i class="fas fa-share-alt"></i>Share</button>
+   </div>
    </div>
   </div>`;
  }
@@ -179,6 +183,7 @@ document.addEventListener('DOMContentLoaded', () =>{
   const month = d ? d.toLocaleDateString('en-GB',{month:'short'}).toUpperCase() : '---';
   const card = document.createElement('div');
   card.className = 'event-card';
+  const _eMsg = '*📅 EVENT — ' + MINISTRY_NAME + '*\n\n*' + e.name + '*\n📅 ' + day + ' ' + month + (e.time?' | ⏰ '+e.time:'') + (e.venue?'\n📍 '+e.venue:'') + '\n\n' + (e.desc||'').substring(0,300) + '\n\n_All are welcome!_\nhttps://mjministries.org/events.html';
   card.innerHTML = `
   <div class="event-date"><span class="day">${escapeHtml(day)}</span><span class="month">${escapeHtml(month)}</span></div>
   <div class="event-info">
@@ -189,7 +194,10 @@ document.addEventListener('DOMContentLoaded', () =>{
    ${e.ticket?`<i class="fas fa-ticket-alt"></i>${escapeHtml(e.ticket)}`:''}
   </div>
   <p>${escapeHtml(e.desc||'')}</p>
-  <button onclick="scrollToRegister()" class="btn btn-sm btn-primary mt-1">Register</button>
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;">
+   <button onclick="scrollToRegister()" class="btn btn-sm btn-primary">Register</button>
+   <button onclick="broadcastShare(${JSON.stringify(e.name)},${JSON.stringify(_eMsg)},'https://mjministries.org/events.html')" style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:50px;padding:0.3rem 0.9rem;cursor:pointer;font-size:0.82rem;color:var(--primary);font-family:inherit;"><i class='fas fa-share-alt' style='margin-right:0.35rem;'></i>Share</button>
+  </div>
   </div>`;
   container.appendChild(card);
  });
