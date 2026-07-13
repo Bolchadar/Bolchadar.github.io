@@ -419,7 +419,7 @@
   </div>
   <div class="form-group"><label class="form-label">Original Prophecy (brief quote)</label><textarea class="form-control" rows="3" placeholder="Paste or summarise the original prophetic word..." id="ful-original"></textarea></div>
   <div class="form-group"><label class="form-label">How It Was Fulfilled <span class="required">*</span></label><textarea class="form-control" rows="8" placeholder="Describe how this prophecy came to pass..." id="ful-how"></textarea></div>
-  <div class="form-group"><label class="form-label">Photos <span style="font-size:0.8rem;color:var(--text-muted);">(paste image URLs, one per line)</span></label><textarea class="form-control" rows="3" placeholder="https://image1.jpg&#10;https://image2.jpg" id="ful-photos"></textarea></div>
+  <div class="form-group"><label class="form-label">Photos <span style="font-size:0.8rem;color:var(--text-muted);">(paste image URLs, one per line — or upload multiple)</span></label><textarea class="form-control" rows="3" placeholder="https://image1.jpg&#10;https://image2.jpg" id="ful-photos"></textarea><button type="button" onclick="uploadMultiple('ful-photos','image/*')" class="btn" style="margin-top:0.4rem;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.9rem;font-size:0.82rem;"><i class="fas fa-images"></i> Upload Photos</button></div>
   <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" placeholder="https://youtube.com/..." id="ful-video"></div>
   <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
   <button id="ful-save-btn" onclick="saveFulfillment()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
@@ -529,7 +529,7 @@
  </div>
  <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-control" id="ch-location" placeholder="e.g. Juba, South Sudan"></div>
  <div class="form-group"><label class="form-label">Description <span class="required">*</span></label><textarea class="form-control" rows="6" id="ch-desc" placeholder="Describe the charity project and its impact..."></textarea></div>
- <div class="form-group"><label class="form-label">Photos <span style="font-size:0.8rem;color:var(--text-muted);">(paste image URLs, one per line)</span></label><textarea class="form-control" rows="3" id="ch-photos" placeholder="https://image1.jpg&#10;https://image2.jpg"></textarea></div>
+ <div class="form-group"><label class="form-label">Photos <span style="font-size:0.8rem;color:var(--text-muted);">(paste image URLs, one per line — or upload multiple)</span></label><textarea class="form-control" rows="3" id="ch-photos" placeholder="https://image1.jpg&#10;https://image2.jpg"></textarea><button type="button" onclick="uploadMultiple('ch-photos','image/*')" class="btn" style="margin-top:0.4rem;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.9rem;font-size:0.82rem;"><i class="fas fa-images"></i> Upload Photos</button></div>
  <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" id="ch-video" placeholder="https://youtube.com/..."></div>
  <div class="form-group"><label class="form-label">Donation Info <span style="font-size:0.8rem;color:var(--text-muted);">(optional — how people can contribute)</span></label><input type="text" class="form-control" id="ch-donation" placeholder="e.g. Give via M-Pesa 0712345678 — Ref: BACKTOSCHOOL"></div>
  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
@@ -881,6 +881,51 @@ async function uploadFile(inputId, accept) {
    }
   } catch (e) {
    showToast('Upload error: ' + e.message, true);
+  }
+ });
+ picker.click();
+}
+
+async function uploadMultiple(textareaId, accept) {
+ const settings = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
+ const workerUrl = (settings.workerUrl || '').trim();
+ const uploadToken = (settings.uploadToken || '').trim();
+ if (!workerUrl || !uploadToken) {
+  showToast('Enter your Worker URL and Upload Token in Site Settings first.', true);
+  showAdminSection('sec-settings');
+  return;
+ }
+ const picker = document.createElement('input');
+ picker.type = 'file';
+ picker.accept = accept || 'image/*';
+ picker.multiple = true;
+ picker.style.display = 'none';
+ document.body.appendChild(picker);
+ picker.addEventListener('change', async () => {
+  const files = Array.from(picker.files);
+  picker.remove();
+  if (!files.length) return;
+  showToast('Uploading ' + files.length + ' photo' + (files.length > 1 ? 's' : '') + '…');
+  const urls = [];
+  for (const file of files) {
+   const fd = new FormData();
+   fd.append('file', file);
+   try {
+    const res = await fetch(workerUrl, { method: 'POST', headers: { 'X-Upload-Token': uploadToken }, body: fd });
+    const data = await res.json();
+    if (data.url) urls.push(data.url);
+    else showToast('Failed: ' + file.name + ' — ' + (data.error || 'error'), true);
+   } catch (e) {
+    showToast('Error uploading ' + file.name + ': ' + e.message, true);
+   }
+  }
+  if (urls.length) {
+   const ta = document.getElementById(textareaId);
+   if (ta) {
+    const existing = ta.value.trim();
+    ta.value = existing ? existing + '\n' + urls.join('\n') : urls.join('\n');
+   }
+   showToast(urls.length + ' photo' + (urls.length > 1 ? 's' : '') + ' uploaded!');
   }
  });
  picker.click();
