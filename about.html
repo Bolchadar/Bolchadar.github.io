@@ -69,10 +69,12 @@
  <div>
  <span class="label" style="color:var(--gold-dark);font-size:0.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Meet the Apostle</span>
  <h2 style="color:var(--primary);margin:0.75rem 0 1.25rem;">Apostle MJ</h2>
+ <div id="about-bio">
  <p>Apostle MJ is a Spirit-filled servant of God who has dedicated his life to the Great Commission — preaching the Gospel of Jesus Christ, healing the sick, setting the captives free, and discipling nations.</p>
  <p>Called into ministry by the grace of God, Apostle MJ has served communities across the region with passion and humility. His ministry is marked by signs and wonders, transformed lives, and a deep love for God's people.</p>
  <p>With a heart for the poor and the lost, Apostle MJ has established charitable programs that support orphans, widows, and vulnerable families — bringing tangible evidence of God's love to those who need it most.</p>
  <p>His teaching ministry is rooted in the Word of God, delivered with clarity, conviction, and compassion. Thousands of souls have been saved and thousands of lives transformed through this ministry.</p>
+ </div>
  </div>
  </div>
  </div>
@@ -90,20 +92,20 @@
  <div class="mv-card">
  <i class="fas fa-eye mv-icon"></i>
  <h3 style="color:var(--primary);">Our Vision</h3>
- <p>To lead people to Jesus Christ and establish them in His Kingdom.</p>
- <p style="font-size:0.82rem;color:var(--primary-light);font-style:italic;margin-top:0.75rem;font-weight:600;">John 14:6 &nbsp;&bull;&nbsp; Matthew 28:19–20</p>
+ <p id="about-vision">To lead people to Jesus Christ and establish them in His Kingdom.</p>
+ <p id="about-vision-ref" style="font-size:0.82rem;color:var(--primary-light);font-style:italic;margin-top:0.75rem;font-weight:600;">John 14:6 &nbsp;&bull;&nbsp; Matthew 28:19–20</p>
  </div>
  <div class="mv-card">
  <i class="fas fa-bullseye mv-icon"></i>
  <h3 style="color:var(--primary);">Our Mission</h3>
- <p>To preach repentance, faith in Jesus Christ, and the love of God to all people and nations.</p>
- <p style="font-size:0.82rem;color:var(--primary-light);font-style:italic;margin-top:0.75rem;font-weight:600;">Mark 1:15 &nbsp;&bull;&nbsp; Acts 2:38 &nbsp;&bull;&nbsp; Matthew 22:37–39</p>
+ <p id="about-mission">To preach repentance, faith in Jesus Christ, and the love of God to all people and nations.</p>
+ <p id="about-mission-ref" style="font-size:0.82rem;color:var(--primary-light);font-style:italic;margin-top:0.75rem;font-weight:600;">Mark 1:15 &nbsp;&bull;&nbsp; Acts 2:38 &nbsp;&bull;&nbsp; Matthew 22:37–39</p>
  </div>
  <div class="mv-card">
  <i class="fas fa-cross mv-icon"></i>
  <h3 style="color:var(--primary);">Core Message</h3>
- <p style="font-size:1.15rem;font-weight:700;color:var(--primary-mid);letter-spacing:0.5px;">Repent. Believe. Love.</p>
- <p style="font-size:0.82rem;color:var(--primary-light);font-style:italic;margin-top:0.75rem;font-weight:600;">Luke 24:47 &nbsp;&bull;&nbsp; John 13:34</p>
+ <p id="about-core-msg" style="font-size:1.15rem;font-weight:700;color:var(--primary-mid);letter-spacing:0.5px;">Repent. Believe. Love.</p>
+ <p id="about-core-ref" style="font-size:0.82rem;color:var(--primary-light);font-style:italic;margin-top:0.75rem;font-weight:600;">Luke 24:47 &nbsp;&bull;&nbsp; John 13:34</p>
  </div>
  </div>
  </div>
@@ -216,6 +218,27 @@
 <a href="#" onclick="sendPrayerViaWhatsApp(); return false;" class="float-wa"><i class="fab fa-whatsapp"></i><span class="float-wa-tooltip">Prayer via WhatsApp</span></a>
 <button id="back-top"><i class="fas fa-chevron-up"></i></button>
 <script src="js/main.js"></script>
+<script>
+(function() {
+ function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+ var s = JSON.parse(localStorage.getItem('mj_about_content') || '{}');
+ if (s.bio) {
+  var c = document.getElementById('about-bio');
+  if (c) c.innerHTML = s.bio.split('\n\n').filter(function(p){return p.trim();}).map(function(p){return '<p>'+esc(p.trim())+'</p>';}).join('');
+ }
+ var fields = {
+  'about-vision': s.vision,
+  'about-vision-ref': s.visionRef,
+  'about-mission': s.mission,
+  'about-mission-ref': s.missionRef,
+  'about-core-msg': s.coreMsg,
+  'about-core-ref': s.coreRef
+ };
+ Object.keys(fields).forEach(function(id) {
+  if (fields[id]) { var el = document.getElementById(id); if (el) el.textContent = fields[id]; }
+ });
+})();
+</script>
 </body>
 </html>
 

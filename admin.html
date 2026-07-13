@@ -114,6 +114,11 @@
  <div class="sidebar-section">Finance</div>
  <a href="#" onclick="showAdminSection('sec-donations');closeSidebar();"><i class="fas fa-hand-holding-heart"></i>Donations</a>
 
+ <div class="sidebar-section">Page Content</div>
+ <a href="#" onclick="showAdminSection('sec-page-home');closeSidebar();"><i class="fas fa-home"></i>Home Page</a>
+ <a href="#" onclick="showAdminSection('sec-page-about');closeSidebar();"><i class="fas fa-info-circle"></i>About Page</a>
+ <a href="#" onclick="showAdminSection('sec-page-donations');closeSidebar();"><i class="fas fa-credit-card"></i>Donations Page</a>
+
  <div class="sidebar-section">Admin</div>
  <a href="#" onclick="showAdminSection('sec-settings');closeSidebar();"><i class="fas fa-cog"></i>Site Settings</a>
  <a href="index.html"><i class="fas fa-globe"></i>View Website</a>
@@ -583,6 +588,66 @@
  </div>
 
  <button onclick="saveSiteSettings()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save Settings</button>
+ </div>
+ </div>
+
+ <!-- HOME PAGE CONTENT -->
+ <div id="sec-page-home" class="admin-section" data-title="Edit Home Page">
+ <div class="admin-card">
+  <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-home" style="color:var(--gold);"></i> Home Page Content</h4>
+  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Edit the hero section and scripture shown on the homepage. Changes take effect immediately when visitors load the site.</p>
+  <div class="form-group"><label class="form-label">Hero Title</label><input type="text" class="form-control" id="ph-hero-title" placeholder="Touching Lives Through the Power of God"></div>
+  <div class="form-group"><label class="form-label">Hero Subtitle</label><textarea class="form-control" id="ph-hero-subtitle" rows="3" placeholder="A Spirit-filled ministry dedicated to spreading the Gospel..."></textarea></div>
+  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-bible" style="color:var(--gold);"></i> Scripture of the Day</h5>
+  <div class="form-group"><label class="form-label">Scripture Text</label><textarea class="form-control" id="ph-scripture" rows="3" placeholder='"For God so loved the world that He gave His only begotten Son..."'></textarea></div>
+  <div class="form-group"><label class="form-label">Scripture Reference</label><input type="text" class="form-control" id="ph-scripture-ref" placeholder="— John 3:16"></div>
+  <button onclick="saveHomePage()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save Home Page</button>
+ </div>
+ </div>
+
+ <!-- ABOUT PAGE CONTENT -->
+ <div id="sec-page-about" class="admin-section" data-title="Edit About Page">
+ <div class="admin-card">
+  <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-info-circle" style="color:var(--gold);"></i> About Page Content</h4>
+  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Edit the biography, vision, mission, and core message shown on the About page.</p>
+  <h5 style="color:var(--primary);margin-bottom:0.75rem;">Apostle MJ Biography</h5>
+  <div class="form-group"><label class="form-label">Biography Text</label><p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.4rem;">Separate paragraphs with a blank line between them.</p><textarea class="form-control" id="pa-bio" rows="8" placeholder="Apostle MJ is a Spirit-filled servant of God..."></textarea></div>
+  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Vision Card</h5>
+  <div class="form-group"><label class="form-label">Vision Text</label><textarea class="form-control" id="pa-vision" rows="2" placeholder="To lead people to Jesus Christ and establish them in His Kingdom."></textarea></div>
+  <div class="form-group"><label class="form-label">Vision Scripture References</label><input type="text" class="form-control" id="pa-vision-ref" placeholder="John 14:6 • Matthew 28:19–20"></div>
+  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Mission Card</h5>
+  <div class="form-group"><label class="form-label">Mission Text</label><textarea class="form-control" id="pa-mission" rows="2" placeholder="To preach repentance, faith in Jesus Christ, and the love of God to all people and nations."></textarea></div>
+  <div class="form-group"><label class="form-label">Mission Scripture References</label><input type="text" class="form-control" id="pa-mission-ref" placeholder="Mark 1:15 • Acts 2:38 • Matthew 22:37–39"></div>
+  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Core Message Card</h5>
+  <div class="form-group"><label class="form-label">Core Message Text</label><input type="text" class="form-control" id="pa-core-msg" placeholder="Repent. Believe. Love."></div>
+  <div class="form-group"><label class="form-label">Core Message Scripture References</label><input type="text" class="form-control" id="pa-core-ref" placeholder="Luke 24:47 • John 13:34"></div>
+  <button onclick="saveAboutPage()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save About Page</button>
+ </div>
+ </div>
+
+ <!-- DONATIONS PAGE CONTENT -->
+ <div id="sec-page-donations" class="admin-section" data-title="Edit Donations Page">
+ <div class="admin-card">
+  <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-credit-card" style="color:var(--gold);"></i> Donations Page Content</h4>
+  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Update payment details shown on the Donations page. Leave a field blank to keep the current default.</p>
+  <h5 style="color:var(--primary);margin-bottom:0.75rem;"><i class="fas fa-mobile-alt" style="color:var(--gold);"></i> Mobile Money</h5>
+  <div class="form-group"><label class="form-label">Mobile Money Instructions</label><textarea class="form-control" id="pd-mobile" rows="3" placeholder="Mobile Money details are available on request. Please contact us via WhatsApp..."></textarea></div>
+  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-university" style="color:var(--gold);"></i> Bank Transfer</h5>
+  <div class="form-row">
+  <div class="form-group"><label class="form-label">Account Name</label><input type="text" class="form-control" id="pd-acc-name" placeholder="Apostle MJ Ministries"></div>
+  <div class="form-group"><label class="form-label">Bank Name</label><input type="text" class="form-control" id="pd-bank-name" placeholder="Equity Bank"></div>
+  </div>
+  <div class="form-row">
+  <div class="form-group"><label class="form-label">Branch</label><input type="text" class="form-control" id="pd-branch" placeholder="Juba Branch"></div>
+  <div class="form-group"><label class="form-label">SWIFT / BIC Code</label><input type="text" class="form-control" id="pd-swift" placeholder="EQBLSSJJ"></div>
+  </div>
+  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-globe" style="color:var(--gold);"></i> International Giving</h5>
+  <div class="form-group"><label class="form-label">PayPal Email</label><input type="email" class="form-control" id="pd-paypal" placeholder="apostlemjmanyiel@gmail.com"></div>
+  <div class="form-row">
+  <div class="form-group"><label class="form-label">WorldRemit / WU Recipient Name</label><input type="text" class="form-control" id="pd-wr-name" placeholder="Ministry Name"></div>
+  <div class="form-group"><label class="form-label">WorldRemit / WU Country</label><input type="text" class="form-control" id="pd-wr-country" placeholder="South Sudan"></div>
+  </div>
+  <button onclick="saveDonationsPage()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save Donations Page</button>
  </div>
  </div>
 
@@ -1397,6 +1462,94 @@ function loadLivestreamAdmin() {
  if (d.schedule) document.getElementById('live-schedule').value = d.schedule;
 }
 
+// ===== PAGE CONTENT EDITORS =====
+
+function saveHomePage() {
+ const data = {
+  heroTitle: document.getElementById('ph-hero-title').value.trim(),
+  heroSubtitle: document.getElementById('ph-hero-subtitle').value.trim(),
+  scripture: document.getElementById('ph-scripture').value.trim(),
+  scriptureRef: document.getElementById('ph-scripture-ref').value.trim()
+ };
+ localStorage.setItem('mj_home_content', JSON.stringify(data));
+ showToast('Home page content saved!');
+}
+
+function loadHomePage() {
+ const data = JSON.parse(localStorage.getItem('mj_home_content') || '{}');
+ const map = {
+  'ph-hero-title': data.heroTitle,
+  'ph-hero-subtitle': data.heroSubtitle,
+  'ph-scripture': data.scripture,
+  'ph-scripture-ref': data.scriptureRef
+ };
+ Object.keys(map).forEach(function(id) {
+  if (map[id]) { var el = document.getElementById(id); if (el) el.value = map[id]; }
+ });
+}
+
+function saveAboutPage() {
+ const data = {
+  bio: document.getElementById('pa-bio').value.trim(),
+  vision: document.getElementById('pa-vision').value.trim(),
+  visionRef: document.getElementById('pa-vision-ref').value.trim(),
+  mission: document.getElementById('pa-mission').value.trim(),
+  missionRef: document.getElementById('pa-mission-ref').value.trim(),
+  coreMsg: document.getElementById('pa-core-msg').value.trim(),
+  coreRef: document.getElementById('pa-core-ref').value.trim()
+ };
+ localStorage.setItem('mj_about_content', JSON.stringify(data));
+ showToast('About page content saved!');
+}
+
+function loadAboutPage() {
+ const data = JSON.parse(localStorage.getItem('mj_about_content') || '{}');
+ const map = {
+  'pa-bio': data.bio,
+  'pa-vision': data.vision,
+  'pa-vision-ref': data.visionRef,
+  'pa-mission': data.mission,
+  'pa-mission-ref': data.missionRef,
+  'pa-core-msg': data.coreMsg,
+  'pa-core-ref': data.coreRef
+ };
+ Object.keys(map).forEach(function(id) {
+  if (map[id]) { var el = document.getElementById(id); if (el) el.value = map[id]; }
+ });
+}
+
+function saveDonationsPage() {
+ const data = {
+  mobileMoney: document.getElementById('pd-mobile').value.trim(),
+  accName: document.getElementById('pd-acc-name').value.trim(),
+  bankName: document.getElementById('pd-bank-name').value.trim(),
+  branch: document.getElementById('pd-branch').value.trim(),
+  swift: document.getElementById('pd-swift').value.trim(),
+  paypal: document.getElementById('pd-paypal').value.trim(),
+  wrName: document.getElementById('pd-wr-name').value.trim(),
+  wrCountry: document.getElementById('pd-wr-country').value.trim()
+ };
+ localStorage.setItem('mj_donation_content', JSON.stringify(data));
+ showToast('Donations page content saved!');
+}
+
+function loadDonationsPage() {
+ const data = JSON.parse(localStorage.getItem('mj_donation_content') || '{}');
+ const map = {
+  'pd-mobile': data.mobileMoney,
+  'pd-acc-name': data.accName,
+  'pd-bank-name': data.bankName,
+  'pd-branch': data.branch,
+  'pd-swift': data.swift,
+  'pd-paypal': data.paypal,
+  'pd-wr-name': data.wrName,
+  'pd-wr-country': data.wrCountry
+ };
+ Object.keys(map).forEach(function(id) {
+  if (map[id]) { var el = document.getElementById(id); if (el) el.value = map[id]; }
+ });
+}
+
 // Hook into loadAdminData
 const origLoad = loadAdminData;
 window.loadAdminData = function() {
@@ -1413,6 +1566,9 @@ window.loadAdminData = function() {
  loadChurchTestimonies();
  loadCharityList();
  loadSiteSettings();
+ loadHomePage();
+ loadAboutPage();
+ loadDonationsPage();
 };
 
 // MEMBER PROFILES

@@ -155,7 +155,7 @@
  <div><h5>Mobile Money</h5><p style="font-size:0.82rem;color:var(--text-muted);margin:0;">M-Pesa, MTN MoMo, Airtel Money</p></div>
  </div>
  <div class="pay-box">
- <p style="color:var(--text-muted);font-size:0.92rem;">Mobile Money details are available on request. Please contact us via WhatsApp and we will send you the correct number to send to.</p>
+ <p id="don-mobile-text" style="color:var(--text-muted);font-size:0.92rem;">Mobile Money details are available on request. Please contact us via WhatsApp and we will send you the correct number to send to.</p>
  <button onclick="sendPrayerViaWhatsApp()" class="btn btn-whatsapp btn-sm mt-2"><i class="fab fa-whatsapp"></i>Get Mobile Money Details</button>
  </div>
  <div class="currency-note"><i class="fas fa-info-circle"></i>After sending, please take a screenshot and send to us via WhatsApp with your name and the giving category.</div>
@@ -169,10 +169,10 @@
  </div>
  <div class="pay-box">
  <h4><i class="fas fa-building-columns" style="color:var(--gold);margin-right:0.5rem;"></i>Bank Details</h4>
- <div class="pay-row"><span>Account Name</span><strong>Apostle MJ Ministries</strong></div>
- <div class="pay-row"><span>Bank Name</span><strong>Equity Bank</strong></div>
- <div class="pay-row"><span>Branch</span><strong>Juba Branch</strong></div>
- <div class="pay-row"><span>SWIFT Code</span><div><strong>EQBLSSJJ</strong><button class="copy-btn" onclick="copyText('EQBLSSJJ', this)">Copy</button></div></div>
+ <div class="pay-row"><span>Account Name</span><strong id="don-acc-name">Apostle MJ Ministries</strong></div>
+ <div class="pay-row"><span>Bank Name</span><strong id="don-bank-name">Equity Bank</strong></div>
+ <div class="pay-row"><span>Branch</span><strong id="don-branch">Juba Branch</strong></div>
+ <div class="pay-row"><span>SWIFT Code</span><div><strong id="don-swift">EQBLSSJJ</strong><button class="copy-btn" id="don-swift-copy" onclick="copyText('EQBLSSJJ', this)">Copy</button></div></div>
  <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.75rem;">For the account number, please contact us via WhatsApp.</p>
  <button onclick="sendPrayerViaWhatsApp()" class="btn btn-whatsapp btn-sm mt-1"><i class="fab fa-whatsapp"></i>Get Account Number</button>
  </div>
@@ -186,12 +186,12 @@
  </div>
  <div class="pay-box">
  <h4><i class="fab fa-paypal" style="color:#003087;margin-right:0.5rem;"></i>PayPal</h4>
- <div class="pay-row"><span>PayPal Email</span><div><strong>apostlemjmanyiel@gmail.com</strong><button class="copy-btn" onclick="copyText('apostlemjmanyiel@gmail.com', this)">Copy</button></div></div>
+ <div class="pay-row"><span>PayPal Email</span><div><strong id="don-paypal">apostlemjmanyiel@gmail.com</strong><button class="copy-btn" id="don-paypal-copy" onclick="copyText('apostlemjmanyiel@gmail.com', this)">Copy</button></div></div>
  </div>
  <div class="pay-box" style="margin-top:0.5rem;">
  <h4><i class="fas fa-money-bill-transfer" style="color:var(--gold);margin-right:0.5rem;"></i>WorldRemit / Western Union</h4>
- <div class="pay-row"><span>Recipient Name</span><strong>Ministry Name</strong></div>
- <div class="pay-row"><span>Country</span><strong>South Sudan</strong></div>
+ <div class="pay-row"><span>Recipient Name</span><strong id="don-wr-name">Ministry Name</strong></div>
+ <div class="pay-row"><span>Country</span><strong id="don-wr-country">South Sudan</strong></div>
  <div class="pay-row"><span>WhatsApp for pickup code</span><strong>Contact us</strong></div>
  </div>
  </div>
@@ -252,6 +252,30 @@ function confirmGift() {
   const msg = `*💝 GIVING CONFIRMATION — ${MINISTRY_NAME}*\n\nPraise God! I have sent a ${cat} of ${amt}.\n\nPlease confirm receipt. I am attaching proof of payment.\n\n_God bless this ministry!_`;
   openWhatsApp(msg);
 }
+(function() {
+ var d = JSON.parse(localStorage.getItem('mj_donation_content') || '{}');
+ var fields = {
+  'don-mobile-text': d.mobileMoney,
+  'don-acc-name': d.accName,
+  'don-bank-name': d.bankName,
+  'don-branch': d.branch,
+  'don-swift': d.swift,
+  'don-paypal': d.paypal,
+  'don-wr-name': d.wrName,
+  'don-wr-country': d.wrCountry
+ };
+ Object.keys(fields).forEach(function(id) {
+  if (fields[id]) { var el = document.getElementById(id); if (el) el.textContent = fields[id]; }
+ });
+ if (d.swift) {
+  var btn = document.getElementById('don-swift-copy');
+  if (btn) btn.setAttribute('onclick', 'copyText(' + JSON.stringify(d.swift) + ', this)');
+ }
+ if (d.paypal) {
+  var btn2 = document.getElementById('don-paypal-copy');
+  if (btn2) btn2.setAttribute('onclick', 'copyText(' + JSON.stringify(d.paypal) + ', this)');
+ }
+})();
 </script>
 </body>
 </html>

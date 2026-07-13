@@ -112,9 +112,9 @@
  <div class="hero-overlay"></div>
  <div class="hero-content">
  <img src="apostlemj.jpeg" alt="Apostle MJ" class="hero-img-circle">
- <div class="hero-badge"><i class="fas fa-cross"></i>&nbsp; Welcome to Apostle MJ Ministries</div>
- <h1>Touching Lives Through the <span>Power of God</span></h1>
- <p>A Spirit-filled ministry dedicated to spreading the Gospel, healing the sick, setting captives free, and transforming communities with the love of Christ.</p>
+ <div class="hero-badge" id="hero-badge"><i class="fas fa-cross"></i>&nbsp; Welcome to Apostle MJ Ministries</div>
+ <h1 id="hero-h1">Touching Lives Through the <span>Power of God</span></h1>
+ <p id="hero-p">A Spirit-filled ministry dedicated to spreading the Gospel, healing the sick, setting captives free, and transforming communities with the love of Christ.</p>
  <div class="hero-buttons">
  <a href="prayer.html" class="btn btn-primary btn-lg"><i class="fas fa-hands-praying"></i>Send a Prayer Request</a>
  <a href="sermons.html" class="btn btn-outline btn-lg"><i class="fas fa-play-circle"></i>Watch Sermons</a>
@@ -355,6 +355,15 @@ document.addEventListener('DOMContentLoaded', () =>{
   show();
   setInterval(show, 5000);
  }
+})();
+</script>
+<script>
+(function() {
+ var h = JSON.parse(localStorage.getItem('mj_home_content') || '{}');
+ if (h.heroTitle) { var el = document.getElementById('hero-h1'); if (el) el.textContent = h.heroTitle; }
+ if (h.heroSubtitle) { var el2 = document.getElementById('hero-p'); if (el2) el2.textContent = h.heroSubtitle; }
+ if (h.scripture) { var el3 = document.getElementById('scripture-text'); if (el3) el3.textContent = h.scripture; }
+ if (h.scriptureRef) { var el4 = document.getElementById('scripture-ref'); if (el4) el4.textContent = h.scriptureRef; }
 })();
 </script>
 </body>
