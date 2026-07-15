@@ -1090,7 +1090,11 @@ footer {
   .page-hero .breadcrumb { font-size: 0.78rem; }
 
   /* TIMELINE */
-  .timeline { padding-left: 1.5rem; }
+  .timeline { padding-left: 2rem; overflow: visible; }
+  .timeline-item { padding-left: 1.25rem; }
+  .timeline-item::before { left: -1.35rem; width: 12px; height: 12px; }
+  .timeline-year { font-size: 0.75rem; }
+  .timeline-text { font-size: 0.85rem; line-height: 1.55; }
 
   /* SEARCH BAR */
   .search-bar { flex-direction: column; }
