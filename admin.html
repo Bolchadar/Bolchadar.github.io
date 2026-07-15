@@ -117,6 +117,7 @@
  <div class="sidebar-section">Page Content</div>
  <a href="#" onclick="showAdminSection('sec-page-home');closeSidebar();"><i class="fas fa-home"></i>Home Page</a>
  <a href="#" onclick="showAdminSection('sec-page-about');closeSidebar();"><i class="fas fa-info-circle"></i>About Page</a>
+ <a href="#" onclick="showAdminSection('sec-page-history');closeSidebar();"><i class="fas fa-history"></i>Church History</a>
  <a href="#" onclick="showAdminSection('sec-page-donations');closeSidebar();"><i class="fas fa-credit-card"></i>Donations Page</a>
 
  <div class="sidebar-section">Admin</div>
@@ -625,6 +626,19 @@
  </div>
  </div>
 
+ <!-- CHURCH HISTORY TIMELINE -->
+ <div id="sec-page-history" class="admin-section" data-title="Church History">
+ <div class="admin-card">
+  <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-history" style="color:var(--gold);"></i> Church History Timeline</h4>
+  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Add, edit or remove timeline entries shown on the About page. Changes appear on the website after saving.</p>
+  <div id="history-items-admin" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.25rem;"></div>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+  <button onclick="addHistoryItem()" class="btn" style="background:var(--primary-light);color:#fff;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-plus"></i> Add Entry</button>
+  <button onclick="saveHistoryContent()" class="btn btn-primary"><i class="fas fa-save"></i> Save History</button>
+  </div>
+ </div>
+ </div>
+
  <!-- DONATIONS PAGE CONTENT -->
  <div id="sec-page-donations" class="admin-section" data-title="Edit Donations Page">
  <div class="admin-card">
@@ -913,15 +927,19 @@ function loadSiteSettings() {
  Object.entries(map).forEach(([id, val]) => { const el = document.getElementById(id); if (el && val) el.value = val; });
 }
 
+const _DEFAULT_WORKER = 'https://mj-uploads.bolchadartong.workers.dev';
+const _DEFAULT_TOKEN  = 'mjministries-upload-2024';
+
+function _getUploadCreds() {
+ const s = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
+ return {
+  workerUrl:   (s.workerUrl   || _DEFAULT_WORKER).trim(),
+  uploadToken: (s.uploadToken || _DEFAULT_TOKEN ).trim()
+ };
+}
+
 async function uploadFile(inputId, accept) {
- const settings = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
- const workerUrl = (settings.workerUrl || '').trim();
- const uploadToken = (settings.uploadToken || '').trim();
- if (!workerUrl || !uploadToken) {
-  showToast('Enter your Worker URL and Upload Token in Site Settings first.', true);
-  showAdminSection('sec-settings');
-  return;
- }
+ const { workerUrl, uploadToken } = _getUploadCreds();
  const picker = document.createElement('input');
  picker.type = 'file';
  picker.accept = accept || 'image/*';
@@ -952,14 +970,7 @@ async function uploadFile(inputId, accept) {
 }
 
 async function uploadMultiple(textareaId, accept) {
- const settings = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
- const workerUrl = (settings.workerUrl || '').trim();
- const uploadToken = (settings.uploadToken || '').trim();
- if (!workerUrl || !uploadToken) {
-  showToast('Enter your Worker URL and Upload Token in Site Settings first.', true);
-  showAdminSection('sec-settings');
-  return;
- }
+ const { workerUrl, uploadToken } = _getUploadCreds();
  const picker = document.createElement('input');
  picker.type = 'file';
  picker.accept = accept || 'image/*';
@@ -971,27 +982,30 @@ async function uploadMultiple(textareaId, accept) {
   picker.remove();
   if (!files.length) return;
   showToast('Uploading ' + files.length + ' photo' + (files.length > 1 ? 's' : '') + '…');
-  const urls = [];
-  for (const file of files) {
+  let done = 0;
+  const results = await Promise.all(files.map(async file => {
    const fd = new FormData();
    fd.append('file', file);
    try {
     const res = await fetch(workerUrl, { method: 'POST', headers: { 'X-Upload-Token': uploadToken }, body: fd });
     const data = await res.json();
-    if (data.url) urls.push(data.url);
-    else showToast('Failed: ' + file.name + ' — ' + (data.error || 'error'), true);
+    done++;
+    showToast('Uploaded ' + done + '/' + files.length + '…');
+    return data.url || null;
    } catch (e) {
-    showToast('Error uploading ' + file.name + ': ' + e.message, true);
+    showToast('Error: ' + file.name, true);
+    return null;
    }
-  }
+  }));
+  const urls = results.filter(Boolean);
   if (urls.length) {
    const ta = document.getElementById(textareaId);
    if (ta) {
     const existing = ta.value.trim();
     ta.value = existing ? existing + '\n' + urls.join('\n') : urls.join('\n');
    }
-   showToast(urls.length + ' photo' + (urls.length > 1 ? 's' : '') + ' uploaded!');
   }
+  showToast(urls.length + '/' + files.length + ' photo' + (files.length > 1 ? 's' : '') + ' uploaded!');
  });
  picker.click();
 }
@@ -1462,6 +1476,61 @@ function loadLivestreamAdmin() {
  if (d.schedule) document.getElementById('live-schedule').value = d.schedule;
 }
 
+// ===== CHURCH HISTORY =====
+
+const _DEFAULT_HISTORY = [
+ {year:'The Beginning', title:'Called by God', text:'Apostle MJ received the divine call to ministry. He began preaching in small gatherings and home churches, with just a handful of believers who caught the vision.'},
+ {year:'Early Days', title:'First Church Established', text:'The ministry officially established its first church congregation. The first Bible study groups were formed and the prayer ministry was launched.'},
+ {year:'Growing', title:'Charity Work Begins', text:'A heart for the community led to the launch of feeding programs, orphan support, and widow care ministries that continue to this day.'},
+ {year:'Expansion', title:'Media Ministry Launched', text:'The ministry went online — Facebook Live services, YouTube channel, and TikTok outreach extended our reach far beyond the local congregation.'},
+ {year:'Today', title:'Growing Stronger', text:'With hundreds of active members, an online community, and ongoing charity work, the ministry continues to expand and touch lives for God\'s glory.'}
+];
+
+function _renderHistoryAdminItem(item, idx) {
+ const div = document.createElement('div');
+ div.className = 'history-admin-item';
+ div.style.cssText = 'background:var(--light);border-radius:10px;padding:1rem 1.25rem;position:relative;border:1px solid var(--gray-200);';
+ div.innerHTML = `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+   <span style="font-weight:700;color:var(--primary);font-size:0.85rem;">Entry ${idx+1}</span>
+   <button onclick="this.closest('.history-admin-item').remove()" style="background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.25rem 0.65rem;font-size:0.78rem;cursor:pointer;font-weight:600;"><i class="fas fa-trash"></i> Remove</button>
+  </div>
+  <div class="form-row">
+   <div class="form-group"><label class="form-label">Year / Era Label</label><input type="text" class="form-control hist-year" placeholder="e.g. 2020 or Early Days" value="${escapeHtml(item.year||'')}"></div>
+   <div class="form-group"><label class="form-label">Title</label><input type="text" class="form-control hist-title" placeholder="e.g. First Church Established" value="${escapeHtml(item.title||'')}"></div>
+  </div>
+  <div class="form-group"><label class="form-label">Description</label><textarea class="form-control hist-text" rows="3" placeholder="What happened during this period...">${escapeHtml(item.text||'')}</textarea></div>
+ `;
+ return div;
+}
+
+function loadHistoryAdmin() {
+ const container = document.getElementById('history-items-admin');
+ if (!container) return;
+ container.innerHTML = '';
+ const items = JSON.parse(localStorage.getItem('mj_history_content') || 'null') || _DEFAULT_HISTORY;
+ items.forEach((item, i) => container.appendChild(_renderHistoryAdminItem(item, i)));
+}
+
+function addHistoryItem() {
+ const container = document.getElementById('history-items-admin');
+ if (!container) return;
+ const idx = container.querySelectorAll('.history-admin-item').length;
+ container.appendChild(_renderHistoryAdminItem({year:'', title:'', text:''}, idx));
+}
+
+function saveHistoryContent() {
+ const container = document.getElementById('history-items-admin');
+ if (!container) return;
+ const items = Array.from(container.querySelectorAll('.history-admin-item')).map(div => ({
+  year:  div.querySelector('.hist-year').value.trim(),
+  title: div.querySelector('.hist-title').value.trim(),
+  text:  div.querySelector('.hist-text').value.trim()
+ })).filter(i => i.year || i.title || i.text);
+ localStorage.setItem('mj_history_content', JSON.stringify(items));
+ showToast('Church history saved!');
+}
+
 // ===== PAGE CONTENT EDITORS =====
 
 function saveHomePage() {
@@ -1569,6 +1638,7 @@ window.loadAdminData = function() {
  loadHomePage();
  loadAboutPage();
  loadDonationsPage();
+ loadHistoryAdmin();
 };
 
 // MEMBER PROFILES
