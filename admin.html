@@ -932,6 +932,7 @@ function saveEditedPrayer() {
  localStorage.setItem('mj_prayers', JSON.stringify(prayers));
  closeEditPrayer();
  loadAdminData();
+ filterPrayers('all');
  showToast('Prayer request updated.');
 }
 function deletePrayer(id) {
@@ -940,6 +941,7 @@ function deletePrayer(id) {
  prayers = prayers.filter(pr => pr.id !== id);
  localStorage.setItem('mj_prayers', JSON.stringify(prayers));
  loadAdminData();
+ filterPrayers('all');
  showToast('Prayer request deleted.');
 }
 function sharePrayer(id) {

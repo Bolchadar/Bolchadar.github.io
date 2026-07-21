@@ -512,6 +512,9 @@ function loadAdminData() {
  <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${pid},'praying')" title="Mark as Prayed For">🙏 Prayed</button>
  <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${pid},'completed')" style="margin-left:4px;" title="Mark as Answered">✔ Answered</button>
  <button class="btn-xs" style="background:#25D366;color:#fff;margin-left:4px;" onclick="openFollowUp(${pid})" title="Send Follow-Up via WhatsApp">💬 Follow-Up</button>
+ <button class="btn-xs" style="background:var(--primary);color:#fff;margin-left:4px;" onclick="editPrayer(${pid})" title="Edit this prayer request"><i class="fas fa-edit"></i></button>
+ <button class="btn-xs" style="background:#6d28d9;color:#fff;margin-left:4px;" onclick="sharePrayer(${pid})" title="Share this prayer request"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs" style="background:#ef4444;color:#fff;margin-left:4px;" onclick="deletePrayer(${pid})" title="Delete this prayer request"><i class="fas fa-trash"></i></button>
  </td>
  </tr>`; }).join('') : '<tr><td colspan="8" class="text-center text-muted">No prayer requests yet.</td></tr>';
  // Update count badges
