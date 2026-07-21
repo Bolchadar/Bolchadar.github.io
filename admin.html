@@ -210,6 +210,9 @@
  <p>• <strong>🙏 Prayed For</strong> — Click after your team has prayed for this request</p>
  <p>• <strong>✔ Answered</strong> — Click when God answers the prayer</p>
  <p>• <strong>💬 Follow-Up</strong> — Opens WhatsApp with a personalized message for that person. You can edit it before sending.</p>
+ <p>• <strong><i class="fas fa-edit"></i> Edit</strong> — Edit any details of the prayer request (name, phone, country, request, status, notes)</p>
+ <p>• <strong><i class="fas fa-share-alt"></i> Share</strong> — Share the prayer request with your prayer team via WhatsApp, Facebook, Telegram, or copy it</p>
+ <p>• <strong><i class="fas fa-trash"></i> Delete</strong> — Permanently remove a prayer request</p>
  <p>• Follow-up notes are saved automatically so you can track what was sent.</p>
  </div>
  </div>
@@ -729,6 +732,31 @@
  </div>
  </div>
 
+ <!-- PRAYER EDIT MODAL -->
+ <div id="prayer-edit-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:1rem;">
+ <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:520px;width:100%;box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;">
+  <button onclick="closeEditPrayer()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">&times;</button>
+  <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-edit" style="color:var(--gold);"></i> Edit Prayer Request</h4>
+  <input type="hidden" id="edit-prayer-id">
+  <div class="form-group"><label class="form-label">Name</label><input type="text" class="form-control" id="edit-prayer-name" placeholder="Full name"></div>
+  <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-control" id="edit-prayer-phone" placeholder="+1234567890"></div>
+  <div class="form-group"><label class="form-label">Country</label><input type="text" class="form-control" id="edit-prayer-country" placeholder="Country"></div>
+  <div class="form-group"><label class="form-label">Prayer Request</label><textarea class="form-control" rows="4" id="edit-prayer-request" placeholder="What do they need prayer for?"></textarea></div>
+  <div class="form-group"><label class="form-label">Status</label>
+   <select class="form-control" id="edit-prayer-status">
+    <option value="pending">⏳ Pending</option>
+    <option value="praying">🙏 Prayed For</option>
+    <option value="completed">✔ Answered</option>
+   </select>
+  </div>
+  <div class="form-group"><label class="form-label">Notes</label><input type="text" class="form-control" id="edit-prayer-notes" placeholder="e.g. Follow-up sent 01/07/2025"></div>
+  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
+  <button onclick="saveEditedPrayer()" class="btn btn-primary"><i class="fas fa-save"></i>Save Changes</button>
+  <button onclick="closeEditPrayer()" style="background:var(--gray-200);color:var(--text);border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;">Cancel</button>
+  </div>
+ </div>
+ </div>
+
  <!-- PRAYER FOLLOW-UP MODAL -->
  <div id="prayer-followup-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:1rem;">
  <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:540px;width:100%;box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;">
@@ -808,6 +836,9 @@ function prayerRow(p) {
   <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${pid},'praying')" title="Mark as Prayed For">🙏 Prayed</button>
   <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${pid},'completed')" style="margin-left:3px;" title="Mark as Answered">✔ Answered</button>
   <button class="btn-xs" style="background:#25D366;color:#fff;margin-left:3px;" onclick="openFollowUp(${pid})" title="Send Follow-Up via WhatsApp">💬 Follow-Up</button>
+  <button class="btn-xs" style="background:var(--primary);color:#fff;margin-left:3px;" onclick="editPrayer(${pid})" title="Edit this prayer request"><i class="fas fa-edit"></i></button>
+  <button class="btn-xs" style="background:#6d28d9;color:#fff;margin-left:3px;" onclick="sharePrayer(${pid})" title="Share this prayer request"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs" style="background:#ef4444;color:#fff;margin-left:3px;" onclick="deletePrayer(${pid})" title="Delete this prayer request"><i class="fas fa-trash"></i></button>
  </td></tr>`;
 }
 function filterPrayers(status) {
@@ -865,6 +896,59 @@ function sendFollowUp() {
  closeFollowUp();
  loadAdminData();
  showToast('Follow-up sent via WhatsApp!');
+}
+
+function editPrayer(id) {
+ const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
+ const p = prayers.find(pr => pr.id === id);
+ if (!p) return;
+ document.getElementById('edit-prayer-id').value = id;
+ document.getElementById('edit-prayer-name').value = p.name || '';
+ document.getElementById('edit-prayer-phone').value = p.phone || '';
+ document.getElementById('edit-prayer-country').value = p.country || '';
+ document.getElementById('edit-prayer-request').value = p.request || '';
+ document.getElementById('edit-prayer-status').value = p.status || 'pending';
+ document.getElementById('edit-prayer-notes').value = p.notes || '';
+ const modal = document.getElementById('prayer-edit-modal');
+ modal.classList.remove('hidden');
+ modal.style.display = 'flex';
+}
+function closeEditPrayer() {
+ const modal = document.getElementById('prayer-edit-modal');
+ modal.classList.add('hidden');
+ modal.style.display = 'none';
+}
+function saveEditedPrayer() {
+ const id = parseInt(document.getElementById('edit-prayer-id').value, 10);
+ const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
+ const idx = prayers.findIndex(pr => pr.id === id);
+ if (idx === -1) { showToast('Prayer not found.', true); return; }
+ prayers[idx].name = document.getElementById('edit-prayer-name').value.trim();
+ prayers[idx].phone = document.getElementById('edit-prayer-phone').value.trim();
+ prayers[idx].country = document.getElementById('edit-prayer-country').value.trim();
+ prayers[idx].request = document.getElementById('edit-prayer-request').value.trim();
+ prayers[idx].status = document.getElementById('edit-prayer-status').value;
+ prayers[idx].notes = document.getElementById('edit-prayer-notes').value.trim();
+ localStorage.setItem('mj_prayers', JSON.stringify(prayers));
+ closeEditPrayer();
+ loadAdminData();
+ showToast('Prayer request updated.');
+}
+function deletePrayer(id) {
+ if (!confirm('Delete this prayer request? This cannot be undone.')) return;
+ let prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
+ prayers = prayers.filter(pr => pr.id !== id);
+ localStorage.setItem('mj_prayers', JSON.stringify(prayers));
+ loadAdminData();
+ showToast('Prayer request deleted.');
+}
+function sharePrayer(id) {
+ const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
+ const p = prayers.find(pr => pr.id === id);
+ if (!p) return;
+ const statusLabel = p.status === 'praying' ? '🙏 Being Prayed For' : p.status === 'completed' ? '✔ Answered' : '⏳ Pending';
+ const msg = `*🙏 Prayer Request – ${MINISTRY_NAME}*\n\nPlease join us in prayer for:\n*${p.name}* (${p.country||'Unknown'})\n\n*Request:* ${p.request}\n*Status:* ${statusLabel}\n\n_"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."_\n— Philippians 4:6\n\n🌐 mjministries.org`;
+ openShareModal(`Prayer for ${p.name}`, msg, 'https://mjministries.org/prayer.html');
 }
 
 // ===== EDIT STATE & HELPERS =====
