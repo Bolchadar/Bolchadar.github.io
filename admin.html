@@ -340,6 +340,7 @@
  <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="evt-category"><option>Revival</option><option>Conference</option><option>Youth</option><option>Outreach</option><option>Charity</option><option>Seminar</option><option>Worship</option><option>Other</option></select></div>
  </div>
  <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" rows="4" placeholder="Describe the event..." id="evt-desc"></textarea></div>
+ <div class="form-group"><label class="form-label">Event Poster / Photo</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" placeholder="https://... (paste URL or upload)" id="evt-photo" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('evt-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
  <button id="evt-save-btn" onclick="saveEvent()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish Event</button>
  <button id="evt-cancel-btn" onclick="cancelEdit('event')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
@@ -725,6 +726,11 @@
 <script src="js/main.js"></script>
 <script>
 // Sidebar open/close for mobile
+// Safe JSON for HTML double-quoted onclick attributes:
+// JSON.stringify produces "...", which would close onclick="..."
+// _ja replaces inner " with &quot; which the HTML parser decodes back to " before JS runs
+function _ja(v) { return JSON.stringify(v).replace(/"/g, '&quot;'); }
+
 function toggleSidebar() {
  const sidebar = document.getElementById('admin-sidebar');
  const overlay = document.getElementById('admin-overlay');
@@ -1153,7 +1159,7 @@ function loadAnnouncements() {
  <span style="font-size:0.82rem;color:var(--text-muted);">${escapeHtml(a.text.substring(0,100))}${a.text.length>100?'...':''}</span></div>
  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
  <button class="btn-xs btn-xs-blue" onclick="editAnnouncement(${aid})"><i class="fas fa-edit"></i> Edit</button>
- <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(a.title))},${JSON.stringify(waMsg)},'https://mjministries.org/media.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(a.title)},${_ja(waMsg)},'https://mjministries.org/media.html')"><i class="fas fa-share-alt"></i></button>
  <button class="btn-xs btn-xs-red" onclick="deleteAnnouncement(${aid})">Delete</button>
  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No announcements yet. Post one above!</p>';
@@ -1170,6 +1176,7 @@ function editEvent(id) {
  document.getElementById('evt-ticket').value = e.ticket || '';
  document.getElementById('evt-category').value = e.category || '';
  document.getElementById('evt-desc').value = e.desc || '';
+ document.getElementById('evt-photo').value = e.photo || '';
  showAdminSection('sec-events');
  _enterEdit('event', 'Update Event');
 }
@@ -1179,14 +1186,14 @@ function saveEvent() {
  const date = document.getElementById('evt-date').value;
  if (!name || !date) { showToast('Please enter event name and date.', true); return; }
  const events = JSON.parse(localStorage.getItem('mj_events') || '[]');
- const record = { name, date, time: document.getElementById('evt-time').value, venue: document.getElementById('evt-venue').value, ticket: document.getElementById('evt-ticket').value, category: document.getElementById('evt-category').value, desc: document.getElementById('evt-desc').value };
+ const record = { name, date, time: document.getElementById('evt-time').value, venue: document.getElementById('evt-venue').value, ticket: document.getElementById('evt-ticket').value, category: document.getElementById('evt-category').value, desc: document.getElementById('evt-desc').value, photo: document.getElementById('evt-photo').value.trim() };
  if (_EDIT.event) {
   const idx = events.findIndex(e => e.id === _EDIT.event);
   if (idx > -1) events[idx] = { ...events[idx], ...record };
   cancelEdit('event'); showToast('Event updated!');
  } else { events.push({ id: Date.now(), ...record }); showToast('Event saved and published!'); }
  localStorage.setItem('mj_events', JSON.stringify(events));
- ['evt-name','evt-date','evt-time','evt-venue','evt-ticket','evt-desc'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
+ ['evt-name','evt-date','evt-time','evt-venue','evt-ticket','evt-desc','evt-photo'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadEventsAdmin();
 }
 
@@ -1208,12 +1215,15 @@ function loadEventsAdmin() {
   const d = e.date ? new Date(e.date) : null;
   const label = d ? d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
   const waMsg = `*📅 EVENT — ${MINISTRY_NAME}*\n\n*${e.name}*\n📅 ${label}${e.time?' | ⏰ '+e.time:''}${e.venue?'\n📍 '+e.venue:''}\n\n${e.desc||''}\n\n_All are welcome!_\nhttps://mjministries.org/events.html`;
-  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
- <div><strong>${escapeHtml(e.name)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.4rem;">[${escapeHtml(e.category)}]</span><br>
- <span style="font-size:0.82rem;color:var(--text-muted);">${label} ${e.time?'| ⏰ '+escapeHtml(e.time):''} ${e.venue?'| '+escapeHtml(e.venue):''}</span></div>
+  const photoThumb = e.photo && /^https?:\/\//i.test(e.photo)
+   ? `<img src="${escapeHtml(e.photo)}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.style.display='none'">`
+   : `<div style="width:48px;height:48px;border-radius:6px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-calendar-alt" style="color:#fff;font-size:1.1rem;"></i></div>`;
+  return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+ <div style="display:flex;align-items:center;gap:0.75rem;">${photoThumb}<div><strong>${escapeHtml(e.name)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.4rem;">[${escapeHtml(e.category)}]</span><br>
+ <span style="font-size:0.82rem;color:var(--text-muted);">${label} ${e.time?'| ⏰ '+escapeHtml(e.time):''} ${e.venue?'| 📍 '+escapeHtml(e.venue):''}</span></div></div>
  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
  <button class="btn-xs btn-xs-blue" onclick="editEvent(${eid})"><i class="fas fa-edit"></i> Edit</button>
- <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(e.name))},${JSON.stringify(waMsg)},'https://mjministries.org/events.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(e.name)},${_ja(waMsg)},'https://mjministries.org/events.html')"><i class="fas fa-share-alt"></i></button>
  <button class="btn-xs btn-xs-red" onclick="deleteEvent(${eid})">Delete</button>
  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No events yet. Add one above!</p>';
@@ -1233,7 +1243,7 @@ function loadDevotionalsList() {
  <span style="font-size:0.82rem;color:var(--text-muted);">${label} ${d.ref?'| '+escapeHtml(d.ref):''}</span></div>
  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
  <button class="btn-xs btn-xs-blue" onclick="editDevotional(${did})"><i class="fas fa-edit"></i> Edit</button>
- <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(d.topic))},${JSON.stringify(waMsg)},'https://mjministries.org/devotions.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(d.topic)},${_ja(waMsg)},'https://mjministries.org/devotions.html')"><i class="fas fa-share-alt"></i></button>
  <button class="btn-xs btn-xs-red" onclick="deleteDevotional(${did})">Delete</button>
  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No devotionals published yet.</p>';
@@ -1269,7 +1279,7 @@ function loadSermonsList() {
  <span style="font-size:0.82rem;color:var(--text-muted);">${label} | ${escapeHtml(s.speaker||'Apostle MJ')} ${s.url && /^https?:\/\//i.test(s.url)?'| <a href="'+escapeHtml(s.url)+'" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Watch</a>':''}</span></div>
  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
  <button class="btn-xs btn-xs-blue" onclick="editSermon(${sid})"><i class="fas fa-edit"></i> Edit</button>
- <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(s.title))},${JSON.stringify(waMsg)},'https://mjministries.org/sermons.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(s.title)},${_ja(waMsg)},'https://mjministries.org/sermons.html')"><i class="fas fa-share-alt"></i></button>
  <button class="btn-xs btn-xs-red" onclick="deleteSermon(${sid})">Delete</button>
  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No sermons uploaded yet.</p>';
@@ -1384,7 +1394,7 @@ function loadProphecyList() {
   <span style="font-size:0.82rem;color:var(--text-muted);">${label}${p.scripture?' | '+escapeHtml(p.scripture):''}</span></div>
   <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
   <button class="btn-xs btn-xs-blue" onclick="editProphecy(${pid})"><i class="fas fa-edit"></i> Edit</button>
-  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(p.title))},${JSON.stringify(waMsg)},'https://mjministries.org/prophecy.html')"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(p.title)},${_ja(waMsg)},'https://mjministries.org/prophecy.html')"><i class="fas fa-share-alt"></i></button>
   <button class="btn-xs btn-xs-red" onclick="deleteProphecy(${pid})">Delete</button>
   </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No prophetic words published yet.</p>';
@@ -1451,7 +1461,7 @@ function loadFulfillmentList() {
   <span style="font-size:0.82rem;color:var(--text-muted);">Fulfilled: ${label}</span></div>
   <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
   <button class="btn-xs btn-xs-blue" onclick="editFulfillment(${fid})"><i class="fas fa-edit"></i> Edit</button>
-  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(f.title))},${JSON.stringify(waMsg)},'https://mjministries.org/fulfillment.html')"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(f.title)},${_ja(waMsg)},'https://mjministries.org/fulfillment.html')"><i class="fas fa-share-alt"></i></button>
   <button class="btn-xs btn-xs-red" onclick="deleteFulfillment(${fid})">Delete</button>
   </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No fulfillments recorded yet.</p>';
@@ -1748,7 +1758,7 @@ function loadChurchTestimonies() {
   <span style="font-size:0.82rem;color:var(--text-muted);">${label}${t.name?' | '+escapeHtml(t.name):' | Anonymous'}</span></div>
   <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
   <button class="btn-xs btn-xs-blue" onclick="editChurchTestimony(${tid})"><i class="fas fa-edit"></i> Edit</button>
-  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(t.title))},${JSON.stringify(waMsg)},'https://mjministries.org/testimony.html')"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(t.title)},${_ja(waMsg)},'https://mjministries.org/testimony.html')"><i class="fas fa-share-alt"></i></button>
   <button class="btn-xs btn-xs-red" onclick="deleteChurchTestimony(${tid})">Delete</button>
   </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No church testimonies posted yet.</p>';
@@ -1807,7 +1817,7 @@ function loadCharityList() {
   <span style="font-size:0.82rem;color:var(--text-muted);">${label}${c.location?' | '+escapeHtml(c.location):''}</span></div>
   <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
   <button class="btn-xs btn-xs-blue" onclick="editCharity(${cid})"><i class="fas fa-edit"></i> Edit</button>
-  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${JSON.stringify(escapeHtml(c.title))},${JSON.stringify(waMsg)},'https://mjministries.org/charity.html')"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(c.title)},${_ja(waMsg)},'https://mjministries.org/charity.html')"><i class="fas fa-share-alt"></i></button>
   <button class="btn-xs btn-xs-red" onclick="deleteCharity(${cid})">Delete</button>
   </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No charity projects yet. Post one above!</p>';
