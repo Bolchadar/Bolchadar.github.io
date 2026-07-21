@@ -108,6 +108,7 @@
  <a href="#" onclick="showAdminSection('sec-prophecy');closeSidebar();"><i class="fas fa-fire"></i>Prophecy</a>
  <a href="#" onclick="showAdminSection('sec-fulfillment');closeSidebar();"><i class="fas fa-check-circle"></i>Fulfillments</a>
  <a href="#" onclick="showAdminSection('sec-events');closeSidebar();"><i class="fas fa-calendar-alt"></i>Events</a>
+ <a href="#" onclick="showAdminSection('sec-gallery');closeSidebar();"><i class="fas fa-images"></i>Photo Gallery</a>
  <a href="#" onclick="showAdminSection('sec-announcements');closeSidebar();"><i class="fas fa-bullhorn"></i>Announcements</a>
  <a href="#" onclick="showAdminSection('sec-livestream');closeSidebar();"><i class="fas fa-tower-broadcast"></i>Livestream</a>
 
@@ -349,6 +350,28 @@
  <div class="admin-card mt-3">
  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Upcoming Events</h4>
  <div id="events-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">No events published yet.</p></div>
+ </div>
+ </div>
+
+ <!-- PHOTO GALLERY -->
+ <div id="sec-gallery" class="admin-section" data-title="Photo Gallery">
+ <div class="admin-card">
+  <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-images" style="color:var(--gold);"></i> Homepage Gallery — "Life at Apostle MJ Ministries"</h4>
+  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Add, replace or remove photos shown in the gallery section on the homepage. Upload new photos to replace the old ones.</p>
+  <div class="form-group">
+  <label class="form-label">Add Photo(s)</label>
+  <div style="display:flex;gap:0.5rem;align-items:center;">
+   <input type="url" class="form-control" id="gal-url" placeholder="https://... (paste URL or upload)" style="flex:1;min-width:0;">
+   <button type="button" onclick="uploadFile('gal-url','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button>
+  </div>
+  </div>
+  <div class="form-group"><label class="form-label">Caption (optional)</label><input type="text" class="form-control" id="gal-caption" placeholder="e.g. Sunday Service, Crusade 2026"></div>
+  <button onclick="addGalleryPhoto()" class="btn btn-primary"><i class="fas fa-plus"></i> Add to Gallery</button>
+  <button onclick="uploadMultipleToGallery()" class="btn" style="margin-left:0.5rem;background:var(--primary-light);color:#fff;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-images"></i> Upload Multiple</button>
+ </div>
+ <div class="admin-card mt-3">
+  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-th" style="color:var(--gold);"></i> Current Gallery Photos</h4>
+  <div id="gallery-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">Loading gallery...</p></div>
  </div>
  </div>
 
@@ -1316,13 +1339,15 @@ function saveDonation() {
 function refreshActivity() {
  const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
  const testimonies = JSON.parse(localStorage.getItem('mj_testimonies') || '[]');
+ const churchTests = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
  const members = JSON.parse(localStorage.getItem('mj_members') || '[]');
  const container = document.getElementById('recent-activity');
  if (!container) return;
  const activities = [];
- prayers.slice(-3).forEach(p =>activities.push({ icon:'', text:`New prayer request from ${escapeHtml(p.name)} (${escapeHtml(p.country||'Unknown')})`, date:escapeHtml(p.date) }));
- testimonies.slice(-2).forEach(t =>activities.push({ icon:'', text:`New testimony from ${escapeHtml(t.name)}`, date:escapeHtml(t.date) }));
- members.slice(-2).forEach(m =>activities.push({ icon:'', text:`New member: ${escapeHtml(m['full-name']||'Unknown')}`, date:escapeHtml(m.date) }));
+ prayers.slice(-3).forEach(p =>activities.push({ icon:'🙏', text:`New prayer request from ${escapeHtml(p.name)} (${escapeHtml(p.country||'Unknown')})`, date:escapeHtml(p.date) }));
+ testimonies.slice(-2).forEach(t =>activities.push({ icon:'⭐', text:`New testimony submitted by ${escapeHtml(t.name)}`, date:escapeHtml(t.date) }));
+ churchTests.slice(-3).forEach(t =>activities.push({ icon:'🌟', text:`Published testimony: "${escapeHtml((t.title||'').substring(0,50))}"`, date:escapeHtml(t.date||'') }));
+ members.slice(-2).forEach(m =>activities.push({ icon:'👤', text:`New member: ${escapeHtml(m['full-name']||'Unknown')}`, date:escapeHtml(m.date) }));
  if (activities.length) {
  container.innerHTML = activities.map(a =>`<div style="display:flex;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid var(--gray-200);"><span style="font-size:1.2rem;">${a.icon}</span><div><div style="font-size:0.85rem;color:var(--text);">${a.text}</div><div style="font-size:0.75rem;color:var(--text-muted);">${a.date}</div></div></div>`).join('');
  } else {
@@ -1484,6 +1509,138 @@ function loadLivestreamAdmin() {
  else document.getElementById('live-no').checked = true;
  if (d.url) document.getElementById('live-url').value = d.url;
  if (d.schedule) document.getElementById('live-schedule').value = d.schedule;
+}
+
+// ===== HOMEPAGE GALLERY =====
+
+const _DEFAULT_GALLERY = [
+ {id:1, url:'WhatsApp Image 2026-06-24 at 09.09.25.jpeg', caption:'Church Service'},
+ {id:2, url:'WhatsApp Image 2026-06-24 at 09.09.26.jpeg', caption:'Church Service'},
+ {id:3, url:'WhatsApp Image 2026-06-24 at 09.09.26 (1).jpeg', caption:'Ministry'},
+ {id:4, url:'WhatsApp Image 2026-06-24 at 09.09.27 (2).jpeg', caption:'Apostle MJ Preaching'},
+ {id:5, url:'WhatsApp Image 2026-06-24 at 09.09.28.jpeg', caption:'Apostle MJ'},
+ {id:6, url:'WhatsApp Image 2026-06-24 at 09.09.26 (2).jpeg', caption:'Ministry'}
+];
+
+function _getGallery() {
+ return JSON.parse(localStorage.getItem('mj_gallery_photos') || 'null') || _DEFAULT_GALLERY.map(p=>({...p}));
+}
+function _saveGallery(list) {
+ localStorage.setItem('mj_gallery_photos', JSON.stringify(list));
+}
+
+function addGalleryPhoto() {
+ const url = document.getElementById('gal-url').value.trim();
+ if (!url) { showToast('Please paste or upload a photo URL.', true); return; }
+ if (!/^https?:\/\//i.test(url)) { showToast('URL must start with https://', true); return; }
+ const caption = document.getElementById('gal-caption').value.trim() || 'Ministry';
+ const list = _getGallery();
+ list.push({ id: Date.now(), url, caption });
+ _saveGallery(list);
+ document.getElementById('gal-url').value = '';
+ document.getElementById('gal-caption').value = '';
+ loadGalleryAdmin();
+ showToast('Photo added to gallery!');
+}
+
+async function uploadMultipleToGallery() {
+ const { workerUrl, uploadToken } = _getUploadCreds();
+ const picker = document.createElement('input');
+ picker.type = 'file'; picker.accept = 'image/*'; picker.multiple = true;
+ picker.style.display = 'none'; document.body.appendChild(picker);
+ picker.addEventListener('change', async () => {
+  const files = Array.from(picker.files); picker.remove();
+  if (!files.length) return;
+  showToast('Uploading ' + files.length + ' photo' + (files.length>1?'s':'') + '...');
+  let done = 0;
+  const results = await Promise.all(files.map(async file => {
+   const fd = new FormData(); fd.append('file', file);
+   try {
+    const res = await fetch(workerUrl, {method:'POST', headers:{'X-Upload-Token':uploadToken}, body:fd});
+    const data = await res.json(); done++;
+    showToast('Uploaded '+done+'/'+files.length+'...');
+    return data.url || null;
+   } catch(e) { return null; }
+  }));
+  const urls = results.filter(Boolean);
+  if (urls.length) {
+   const list = _getGallery();
+   urls.forEach(url => list.push({id: Date.now() + Math.random(), url, caption:'Ministry'}));
+   _saveGallery(list);
+   loadGalleryAdmin();
+   showToast(urls.length + ' photo' + (urls.length>1?'s':'') + ' added to gallery!');
+  }
+ });
+ picker.click();
+}
+
+function deleteGalleryPhoto(id) {
+ if (!confirm('Remove this photo from the gallery?')) return;
+ const list = _getGallery().filter(p => String(p.id) !== String(id));
+ _saveGallery(list);
+ loadGalleryAdmin();
+ showToast('Photo removed.');
+}
+
+function editGalleryCaption(id) {
+ const list = _getGallery();
+ const photo = list.find(p => String(p.id) === String(id));
+ if (!photo) return;
+ const newCaption = prompt('Edit caption:', photo.caption || '');
+ if (newCaption === null) return;
+ photo.caption = newCaption.trim() || 'Ministry';
+ _saveGallery(list);
+ loadGalleryAdmin();
+ showToast('Caption updated!');
+}
+
+function replaceGalleryPhoto(id) {
+ const { workerUrl, uploadToken } = _getUploadCreds();
+ const picker = document.createElement('input');
+ picker.type = 'file'; picker.accept = 'image/*';
+ picker.style.display = 'none'; document.body.appendChild(picker);
+ picker.addEventListener('change', async () => {
+  const file = picker.files[0]; picker.remove();
+  if (!file) return;
+  showToast('Uploading replacement...');
+  const fd = new FormData(); fd.append('file', file);
+  try {
+   const res = await fetch(workerUrl, {method:'POST', headers:{'X-Upload-Token':uploadToken}, body:fd});
+   const data = await res.json();
+   if (data.url) {
+    const list = _getGallery();
+    const photo = list.find(p => String(p.id) === String(id));
+    if (photo) { photo.url = data.url; _saveGallery(list); loadGalleryAdmin(); showToast('Photo replaced!'); }
+   } else { showToast('Upload failed: ' + (data.error||'error'), true); }
+  } catch(e) { showToast('Upload error: ' + e.message, true); }
+ });
+ picker.click();
+}
+
+function loadGalleryAdmin() {
+ const el = document.getElementById('gallery-admin-list');
+ if (!el) return;
+ const list = _getGallery();
+ const waMsg = '*📸 LIFE AT ' + MINISTRY_NAME.toUpperCase() + '*\n\nFeaturing moments from our gatherings and ministry events.\n\nhttps://mjministries.org/';
+ el.innerHTML = list.length ? `
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">
+  ${list.map(p => {
+   const pid = String(p.id);
+   const thumb = /^https?:\/\//i.test(p.url) ? escapeHtml(p.url) : escapeHtml(p.url);
+   return `<div style="border-radius:10px;overflow:hidden;border:1px solid var(--gray-200);background:var(--white);">
+    <img src="${thumb}" alt="${escapeHtml(p.caption||'')}" style="width:100%;height:140px;object-fit:cover;display:block;" onerror="this.style.opacity='0.3'">
+    <div style="padding:0.6rem;">
+    <p style="font-size:0.82rem;color:var(--text);margin-bottom:0.5rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.caption||'Ministry')}</p>
+    <div style="display:flex;gap:0.3rem;flex-wrap:wrap;">
+     <button class="btn-xs btn-xs-blue" onclick="editGalleryCaption(${_ja(pid)})"><i class="fas fa-edit"></i> Caption</button>
+     <button class="btn-xs" style="background:#8b5cf6;color:#fff;" onclick="replaceGalleryPhoto(${_ja(pid)})"><i class="fas fa-sync"></i> Replace</button>
+     <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal('Life at ${MINISTRY_NAME}',${_ja(waMsg)},'https://mjministries.org/')"><i class="fas fa-share-alt"></i></button>
+     <button class="btn-xs btn-xs-red" onclick="deleteGalleryPhoto(${_ja(pid)})"><i class="fas fa-trash"></i></button>
+    </div>
+    </div>
+   </div>`;
+  }).join('')}
+  </div>` : '<p style="color:var(--text-muted);font-size:0.9rem;">No photos yet. Add some above!</p>';
 }
 
 // ===== CHURCH HISTORY =====
@@ -1649,6 +1806,7 @@ window.loadAdminData = function() {
  loadAboutPage();
  loadDonationsPage();
  loadHistoryAdmin();
+ loadGalleryAdmin();
 };
 
 // MEMBER PROFILES

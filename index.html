@@ -199,7 +199,7 @@
  <h2>Life at Apostle MJ Ministries</h2>
  <div class="divider"></div>
  </div>
- <div class="gallery">
+ <div class="gallery" id="home-gallery">
  <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-06-24 at 09.09.25.jpeg')">
  <img src="WhatsApp Image 2026-06-24 at 09.09.25.jpeg" alt="Church Service" loading="lazy">
  <div class="gallery-overlay"><i class="fas fa-expand"></i></div>
@@ -354,6 +354,19 @@ document.addEventListener('DOMContentLoaded', () =>{
   }
   show();
   setInterval(show, 5000);
+ }
+})();
+</script>
+<script>
+(function() {
+ function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+ var photos = JSON.parse(localStorage.getItem('mj_gallery_photos') || 'null');
+ if (photos && photos.length) {
+  var g = document.getElementById('home-gallery');
+  if (g) g.innerHTML = photos.map(function(p){
+   var url = esc(p.url); var cap = esc(p.caption||'Ministry');
+   return '<div class="gallery-item" onclick="openLightbox(\''+url+'\')"><img src="'+url+'" alt="'+cap+'" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>';
+  }).join('');
  }
 })();
 </script>

@@ -485,12 +485,13 @@ function showAdminSection(id) {
 function loadAdminData() {
  const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
  const testimonies = JSON.parse(localStorage.getItem('mj_testimonies')|| '[]');
+ const churchTests = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
  const members = JSON.parse(localStorage.getItem('mj_members') || '[]');
 
  // Stats
  const setEl = (id, val) =>{ const el = document.getElementById(id); if (el) el.textContent = val; };
  setEl('stat-prayers', prayers.length);
- setEl('stat-testimonies', testimonies.length);
+ setEl('stat-testimonies', testimonies.length + churchTests.length);
  setEl('stat-members', members.length);
  setEl('stat-pending', prayers.filter(p =>p.status === 'pending').length);
 
