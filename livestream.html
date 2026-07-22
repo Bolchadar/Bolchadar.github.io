@@ -72,7 +72,7 @@
  <div class="grid-2" style="gap:3rem;align-items:start;">
  <div>
  <!-- YOUTUBE LIVE -->
- <div class="stream-card mb-3">
+ <div id="yt-card" class="stream-card mb-3">
  <div class="stream-header">
  <div><h3 style="color:var(--white);margin:0;">YouTube Live Service</h3></div>
  <i class="fab fa-youtube" style="font-size:2.5rem;color:#ff0000;"></i>
@@ -83,7 +83,7 @@
  </div>
 
  <!-- FACEBOOK LIVE -->
- <div class="stream-card">
+ <div id="fb-card" class="stream-card">
  <div class="stream-header" style="background:linear-gradient(135deg,#1877F2,#0d5dbf);">
  <div><h3 style="color:var(--white);margin:0;">Facebook Live Service</h3></div>
  <i class="fab fa-facebook" style="font-size:2.5rem;color:rgba(255,255,255,0.8);"></i>
@@ -248,6 +248,17 @@
   if (platforms.length) {
    if (liveText) { liveText.textContent = '🔴 We are LIVE now on ' + platforms.join(' & ') + '! Join the service below.'; liveText.style.color = '#16a34a'; }
    if (liveDot) liveDot.style.background = '#16a34a';
+
+   // Reorder: move live platform cards to top of their container
+   const col = document.getElementById('yt-card') && document.getElementById('yt-card').parentNode;
+   if (col) {
+    const ORDER = { YouTube: 'yt-card', Facebook: 'fb-card', TikTok: 'tiktok-live-section' };
+    // Prepend live cards in reverse so first live platform ends up on top
+    platforms.slice().reverse().forEach(p => {
+     const card = document.getElementById(ORDER[p]);
+     if (card) { card.style.marginTop = '0'; card.style.marginBottom = '1rem'; col.prepend(card); }
+    });
+   }
   }
  } else {
   if (ytPlayer) ytPlayer.innerHTML = '<div class="not-live"><i class="fab fa-youtube"></i><h3 style="color:var(--white);">Not Live Right Now</h3><p style="color:rgba(255,255,255,0.75);">' + escapeHtml(schedule) + '</p><a href="https://youtube.com/@apostlemj.ministries" target="_blank" class="btn btn-primary"><i class="fab fa-youtube"></i>Visit Our YouTube Channel</a></div>';
