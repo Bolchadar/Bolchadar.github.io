@@ -1694,7 +1694,9 @@ function saveLivestream() {
  const tiktokLive = document.getElementById('live-tiktok').checked;
  const schedule = document.getElementById('live-schedule').value.trim();
  if (isLive && !url && !fbUrl && !tiktokLive) { showToast('Please paste at least one live URL (YouTube or Facebook) or enable TikTok.', true); return; }
- localStorage.setItem('mj_livestream', JSON.stringify({ isLive, url, fbUrl, tiktokLive, schedule, updated: Date.now() }));
+ const data = { isLive, url, fbUrl, tiktokLive, schedule, updated: Date.now() };
+ localStorage.setItem('mj_livestream', JSON.stringify(data));
+ saveToGitHub('livestream.json', data);
  const msg = document.getElementById('live-status-msg');
  const platforms = [url && 'YouTube', fbUrl && 'Facebook', tiktokLive && 'TikTok'].filter(Boolean).join(', ');
  msg.textContent = isLive ? '🔴 LIVE on: ' + (platforms || 'website') : '⚫ Livestream set to offline.';

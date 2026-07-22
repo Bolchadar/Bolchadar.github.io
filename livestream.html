@@ -182,7 +182,7 @@
 <button id="back-top"><i class="fas fa-chevron-up"></i></button>
 <script src="js/main.js"></script>
 <script>
-(function() {
+(window._serverSync || Promise.resolve()).then(function() {
  const d = JSON.parse(localStorage.getItem('mj_livestream') || '{}');
  const ytPlayer = document.getElementById('yt-player');
  const fbPlayer = document.getElementById('fb-player');
@@ -243,7 +243,7 @@
   if (ytPlayer) ytPlayer.innerHTML = '<div class="not-live"><i class="fab fa-youtube"></i><h3 style="color:var(--white);">Not Live Right Now</h3><p style="color:rgba(255,255,255,0.75);">' + escapeHtml(schedule) + '</p><a href="https://youtube.com/@apostlemj.ministries" target="_blank" class="btn btn-primary"><i class="fab fa-youtube"></i>Visit Our YouTube Channel</a></div>';
   if (liveText) liveText.textContent = d.schedule || 'Check our social media for the next service time';
  }
-})();
+}); // end _serverSync.then
 
 function subscribeNotifications() {
  const msg = '*📺 LIVESTREAM NOTIFICATIONS — ' + MINISTRY_NAME + '*\n\nHello! I want to subscribe to live service notifications.\n\nPlease notify me via WhatsApp when you go LIVE!\n\nName: [Your Name]\nCountry: [Your Country]\n\nGod bless you!';

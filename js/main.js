@@ -31,6 +31,7 @@ window._serverSync = (async function syncFromServer() {
   ['mj_home_content',       'data/home_content.json'],
   ['mj_donation_content',   'data/donation_content.json'],
   ['mj_history_content',    'data/history_content.json'],
+  ['mj_livestream',         'data/livestream.json'],
  ];
  await Promise.all(MAP.map(async ([key, path]) => {
   try {
