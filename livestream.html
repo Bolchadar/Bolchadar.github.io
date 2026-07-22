@@ -193,7 +193,7 @@
 
  function toYTEmbed(url) {
   if (!url || !/^https?:\/\//i.test(url)) return '';
-  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_\-]+)/);
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|live\/))([A-Za-z0-9_\-]+)/);
   return m ? 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1' : '';
  }
 
