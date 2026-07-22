@@ -1088,44 +1088,49 @@ async function testGitHubToken() {
  const s = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
  const token = (s.githubToken || document.getElementById('set-github-token').value || '').trim();
  const result = document.getElementById('github-test-result');
- result.style.display = 'block';
- result.style.background = '#fef3c7';
- result.style.color = '#92400e';
- result.textContent = '⏳ Testing connection…';
- if (!token) {
-  result.textContent = '❌ No token saved. Enter your GitHub token above and click Save Settings first.';
-  result.style.background = '#fee2e2'; result.style.color = '#991b1b';
-  return;
+ function show(ok, msg) {
+  result.style.display = 'block';
+  result.style.background = ok === true ? '#d1fae5' : ok === 'warn' ? '#fef3c7' : '#fee2e2';
+  result.style.color   = ok === true ? '#065f46'  : ok === 'warn' ? '#92400e'  : '#991b1b';
+  result.textContent   = msg;
  }
+ show('warn', '⏳ Testing connection…');
+ if (!token) { show(false, '❌ No token found. Enter your token above and click Save Settings first.'); return; }
  try {
+  // Step 1: check repo access
   const res = await fetch('https://api.github.com/repos/Bolchadar/Bolchadar.github.io', {
    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
   });
-  if (res.status === 401) {
-   result.textContent = '❌ Token is invalid or expired. Please generate a new one on GitHub.';
-   result.style.background = '#fee2e2'; result.style.color = '#991b1b';
-   return;
-  }
-  if (res.status === 404 || res.status === 403) {
-   result.textContent = '❌ Token cannot access this repository. Make sure you selected the correct repo when creating the token.';
-   result.style.background = '#fee2e2'; result.style.color = '#991b1b';
-   return;
-  }
-  const data = await res.json();
-  const canWrite = data.permissions && data.permissions.push;
-  if (canWrite) {
-   result.textContent = '✅ Connected! Token has Read & Write access. Content will sync across all devices.';
-   result.style.background = '#d1fae5'; result.style.color = '#065f46';
-   // Try a real write to confirm
-   const testData = { _test: true, ts: Date.now() };
-   await saveToGitHub('_test.json', testData);
+  if (res.status === 401) { show(false, '❌ Token is invalid or expired. Please generate a new one on GitHub.'); return; }
+  if (res.status === 403 || res.status === 404) { show(false, '❌ Token cannot access this repository. Make sure you selected Bolchadar/Bolchadar.github.io when creating the token.'); return; }
+
+  // Step 2: attempt a real file write directly (not via saveToGitHub to avoid error toasts)
+  show('warn', '⏳ Checking write access…');
+  const path = 'data/_test.json';
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify({_test:true,ts:Date.now()}))));
+  // Get SHA if file already exists
+  const getRes = await fetch('https://api.github.com/repos/Bolchadar/Bolchadar.github.io/contents/' + path, {
+   headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
+  });
+  const body = { message: 'Connection test', content, branch: 'main' };
+  if (getRes.ok) { const ex = await getRes.json(); body.sha = ex.sha; }
+  const putRes = await fetch('https://api.github.com/repos/Bolchadar/Bolchadar.github.io/contents/' + path, {
+   method: 'PUT',
+   headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github+json' },
+   body: JSON.stringify(body)
+  });
+  if (putRes.ok) {
+   show(true, '✅ All good! Token has Read & Write access. Every time you publish content it will automatically sync to all devices and website visitors.');
   } else {
-   result.textContent = '⚠️ Token can read the repo but does NOT have write access. Go to GitHub, edit this token, and set Contents: Read and write.';
-   result.style.background = '#fef3c7'; result.style.color = '#92400e';
+   const err = await putRes.json().catch(()=>({}));
+   if (putRes.status === 403) {
+    show('warn', '⚠️ Token can read the repo but cannot write. Go to GitHub → edit this token → set Contents: Read and write → regenerate and paste the new token here.');
+   } else {
+    show(false, '❌ Write test failed (' + putRes.status + '): ' + (err.message || 'Unknown error'));
+   }
   }
  } catch(e) {
-  result.textContent = '❌ Network error: ' + e.message;
-  result.style.background = '#fee2e2'; result.style.color = '#991b1b';
+  show(false, '❌ Network error: ' + e.message);
  }
 }
 
