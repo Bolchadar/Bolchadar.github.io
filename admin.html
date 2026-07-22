@@ -505,6 +505,10 @@
   <span>We are also LIVE on TikTok right now</span>
  </label>
  </div>
+ <div class="form-group">
+ <label class="form-label">TikTok Live URL <span style="font-size:0.8rem;color:var(--text-muted);">(paste your TikTok live link)</span></label>
+ <input type="text" class="form-control" id="live-tiktok-url" placeholder="https://www.tiktok.com/@yourusername/live">
+ </div>
 
  <div class="form-group">
  <label class="form-label">Schedule / Next Service Info <span style="font-size:0.8rem;color:var(--text-muted);">(shown when not live)</span></label>
@@ -1692,9 +1696,10 @@ function saveLivestream() {
  const url = document.getElementById('live-url').value.trim();
  const fbUrl = document.getElementById('live-fb-url').value.trim();
  const tiktokLive = document.getElementById('live-tiktok').checked;
+ const tiktokUrl = document.getElementById('live-tiktok-url').value.trim();
  const schedule = document.getElementById('live-schedule').value.trim();
  if (isLive && !url && !fbUrl && !tiktokLive) { showToast('Please paste at least one live URL (YouTube or Facebook) or enable TikTok.', true); return; }
- const data = { isLive, url, fbUrl, tiktokLive, schedule, updated: Date.now() };
+ const data = { isLive, url, fbUrl, tiktokLive, tiktokUrl, schedule, updated: Date.now() };
  localStorage.setItem('mj_livestream', JSON.stringify(data));
  saveToGitHub('livestream.json', data);
  const msg = document.getElementById('live-status-msg');
@@ -1710,6 +1715,7 @@ function loadLivestreamAdmin() {
  if (d.url) document.getElementById('live-url').value = d.url;
  if (d.fbUrl) document.getElementById('live-fb-url').value = d.fbUrl;
  if (d.tiktokLive) document.getElementById('live-tiktok').checked = true;
+ if (d.tiktokUrl) document.getElementById('live-tiktok-url').value = d.tiktokUrl;
  if (d.schedule) document.getElementById('live-schedule').value = d.schedule;
 }
 

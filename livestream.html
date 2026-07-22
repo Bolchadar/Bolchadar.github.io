@@ -198,8 +198,11 @@
  }
 
  function toFBEmbed(url) {
-  if (!url || !/^https?:\/\//i.test(url) || !/facebook\.com/i.test(url)) return '';
-  return 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url) + '&show_text=false&width=560&height=314';
+  if (!url || !/^https?:\/\//i.test(url)) return '';
+  if (!/facebook\.com|fb\.watch/i.test(url)) return '';
+  // Normalise mobile URLs to www for the embed plugin
+  const canonical = url.replace(/^https?:\/\/m\.facebook\.com/i, 'https://www.facebook.com');
+  return 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(canonical) + '&show_text=false&width=560&height=314';
  }
 
  function makeIframe(src, allow) {
@@ -233,7 +236,14 @@
   }
 
   // TikTok
-  if (d.tiktokLive && tiktokSection) { tiktokSection.style.display = 'block'; platforms.push('TikTok'); }
+  if (d.tiktokLive && tiktokSection) {
+   tiktokSection.style.display = 'block';
+   if (d.tiktokUrl && /^https?:\/\//i.test(d.tiktokUrl)) {
+    const btn = tiktokSection.querySelector('a[href]');
+    if (btn) btn.href = d.tiktokUrl;
+   }
+   platforms.push('TikTok');
+  }
 
   if (platforms.length) {
    if (liveText) { liveText.textContent = '🔴 We are LIVE now on ' + platforms.join(' & ') + '! Join the service below.'; liveText.style.color = '#16a34a'; }
