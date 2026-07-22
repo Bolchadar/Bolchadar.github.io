@@ -123,7 +123,7 @@
 <script>
 document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-GB', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
 
-(function loadPublishedDevotionals() {
+(window._serverSync || Promise.resolve()).then(function loadPublishedDevotionals() {
  const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
  if (!devs.length) return;
  const emptyMsg = document.getElementById('devotion-empty');
@@ -179,7 +179,7 @@ document.getElementById('today-date').textContent = new Date().toLocaleDateStrin
  </div>`;
  }).join('');
  }
-})();
+});
 
 function toggleCheck(el) {
  el.classList.toggle('checked');

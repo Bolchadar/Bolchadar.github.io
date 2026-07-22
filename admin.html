@@ -609,6 +609,11 @@
   <div class="form-group"><label class="form-label">Website Description (short)</label><input type="text" class="form-control" id="set-desc" placeholder="e.g. Spreading the Gospel of Jesus Christ"></div>
  </div>
 
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fab fa-github" style="color:var(--gold);"></i> Cross-Device Sync (GitHub)</h5>
+ <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:0.5rem;">Paste a GitHub Personal Access Token here so content you publish is visible on ALL devices — laptop, phone, and to website visitors.</p>
+ <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:1rem;">👉 Get a token at <strong>github.com → Settings → Developer Settings → Personal access tokens → Fine-grained tokens</strong>. Select this repository and set <strong>Contents: Read and write</strong>.</p>
+ <div class="form-group"><label class="form-label">GitHub Personal Access Token</label><input type="password" class="form-control" id="set-github-token" placeholder="github_pat_..."></div>
+
  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-cloud-upload-alt" style="color:var(--gold);"></i> File Upload (Cloudflare)</h5>
  <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:1rem;">Paste your Cloudflare Worker URL and secret token here to enable direct file uploads on image fields.</p>
  <div class="form-row">
@@ -1032,6 +1037,7 @@ function saveSiteSettings() {
   desc: document.getElementById('set-desc').value.trim(),
   workerUrl: document.getElementById('set-worker-url').value.trim(),
   uploadToken: document.getElementById('set-upload-token').value.trim(),
+  githubToken: document.getElementById('set-github-token').value.trim(),
   updated: Date.now()
  };
  localStorage.setItem('mj_site_settings', JSON.stringify(settings));
@@ -1039,7 +1045,7 @@ function saveSiteSettings() {
 }
 function loadSiteSettings() {
  const settings = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
- const map = { 'set-address': settings.address, 'set-phone-display': settings.phoneDisplay, 'set-email': settings.email, 'set-sunday': settings.sunday, 'set-wednesday': settings.wednesday, 'set-friday': settings.friday, 'set-other': settings.other, 'set-facebook': settings.facebook, 'set-youtube': settings.youtube, 'set-tiktok': settings.tiktok, 'set-desc': settings.desc, 'set-worker-url': settings.workerUrl, 'set-upload-token': settings.uploadToken };
+ const map = { 'set-address': settings.address, 'set-phone-display': settings.phoneDisplay, 'set-email': settings.email, 'set-sunday': settings.sunday, 'set-wednesday': settings.wednesday, 'set-friday': settings.friday, 'set-other': settings.other, 'set-facebook': settings.facebook, 'set-youtube': settings.youtube, 'set-tiktok': settings.tiktok, 'set-desc': settings.desc, 'set-worker-url': settings.workerUrl, 'set-upload-token': settings.uploadToken, 'set-github-token': settings.githubToken };
  Object.entries(map).forEach(([id, val]) => { const el = document.getElementById(id); if (el && val) el.value = val; });
 }
 
@@ -1052,6 +1058,28 @@ function _getUploadCreds() {
   workerUrl:   (s.workerUrl   || _DEFAULT_WORKER).trim(),
   uploadToken: (s.uploadToken || _DEFAULT_TOKEN ).trim()
  };
+}
+
+async function saveToGitHub(filename, data) {
+ const s = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
+ const token = (s.githubToken || '').trim();
+ if (!token) return;
+ const repo = 'Bolchadar/Bolchadar.github.io';
+ const path = 'data/' + filename;
+ const content = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+ try {
+  const getRes = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+   headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
+  });
+  const body = { message: 'Update ' + filename + ' via admin', content, branch: 'main' };
+  if (getRes.ok) { const ex = await getRes.json(); body.sha = ex.sha; }
+  const putRes = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+   method: 'PUT',
+   headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github+json' },
+   body: JSON.stringify(body)
+  });
+  if (!putRes.ok) showToast('Saved locally. GitHub sync failed — check your token in Settings.', true);
+ } catch(e) { showToast('Saved locally. Could not sync to GitHub (network error).', true); }
 }
 
 async function uploadFile(inputId, accept) {
@@ -1173,6 +1201,7 @@ function saveSermon() {
   cancelEdit('sermon'); showToast('Sermon updated!');
  } else { sermons.push({ id: Date.now(), ...record }); showToast('Sermon saved and published!'); }
  localStorage.setItem('mj_sermons', JSON.stringify(sermons));
+ saveToGitHub('sermons.json', sermons);
  ['sermon-title','sermon-speaker','sermon-url','sermon-desc','sermon-date','sermon-preacher-photo','sermon-scripture','sermon-audio'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadSermonsList();
 }
@@ -1202,6 +1231,7 @@ function saveDevotional() {
   cancelEdit('devotional'); showToast('Devotional updated!');
  } else { devs.push({ id: Date.now(), ...record }); showToast('Devotional saved and published!'); }
  localStorage.setItem('mj_devotionals', JSON.stringify(devs));
+ saveToGitHub('devotionals.json', devs);
  ['dev-date','dev-topic','dev-ref','dev-verse','dev-message','dev-prayers'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadDevotionalsList();
 }
@@ -1245,14 +1275,16 @@ function postAnnouncement() {
   showToast('Announcement posted!');
  }
  localStorage.setItem('mj_announcements', JSON.stringify(announcements));
+ saveToGitHub('announcements.json', announcements);
  ['ann-title','ann-text','ann-event-date','ann-photo','ann-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadAnnouncements();
 }
 
 function deleteAnnouncement(id) {
  if (!confirm('Delete this announcement?')) return;
- const list = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
- localStorage.setItem('mj_announcements', JSON.stringify(list.filter(a =>a.id !== id)));
+ const list = JSON.parse(localStorage.getItem('mj_announcements') || '[]').filter(a =>a.id !== id);
+ localStorage.setItem('mj_announcements', JSON.stringify(list));
+ saveToGitHub('announcements.json', list);
  loadAnnouncements();
  showToast('Announcement deleted.');
 }
@@ -1303,14 +1335,16 @@ function saveEvent() {
   cancelEdit('event'); showToast('Event updated!');
  } else { events.push({ id: Date.now(), ...record }); showToast('Event saved and published!'); }
  localStorage.setItem('mj_events', JSON.stringify(events));
+ saveToGitHub('events.json', events);
  ['evt-name','evt-date','evt-time','evt-venue','evt-ticket','evt-desc','evt-photo'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadEventsAdmin();
 }
 
 function deleteEvent(id) {
  if (!confirm('Delete this event?')) return;
- const events = JSON.parse(localStorage.getItem('mj_events') || '[]');
- localStorage.setItem('mj_events', JSON.stringify(events.filter(e =>e.id !== id)));
+ const events = JSON.parse(localStorage.getItem('mj_events') || '[]').filter(e =>e.id !== id);
+ localStorage.setItem('mj_events', JSON.stringify(events));
+ saveToGitHub('events.json', events);
  loadEventsAdmin();
  showToast('Event deleted.');
 }
@@ -1361,16 +1395,18 @@ function loadDevotionalsList() {
 
 function deleteDevotional(id) {
  if (!confirm('Delete this devotional?')) return;
- const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]');
- localStorage.setItem('mj_devotionals', JSON.stringify(devs.filter(d =>d.id !== id)));
+ const devs = JSON.parse(localStorage.getItem('mj_devotionals') || '[]').filter(d =>d.id !== id);
+ localStorage.setItem('mj_devotionals', JSON.stringify(devs));
+ saveToGitHub('devotionals.json', devs);
  loadDevotionalsList();
  showToast('Devotional deleted.');
 }
 
 function deleteSermon(id) {
  if (!confirm('Delete this sermon?')) return;
- const sermons = JSON.parse(localStorage.getItem('mj_sermons') || '[]');
- localStorage.setItem('mj_sermons', JSON.stringify(sermons.filter(s =>s.id !== id)));
+ const sermons = JSON.parse(localStorage.getItem('mj_sermons') || '[]').filter(s =>s.id !== id);
+ localStorage.setItem('mj_sermons', JSON.stringify(sermons));
+ saveToGitHub('sermons.json', sermons);
  loadSermonsList();
  showToast('Sermon deleted.');
 }
@@ -1472,6 +1508,7 @@ function saveProphecy() {
   cancelEdit('prophecy'); showToast('Prophecy updated!');
  } else { list.push({ id: Date.now(), ...record }); showToast('Prophetic word saved and published!'); }
  localStorage.setItem('mj_prophecies', JSON.stringify(list));
+ saveToGitHub('prophecies.json', list);
  ['proph-title','proph-date','proph-scripture','proph-word','proph-photo','proph-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadProphecyList();
 }
@@ -1486,8 +1523,9 @@ function shareProphecyWA() {
 
 function deleteProphecy(id) {
  if (!confirm('Delete this prophetic word?')) return;
- const list = JSON.parse(localStorage.getItem('mj_prophecies') || '[]');
- localStorage.setItem('mj_prophecies', JSON.stringify(list.filter(p => p.id !== id)));
+ const list = JSON.parse(localStorage.getItem('mj_prophecies') || '[]').filter(p => p.id !== id);
+ localStorage.setItem('mj_prophecies', JSON.stringify(list));
+ saveToGitHub('prophecies.json', list);
  loadProphecyList();
  showToast('Prophecy deleted.');
 }
@@ -1540,6 +1578,7 @@ function saveFulfillment() {
   cancelEdit('fulfillment'); showToast('Fulfillment updated!');
  } else { list.push({ id: Date.now(), ...record }); showToast('Fulfillment recorded and published!'); }
  localStorage.setItem('mj_fulfillments', JSON.stringify(list));
+ saveToGitHub('fulfillments.json', list);
  ['ful-title','ful-date','ful-propdate','ful-original','ful-how','ful-photos','ful-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadFulfillmentList();
 }
@@ -1553,8 +1592,9 @@ function shareFulfillmentAdminWA() {
 
 function deleteFulfillment(id) {
  if (!confirm('Delete this fulfillment record?')) return;
- const list = JSON.parse(localStorage.getItem('mj_fulfillments') || '[]');
- localStorage.setItem('mj_fulfillments', JSON.stringify(list.filter(f => f.id !== id)));
+ const list = JSON.parse(localStorage.getItem('mj_fulfillments') || '[]').filter(f => f.id !== id);
+ localStorage.setItem('mj_fulfillments', JSON.stringify(list));
+ saveToGitHub('fulfillments.json', list);
  loadFulfillmentList();
  showToast('Fulfillment deleted.');
 }
@@ -1614,6 +1654,7 @@ function _getGallery() {
 }
 function _saveGallery(list) {
  localStorage.setItem('mj_gallery_photos', JSON.stringify(list));
+ saveToGitHub('gallery.json', list);
 }
 
 function addGalleryPhoto() {
@@ -1782,6 +1823,7 @@ function saveHistoryContent() {
   text:  div.querySelector('.hist-text').value.trim()
  })).filter(i => i.year || i.title || i.text);
  localStorage.setItem('mj_history_content', JSON.stringify(items));
+ saveToGitHub('history_content.json', items);
  showToast('Church history saved!');
 }
 
@@ -1795,6 +1837,7 @@ function saveHomePage() {
   scriptureRef: document.getElementById('ph-scripture-ref').value.trim()
  };
  localStorage.setItem('mj_home_content', JSON.stringify(data));
+ saveToGitHub('home_content.json', data);
  showToast('Home page content saved!');
 }
 
@@ -1822,6 +1865,7 @@ function saveAboutPage() {
   coreRef: document.getElementById('pa-core-ref').value.trim()
  };
  localStorage.setItem('mj_about_content', JSON.stringify(data));
+ saveToGitHub('about_content.json', data);
  showToast('About page content saved!');
 }
 
@@ -1853,6 +1897,7 @@ function saveDonationsPage() {
   wrCountry: document.getElementById('pd-wr-country').value.trim()
  };
  localStorage.setItem('mj_donation_content', JSON.stringify(data));
+ saveToGitHub('donation_content.json', data);
  showToast('Donations page content saved!');
 }
 
@@ -1979,13 +2024,15 @@ function saveChurchTestimony() {
   cancelEdit('churchTestimony'); showToast('Testimony updated!');
  } else { list.push({ id: Date.now(), ...record }); showToast('Church testimony published!'); }
  localStorage.setItem('mj_church_testimonies', JSON.stringify(list));
+ saveToGitHub('church_testimonies.json', list);
  ['ct-title','ct-name','ct-date','ct-testimony','ct-photo','ct-video'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadChurchTestimonies();
 }
 function deleteChurchTestimony(id) {
  if (!confirm('Delete this church testimony?')) return;
- const list = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
- localStorage.setItem('mj_church_testimonies', JSON.stringify(list.filter(t => t.id !== id)));
+ const list = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]').filter(t => t.id !== id);
+ localStorage.setItem('mj_church_testimonies', JSON.stringify(list));
+ saveToGitHub('church_testimonies.json', list);
  loadChurchTestimonies();
  showToast('Testimony deleted.');
 }
@@ -2038,13 +2085,15 @@ function saveCharity() {
   cancelEdit('charity'); showToast('Charity project updated!');
  } else { list.push({ id: Date.now(), ...record }); showToast('Charity project published!'); }
  localStorage.setItem('mj_charity', JSON.stringify(list));
+ saveToGitHub('charity.json', list);
  ['ch-title','ch-date','ch-location','ch-desc','ch-photos','ch-video','ch-donation'].forEach(id =>{ const el=document.getElementById(id); if(el) el.value=''; });
  loadCharityList();
 }
 function deleteCharity(id) {
  if (!confirm('Delete this charity project?')) return;
- const list = JSON.parse(localStorage.getItem('mj_charity') || '[]');
- localStorage.setItem('mj_charity', JSON.stringify(list.filter(c => c.id !== id)));
+ const list = JSON.parse(localStorage.getItem('mj_charity') || '[]').filter(c => c.id !== id);
+ localStorage.setItem('mj_charity', JSON.stringify(list));
+ saveToGitHub('charity.json', list);
  loadCharityList();
  showToast('Project deleted.');
 }

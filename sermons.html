@@ -195,6 +195,7 @@ function toYouTubeEmbed(url) {
 }
 
 document.addEventListener('DOMContentLoaded', () =>{
+ (window._serverSync || Promise.resolve()).then(() => {
  const sermons = JSON.parse(localStorage.getItem('mj_sermons') || '[]');
  sermons.sort((a,b) =>(b.date||'').localeCompare(a.date||'') || b.id - a.id);
  const grid = document.getElementById('video-grid');
@@ -268,6 +269,7 @@ document.addEventListener('DOMContentLoaded', () =>{
  audioGrid.appendChild(item);
  });
  }
+ }); // end _serverSync.then
 });
 </script>
 </body>

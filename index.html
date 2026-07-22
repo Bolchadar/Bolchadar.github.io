@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () =>{
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
 <script>lucide.createIcons();</script>
 <script>
-(function showAnnouncements() {
+(window._serverSync || Promise.resolve()).then(function showAnnouncements() {
  const list = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
  if (!list.length) return;
  const banner = document.getElementById('announcements-banner');
@@ -355,10 +355,10 @@ document.addEventListener('DOMContentLoaded', () =>{
   show();
   setInterval(show, 5000);
  }
-})();
+});
 </script>
 <script>
-(function() {
+(window._serverSync || Promise.resolve()).then(function() {
  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
  var photos = JSON.parse(localStorage.getItem('mj_gallery_photos') || 'null');
  if (photos && photos.length) {
@@ -368,16 +368,16 @@ document.addEventListener('DOMContentLoaded', () =>{
    return '<div class="gallery-item" onclick="openLightbox(\''+url+'\')"><img src="'+url+'" alt="'+cap+'" loading="lazy"><div class="gallery-overlay"><i class="fas fa-expand"></i></div></div>';
   }).join('');
  }
-})();
+});
 </script>
 <script>
-(function() {
+(window._serverSync || Promise.resolve()).then(function() {
  var h = JSON.parse(localStorage.getItem('mj_home_content') || '{}');
  if (h.heroTitle) { var el = document.getElementById('hero-h1'); if (el) el.textContent = h.heroTitle; }
  if (h.heroSubtitle) { var el2 = document.getElementById('hero-p'); if (el2) el2.textContent = h.heroSubtitle; }
  if (h.scripture) { var el3 = document.getElementById('scripture-text'); if (el3) el3.textContent = h.scripture; }
  if (h.scriptureRef) { var el4 = document.getElementById('scripture-ref'); if (el4) el4.textContent = h.scriptureRef; }
-})();
+});
 </script>
 </body>
 </html>

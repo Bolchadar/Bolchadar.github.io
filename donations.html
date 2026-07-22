@@ -252,7 +252,7 @@ function confirmGift() {
   const msg = `*💝 GIVING CONFIRMATION — ${MINISTRY_NAME}*\n\nPraise God! I have sent a ${cat} of ${amt}.\n\nPlease confirm receipt. I am attaching proof of payment.\n\n_God bless this ministry!_`;
   openWhatsApp(msg);
 }
-(function() {
+(window._serverSync || Promise.resolve()).then(function() {
  var d = JSON.parse(localStorage.getItem('mj_donation_content') || '{}');
  var fields = {
   'don-mobile-text': d.mobileMoney,
@@ -275,7 +275,7 @@ function confirmGift() {
   var btn2 = document.getElementById('don-paypal-copy');
   if (btn2) btn2.setAttribute('onclick', 'copyText(' + JSON.stringify(d.paypal) + ', this)');
  }
-})();
+});
 </script>
 </body>
 </html>

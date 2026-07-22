@@ -139,6 +139,7 @@ function scrollToRegister() {
 }
 
 document.addEventListener('DOMContentLoaded', () =>{
+ (window._serverSync || Promise.resolve()).then(() => {
  const events = JSON.parse(localStorage.getItem('mj_events') || '[]');
  events.sort((a,b) =>(a.date||'').localeCompare(b.date||''));
  const container = document.getElementById('events-list');
@@ -220,6 +221,7 @@ document.addEventListener('DOMContentLoaded', () =>{
   eventSelect.appendChild(opt);
  }
  }
+ }); // end _serverSync.then
 });
 </script>
 </body>

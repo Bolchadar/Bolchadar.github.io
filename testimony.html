@@ -196,6 +196,7 @@ function toYTEmbed(url) {
  return m ? 'https://www.youtube.com/embed/' + m[1] : '';
 }
 document.addEventListener('DOMContentLoaded', () =>{
+ (window._serverSync || Promise.resolve()).then(() => {
  // Church testimonies
  const churchList = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
  const churchContainer = document.getElementById('church-testimonies-display');
@@ -251,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () =>{
    container.appendChild(div);
   });
  }
+ }); // end _serverSync.then
 });
 </script>
 </body>

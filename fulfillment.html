@@ -124,6 +124,7 @@ function toYTEmbed(url) {
  return m ? 'https://www.youtube.com/embed/' + m[1] : '';
 }
 document.addEventListener('DOMContentLoaded', () => {
+ (window._serverSync || Promise.resolve()).then(() => {
  const list = document.getElementById('fulfillment-list');
  const empty = document.getElementById('fulfillment-empty');
  const fulfillments = JSON.parse(localStorage.getItem('mj_fulfillments') || '[]');
@@ -162,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
    list.appendChild(div);
   });
  }
+ }); // end _serverSync.then
 });
 </script>
 </body>

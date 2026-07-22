@@ -183,6 +183,7 @@ function toYTEmbed(url) {
  return m ? 'https://www.youtube.com/embed/' + m[1] : '';
 }
 document.addEventListener('DOMContentLoaded', () => {
+ (window._serverSync || Promise.resolve()).then(() => {
  const projects = JSON.parse(localStorage.getItem('mj_charity') || '[]');
  const container = document.getElementById('charity-projects-display');
  const empty = document.getElementById('charity-projects-empty');
@@ -226,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
   div.innerHTML = html;
   container.appendChild(div);
  });
+ }); // end _serverSync.then
 });
 </script>
 </body>

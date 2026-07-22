@@ -13,6 +13,33 @@ const MINISTRY_NAME = "Apostle MJ Ministries";
  Replace the hash below with the output. */
 const ADMIN_PASSWORD_HASH = "58b9317ecf8669d33ea206d7e48e599f507ff589013a9f87b59dd6b131cc6f23";
 
+// Cross-device sync: admin publishes from any device → data saved to GitHub →
+// every other device fetches it on next page load. Only runs on public pages.
+window._serverSync = (async function syncFromServer() {
+ if (window.location.pathname.includes('admin')) return;
+ const MAP = [
+  ['mj_devotionals',        'data/devotionals.json'],
+  ['mj_sermons',            'data/sermons.json'],
+  ['mj_announcements',      'data/announcements.json'],
+  ['mj_events',             'data/events.json'],
+  ['mj_prophecies',         'data/prophecies.json'],
+  ['mj_fulfillments',       'data/fulfillments.json'],
+  ['mj_church_testimonies', 'data/church_testimonies.json'],
+  ['mj_charity',            'data/charity.json'],
+  ['mj_gallery_photos',     'data/gallery.json'],
+  ['mj_about_content',      'data/about_content.json'],
+  ['mj_home_content',       'data/home_content.json'],
+  ['mj_donation_content',   'data/donation_content.json'],
+  ['mj_history_content',    'data/history_content.json'],
+ ];
+ await Promise.all(MAP.map(async ([key, path]) => {
+  try {
+   const r = await fetch('/' + path + '?_v=' + Date.now());
+   if (r.ok) { const t = await r.text(); if (t && t.length > 2) localStorage.setItem(key, t); }
+  } catch(e) {}
+ }));
+})();
+
 function escapeHtml(str) {
  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }

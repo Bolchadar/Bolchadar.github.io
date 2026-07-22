@@ -132,6 +132,7 @@ function toYTEmbed(url) {
  return m ? 'https://www.youtube.com/embed/' + m[1] : '';
 }
 document.addEventListener('DOMContentLoaded', () => {
+ (window._serverSync || Promise.resolve()).then(() => {
  const list = document.getElementById('prophecy-list');
  const empty = document.getElementById('prophecy-empty');
  const prophecies = JSON.parse(localStorage.getItem('mj_prophecies') || '[]');
@@ -164,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
    list.appendChild(div);
   });
  }
+ }); // end _serverSync.then
 });
 </script>
 </body>

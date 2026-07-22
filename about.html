@@ -219,7 +219,7 @@
 <button id="back-top"><i class="fas fa-chevron-up"></i></button>
 <script src="js/main.js"></script>
 <script>
-(function() {
+(window._serverSync || Promise.resolve()).then(function() {
  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
  var s = JSON.parse(localStorage.getItem('mj_about_content') || '{}');
  if (s.bio) {
@@ -247,7 +247,7 @@
    }).join('');
   }
  }
-})();
+});
 </script>
 </body>
 </html>
