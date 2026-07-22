@@ -977,7 +977,7 @@ function sharePrayer(id) {
  if (!p) return;
  const statusLabel = p.status === 'praying' ? '🙏 Being Prayed For' : p.status === 'completed' ? '✔ Answered' : '⏳ Pending';
  const msg = `*🙏 Prayer Request – ${MINISTRY_NAME}*\n\nPlease join us in prayer for:\n*${p.name}* (${p.country||'Unknown'})\n\n*Request:* ${p.request}\n*Status:* ${statusLabel}\n\n_"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."_\n— Philippians 4:6\n\n🌐 mjministries.org`;
- openShareModal(`Prayer for ${p.name}`, msg, 'https://mjministries.org/prayer.html');
+ openShareModal(`Prayer for ${p.name}`, msg, 'https://mjministries.org/prayer/');
 }
 
 // ===== EDIT STATE & HELPERS =====
@@ -1313,8 +1313,8 @@ function shareDevotionalWA() {
  const verse = document.getElementById('dev-verse').value || '';
  const ref = document.getElementById('dev-ref').value || '';
  const message = document.getElementById('dev-message').value || '';
- const msg = `*📖 DAILY DEVOTIONAL — ${MINISTRY_NAME}*\n\n*Topic:* ${topic}\n*Scripture:* ${ref}\n\n_"${verse}"_\n\n${message.substring(0,400)}...\n\n🙏 God bless you today!\n— Apostle MJ\n\nhttps://mjministries.org/devotions.html`;
- openShareModal(topic, msg, 'https://mjministries.org/devotions.html');
+ const msg = `*📖 DAILY DEVOTIONAL — ${MINISTRY_NAME}*\n\n*Topic:* ${topic}\n*Scripture:* ${ref}\n\n_"${verse}"_\n\n${message.substring(0,400)}...\n\n🙏 God bless you today!\n— Apostle MJ\n\nhttps://mjministries.org/devotions/`;
+ openShareModal(topic, msg, 'https://mjministries.org/devotions/');
 }
 
 function editAnnouncement(id) {
@@ -1342,8 +1342,8 @@ function postAnnouncement() {
   cancelEdit('announcement'); showToast('Announcement updated!');
  } else {
   announcements.push({ id: Date.now(), ...record });
-  const msg = `*📢 ANNOUNCEMENT — ${MINISTRY_NAME}*\n\n*${title}*\n\n${text}\n\n_God bless you all!_\n\nhttps://mjministries.org/media.html`;
-  openShareModal(title, msg, 'https://mjministries.org/media.html');
+  const msg = `*📢 ANNOUNCEMENT — ${MINISTRY_NAME}*\n\n*${title}*\n\n${text}\n\n_God bless you all!_\n\nhttps://mjministries.org/media/`;
+  openShareModal(title, msg, 'https://mjministries.org/media/');
   showToast('Announcement posted!');
  }
  localStorage.setItem('mj_announcements', JSON.stringify(announcements));
@@ -1367,13 +1367,13 @@ function loadAnnouncements() {
  const list = JSON.parse(localStorage.getItem('mj_announcements') || '[]');
  el.innerHTML = list.length ? list.slice().reverse().map(a => {
   const aid = parseInt(a.id, 10);
-  const waMsg = `*📢 ANNOUNCEMENT — ${MINISTRY_NAME}*\n\n*${a.title}*\n\n${a.text}\n\n_God bless you all!_\n\nhttps://mjministries.org/media.html`;
+  const waMsg = `*📢 ANNOUNCEMENT — ${MINISTRY_NAME}*\n\n*${a.title}*\n\n${a.text}\n\n_God bless you all!_\n\nhttps://mjministries.org/media/`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
  <div><strong>${escapeHtml(a.title)}</strong><span style="font-size:0.8rem;color:var(--text-muted);margin-left:0.5rem;">${escapeHtml(a.date)}</span><br>
  <span style="font-size:0.82rem;color:var(--text-muted);">${escapeHtml(a.text.substring(0,100))}${a.text.length>100?'...':''}</span></div>
  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
  <button class="btn-xs btn-xs-blue" onclick="editAnnouncement(${aid})"><i class="fas fa-edit"></i> Edit</button>
- <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(a.title)},${_ja(waMsg)},'https://mjministries.org/media.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(a.title)},${_ja(waMsg)},'https://mjministries.org/media/')"><i class="fas fa-share-alt"></i></button>
  <button class="btn-xs btn-xs-red" onclick="deleteAnnouncement(${aid})">Delete</button>
  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No announcements yet. Post one above!</p>';
@@ -1430,7 +1430,7 @@ function loadEventsAdmin() {
   const eid = parseInt(e.id, 10);
   const d = e.date ? new Date(e.date) : null;
   const label = d ? d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
-  const waMsg = `*📅 EVENT — ${MINISTRY_NAME}*\n\n*${e.name}*\n📅 ${label}${e.time?' | ⏰ '+e.time:''}${e.venue?'\n📍 '+e.venue:''}\n\n${e.desc||''}\n\n_All are welcome!_\nhttps://mjministries.org/events.html`;
+  const waMsg = `*📅 EVENT — ${MINISTRY_NAME}*\n\n*${e.name}*\n📅 ${label}${e.time?' | ⏰ '+e.time:''}${e.venue?'\n📍 '+e.venue:''}\n\n${e.desc||''}\n\n_All are welcome!_\nhttps://mjministries.org/events/`;
   const photoThumb = e.photo && /^https?:\/\//i.test(e.photo)
    ? `<img src="${escapeHtml(e.photo)}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.style.display='none'">`
    : `<div style="width:48px;height:48px;border-radius:6px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-calendar-alt" style="color:#fff;font-size:1.1rem;"></i></div>`;
@@ -1439,7 +1439,7 @@ function loadEventsAdmin() {
  <span style="font-size:0.82rem;color:var(--text-muted);">${label} ${e.time?'| ⏰ '+escapeHtml(e.time):''} ${e.venue?'| 📍 '+escapeHtml(e.venue):''}</span></div></div>
  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
  <button class="btn-xs btn-xs-blue" onclick="editEvent(${eid})"><i class="fas fa-edit"></i> Edit</button>
- <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(e.name)},${_ja(waMsg)},'https://mjministries.org/events.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(e.name)},${_ja(waMsg)},'https://mjministries.org/events/')"><i class="fas fa-share-alt"></i></button>
  <button class="btn-xs btn-xs-red" onclick="deleteEvent(${eid})">Delete</button>
  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No events yet. Add one above!</p>';
@@ -1453,13 +1453,13 @@ function loadDevotionalsList() {
  el.innerHTML = devs.length ? devs.map(d => {
   const did = parseInt(d.id, 10);
   const label = d.date ? new Date(d.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
-  const waMsg = `*📖 DAILY DEVOTIONAL — ${MINISTRY_NAME}*\n\n*Topic:* ${d.topic}\n*Scripture:* ${d.ref||''}\n\n_"${d.verse||''}"_\n\n${(d.message||'').substring(0,400)}...\n\n🙏 God bless you!\n— Apostle MJ\n\nhttps://mjministries.org/devotions.html`;
+  const waMsg = `*📖 DAILY DEVOTIONAL — ${MINISTRY_NAME}*\n\n*Topic:* ${d.topic}\n*Scripture:* ${d.ref||''}\n\n_"${d.verse||''}"_\n\n${(d.message||'').substring(0,400)}...\n\n🙏 God bless you!\n— Apostle MJ\n\nhttps://mjministries.org/devotions/`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
  <div><strong>${escapeHtml(d.topic)}</strong><br>
  <span style="font-size:0.82rem;color:var(--text-muted);">${label} ${d.ref?'| '+escapeHtml(d.ref):''}</span></div>
  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
  <button class="btn-xs btn-xs-blue" onclick="editDevotional(${did})"><i class="fas fa-edit"></i> Edit</button>
- <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(d.topic)},${_ja(waMsg)},'https://mjministries.org/devotions.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(d.topic)},${_ja(waMsg)},'https://mjministries.org/devotions/')"><i class="fas fa-share-alt"></i></button>
  <button class="btn-xs btn-xs-red" onclick="deleteDevotional(${did})">Delete</button>
  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No devotionals published yet.</p>';
@@ -1491,13 +1491,13 @@ function loadSermonsList() {
  el.innerHTML = sermons.length ? sermons.map(s => {
   const sid = parseInt(s.id, 10);
   const label = s.date ? new Date(s.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
-  const waMsg = `*🎤 SERMON — ${MINISTRY_NAME}*\n\n*"${s.title}"*\n👤 ${s.speaker||'Apostle MJ'}${s.scripture?'\n📖 '+s.scripture:''}\n📅 ${label}\n\n${(s.desc||'').substring(0,300)}${s.desc&&s.desc.length>300?'...':''}\n\n${s.url && /^https?:\/\//i.test(s.url)?'▶️ Watch: '+s.url+'\n':''}🌐 More sermons: https://mjministries.org/sermons.html`;
+  const waMsg = `*🎤 SERMON — ${MINISTRY_NAME}*\n\n*"${s.title}"*\n👤 ${s.speaker||'Apostle MJ'}${s.scripture?'\n📖 '+s.scripture:''}\n📅 ${label}\n\n${(s.desc||'').substring(0,300)}${s.desc&&s.desc.length>300?'...':''}\n\n${s.url && /^https?:\/\//i.test(s.url)?'▶️ Watch: '+s.url+'\n':''}🌐 More sermons: https://mjministries.org/sermons/`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
  <div><strong>${escapeHtml(s.title)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.4rem;">[${escapeHtml(s.topic)}]</span><br>
  <span style="font-size:0.82rem;color:var(--text-muted);">${label} | ${escapeHtml(s.speaker||'Apostle MJ')} ${s.url && /^https?:\/\//i.test(s.url)?'| <a href="'+escapeHtml(s.url)+'" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">Watch</a>':''}</span></div>
  <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
  <button class="btn-xs btn-xs-blue" onclick="editSermon(${sid})"><i class="fas fa-edit"></i> Edit</button>
- <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(s.title)},${_ja(waMsg)},'https://mjministries.org/sermons.html')"><i class="fas fa-share-alt"></i></button>
+ <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(s.title)},${_ja(waMsg)},'https://mjministries.org/sermons/')"><i class="fas fa-share-alt"></i></button>
  <button class="btn-xs btn-xs-red" onclick="deleteSermon(${sid})">Delete</button>
  </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No sermons uploaded yet.</p>';
@@ -1589,8 +1589,8 @@ function shareProphecyWA() {
  const title = document.getElementById('proph-title').value || 'Prophetic Word';
  const word = document.getElementById('proph-word').value || '';
  const ref = document.getElementById('proph-scripture').value || '';
- const msg = `*🔥 PROPHETIC WORD — ${MINISTRY_NAME}*\n\n*${title}*${ref ? '\n_Scripture: ' + ref + '_' : ''}\n\n${word.substring(0,500)}...\n\n— Apostle MJ\n\nhttps://mjministries.org/prophecy.html`;
- openShareModal(title, msg, 'https://mjministries.org/prophecy.html');
+ const msg = `*🔥 PROPHETIC WORD — ${MINISTRY_NAME}*\n\n*${title}*${ref ? '\n_Scripture: ' + ref + '_' : ''}\n\n${word.substring(0,500)}...\n\n— Apostle MJ\n\nhttps://mjministries.org/prophecy/`;
+ openShareModal(title, msg, 'https://mjministries.org/prophecy/');
 }
 
 function deleteProphecy(id) {
@@ -1610,13 +1610,13 @@ function loadProphecyList() {
  el.innerHTML = list.length ? list.map(p => {
   const pid = parseInt(p.id, 10);
   const label = p.date ? new Date(p.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
-  const waMsg = `*🔥 PROPHETIC WORD — ${MINISTRY_NAME}*\n\n*${p.title}*${p.scripture?'\n_Scripture: '+p.scripture+'_':''}\n\n${(p.word||'').substring(0,500)}...\n\n— Apostle MJ\n\nhttps://mjministries.org/prophecy.html`;
+  const waMsg = `*🔥 PROPHETIC WORD — ${MINISTRY_NAME}*\n\n*${p.title}*${p.scripture?'\n_Scripture: '+p.scripture+'_':''}\n\n${(p.word||'').substring(0,500)}...\n\n— Apostle MJ\n\nhttps://mjministries.org/prophecy/`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div><strong>${escapeHtml(p.title)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.5rem;">[${escapeHtml(p.category||'General')}]</span><br>
   <span style="font-size:0.82rem;color:var(--text-muted);">${label}${p.scripture?' | '+escapeHtml(p.scripture):''}</span></div>
   <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
   <button class="btn-xs btn-xs-blue" onclick="editProphecy(${pid})"><i class="fas fa-edit"></i> Edit</button>
-  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(p.title)},${_ja(waMsg)},'https://mjministries.org/prophecy.html')"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(p.title)},${_ja(waMsg)},'https://mjministries.org/prophecy/')"><i class="fas fa-share-alt"></i></button>
   <button class="btn-xs btn-xs-red" onclick="deleteProphecy(${pid})">Delete</button>
   </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No prophetic words published yet.</p>';
@@ -1658,8 +1658,8 @@ function saveFulfillment() {
 function shareFulfillmentAdminWA() {
  const title = document.getElementById('ful-title').value || 'Fulfilled Prophecy';
  const how = document.getElementById('ful-how').value || '';
- const msg = `*✅ FULFILLED PROPHECY — ${MINISTRY_NAME}*\n\n*${title}*\n\n${how.substring(0,500)}...\n\nTo God be all the glory!\n— Apostle MJ\n\nhttps://mjministries.org/fulfillment.html`;
- openShareModal(title, msg, 'https://mjministries.org/fulfillment.html');
+ const msg = `*✅ FULFILLED PROPHECY — ${MINISTRY_NAME}*\n\n*${title}*\n\n${how.substring(0,500)}...\n\nTo God be all the glory!\n— Apostle MJ\n\nhttps://mjministries.org/fulfillment/`;
+ openShareModal(title, msg, 'https://mjministries.org/fulfillment/');
 }
 
 function deleteFulfillment(id) {
@@ -1679,13 +1679,13 @@ function loadFulfillmentList() {
  el.innerHTML = list.length ? list.map(f => {
   const fid = parseInt(f.id, 10);
   const label = f.fulfilledDate ? new Date(f.fulfilledDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
-  const waMsg = `*✅ FULFILLED PROPHECY — ${MINISTRY_NAME}*\n\n*${f.title}*\nFulfilled: ${label}\n\n${(f.howFulfilled||'').substring(0,500)}...\n\nTo God be all the glory!\nhttps://mjministries.org/fulfillment.html`;
+  const waMsg = `*✅ FULFILLED PROPHECY — ${MINISTRY_NAME}*\n\n*${f.title}*\nFulfilled: ${label}\n\n${(f.howFulfilled||'').substring(0,500)}...\n\nTo God be all the glory!\nhttps://mjministries.org/fulfillment/`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div><strong>${escapeHtml(f.title)}</strong><br>
   <span style="font-size:0.82rem;color:var(--text-muted);">Fulfilled: ${label}</span></div>
   <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
   <button class="btn-xs btn-xs-blue" onclick="editFulfillment(${fid})"><i class="fas fa-edit"></i> Edit</button>
-  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(f.title)},${_ja(waMsg)},'https://mjministries.org/fulfillment.html')"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(f.title)},${_ja(waMsg)},'https://mjministries.org/fulfillment/')"><i class="fas fa-share-alt"></i></button>
   <button class="btn-xs btn-xs-red" onclick="deleteFulfillment(${fid})">Delete</button>
   </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No fulfillments recorded yet.</p>';
@@ -2125,13 +2125,13 @@ function loadChurchTestimonies() {
  el.innerHTML = list.length ? list.map(t => {
   const tid = parseInt(t.id, 10);
   const label = t.date ? new Date(t.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
-  const waMsg = `*🌟 TESTIMONY — ${MINISTRY_NAME}*\n\n*${t.title}*\n[${t.category||'Testimony'}] | ${label}\n\n"${(t.testimony||'').substring(0,500)}..."\n\n${t.name?'— '+t.name:'— Anonymous'}\n\nhttps://mjministries.org/testimony.html`;
+  const waMsg = `*🌟 TESTIMONY — ${MINISTRY_NAME}*\n\n*${t.title}*\n[${t.category||'Testimony'}] | ${label}\n\n"${(t.testimony||'').substring(0,500)}..."\n\n${t.name?'— '+t.name:'— Anonymous'}\n\nhttps://mjministries.org/testimony/`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div><strong>${escapeHtml(t.title)}</strong><span style="font-size:0.8rem;color:var(--primary);margin-left:0.5rem;">[${escapeHtml(t.category||'General')}]</span><br>
   <span style="font-size:0.82rem;color:var(--text-muted);">${label}${t.name?' | '+escapeHtml(t.name):' | Anonymous'}</span></div>
   <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
   <button class="btn-xs btn-xs-blue" onclick="editChurchTestimony(${tid})"><i class="fas fa-edit"></i> Edit</button>
-  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(t.title)},${_ja(waMsg)},'https://mjministries.org/testimony.html')"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(t.title)},${_ja(waMsg)},'https://mjministries.org/testimony/')"><i class="fas fa-share-alt"></i></button>
   <button class="btn-xs btn-xs-red" onclick="deleteChurchTestimony(${tid})">Delete</button>
   </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No church testimonies posted yet.</p>';
@@ -2186,13 +2186,13 @@ function loadCharityList() {
  el.innerHTML = list.length ? list.map(c => {
   const cid = parseInt(c.id, 10);
   const label = c.date ? new Date(c.date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'No date';
-  const waMsg = `*❤️ CHARITY — ${MINISTRY_NAME}*\n\n*${c.title}*\n📅 ${label}${c.location?' | 📍 '+c.location:''}\n\n${(c.desc||'').substring(0,400)}...\n\n${c.donation?'💝 '+c.donation+'\n':''}https://mjministries.org/charity.html`;
+  const waMsg = `*❤️ CHARITY — ${MINISTRY_NAME}*\n\n*${c.title}*\n📅 ${label}${c.location?' | 📍 '+c.location:''}\n\n${(c.desc||'').substring(0,400)}...\n\n${c.donation?'💝 '+c.donation+'\n':''}https://mjministries.org/charity/`;
   return `<div style="padding:0.75rem;background:var(--light);border-radius:var(--radius-sm);margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
   <div><strong>${escapeHtml(c.title)}</strong><br>
   <span style="font-size:0.82rem;color:var(--text-muted);">${label}${c.location?' | '+escapeHtml(c.location):''}</span></div>
   <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
   <button class="btn-xs btn-xs-blue" onclick="editCharity(${cid})"><i class="fas fa-edit"></i> Edit</button>
-  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(c.title)},${_ja(waMsg)},'https://mjministries.org/charity.html')"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openShareModal(${_ja(c.title)},${_ja(waMsg)},'https://mjministries.org/charity/')"><i class="fas fa-share-alt"></i></button>
   <button class="btn-xs btn-xs-red" onclick="deleteCharity(${cid})">Delete</button>
   </div></div>`;
  }).join('') : '<p style="color:var(--text-muted);font-size:0.9rem;">No charity projects yet. Post one above!</p>';
