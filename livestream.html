@@ -89,13 +89,30 @@
  <i class="fab fa-facebook" style="font-size:2.5rem;color:rgba(255,255,255,0.8);"></i>
  </div>
  <div style="padding:1.5rem;">
- <div class="not-live" style="background:linear-gradient(135deg,#1877F2,#0d5dbf);">
- <i class="fab fa-facebook" style="color:rgba(255,255,255,0.3);"></i>
- <h3 style="color:var(--white);">Facebook Live</h3>
- <p style="color:rgba(255,255,255,0.75);">We also stream live on Facebook. Follow our page to get notified!</p>
- <a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="btn btn-primary"><i class="fab fa-facebook"></i>Visit Our Facebook Page</a>
+ <div id="fb-player">
+  <div class="not-live" style="background:linear-gradient(135deg,#1877F2,#0d5dbf);">
+  <i class="fab fa-facebook" style="color:rgba(255,255,255,0.3);"></i>
+  <h3 style="color:var(--white);">Facebook Live</h3>
+  <p style="color:rgba(255,255,255,0.75);">We also stream live on Facebook. Follow our page to get notified!</p>
+  <a href="https://www.facebook.com/share/1BKzVuBHPg/" target="_blank" class="btn btn-primary"><i class="fab fa-facebook"></i>Visit Our Facebook Page</a>
+  </div>
  </div>
- <!-- When live, use Facebook embed plugin or iframe from Facebook Live -->
+ </div>
+ </div>
+
+ <!-- TIKTOK LIVE (shown only when admin enables it) -->
+ <div id="tiktok-live-section" class="stream-card mt-3" style="display:none;">
+ <div class="stream-header" style="background:linear-gradient(135deg,#010101,#2b2b2b);">
+  <div><h3 style="color:var(--white);margin:0;">TikTok Live Service</h3></div>
+  <i class="fab fa-tiktok" style="font-size:2.5rem;color:rgba(255,255,255,0.8);"></i>
+ </div>
+ <div style="padding:1.5rem;">
+  <div class="not-live" style="background:linear-gradient(135deg,#010101,#2b2b2b);">
+  <i class="fab fa-tiktok" style="color:rgba(255,255,255,0.3);"></i>
+  <h3 style="color:var(--white);">We Are Live on TikTok!</h3>
+  <p style="color:rgba(255,255,255,0.75);">TikTok Live can only be watched directly on TikTok. Tap below to join us live!</p>
+  <a href="https://vt.tiktok.com/ZSC8o6aMP/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background:#010101;border:2px solid rgba(255,255,255,0.5);"><i class="fab fa-tiktok"></i>Watch Live on TikTok</a>
+  </div>
  </div>
  </div>
  </div>
@@ -165,48 +182,73 @@
 <button id="back-top"><i class="fas fa-chevron-up"></i></button>
 <script src="js/main.js"></script>
 <script>
-// Load livestream state from admin localStorage
 (function() {
  const d = JSON.parse(localStorage.getItem('mj_livestream') || '{}');
- const player = document.getElementById('yt-player');
- const statusBar = document.getElementById('live-status-bar');
+ const ytPlayer = document.getElementById('yt-player');
+ const fbPlayer = document.getElementById('fb-player');
+ const tiktokSection = document.getElementById('tiktok-live-section');
  const liveText = document.getElementById('live-text');
- const liveDot = statusBar ? statusBar.querySelector('.live-dot') : null;
+ const liveBar = document.getElementById('live-status-bar');
+ const liveDot = liveBar ? liveBar.querySelector('.live-dot') : null;
 
- function toEmbed(url) {
+ function toYTEmbed(url) {
   if (!url || !/^https?:\/\//i.test(url)) return '';
   const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_\-]+)/);
   return m ? 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1' : '';
  }
 
- if (d.isLive && d.url) {
-  const embedUrl = toEmbed(d.url);
-  if (embedUrl && player) {
-   const wrap = document.createElement('div');
-   wrap.style.cssText = 'position:relative;aspect-ratio:16/9;';
-   const iframe = document.createElement('iframe');
-   iframe.src = embedUrl;
-   iframe.allow = 'autoplay; fullscreen';
-   iframe.allowFullscreen = true;
-   iframe.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0;border:none;border-radius:var(--radius-sm);';
-   wrap.appendChild(iframe);
-   player.appendChild(wrap);
+ function toFBEmbed(url) {
+  if (!url || !/^https?:\/\//i.test(url) || !/facebook\.com/i.test(url)) return '';
+  return 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url) + '&show_text=false&width=560&height=314';
+ }
+
+ function makeIframe(src, allow) {
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:relative;aspect-ratio:16/9;background:#000;border-radius:var(--radius-sm);overflow:hidden;';
+  const f = document.createElement('iframe');
+  f.src = src;
+  f.allow = allow;
+  f.allowFullscreen = true;
+  f.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0;border:none;';
+  wrap.appendChild(f);
+  return wrap;
+ }
+
+ const schedule = d.schedule || 'Follow us on our channels for the next service time.';
+ const platforms = [];
+
+ if (d.isLive) {
+  // YouTube
+  if (d.url) {
+   const src = toYTEmbed(d.url);
+   if (src && ytPlayer) { ytPlayer.innerHTML = ''; ytPlayer.appendChild(makeIframe(src, 'autoplay; fullscreen')); platforms.push('YouTube'); }
+  } else if (ytPlayer) {
+   ytPlayer.innerHTML = '<div class="not-live"><i class="fab fa-youtube"></i><h3 style="color:var(--white);">Not Live on YouTube</h3><p style="color:rgba(255,255,255,0.75);">' + escapeHtml(schedule) + '</p><a href="https://youtube.com/@apostlemj.ministries" target="_blank" class="btn btn-primary"><i class="fab fa-youtube"></i>Subscribe on YouTube</a></div>';
   }
-  if (liveText) liveText.textContent = '🔴 We are LIVE now! Join the service below.';
-  if (liveText) liveText.style.color = '#16a34a';
-  if (liveDot) liveDot.style.background = '#16a34a';
+
+  // Facebook
+  if (d.fbUrl) {
+   const src = toFBEmbed(d.fbUrl);
+   if (src && fbPlayer) { fbPlayer.innerHTML = ''; fbPlayer.appendChild(makeIframe(src, 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share')); platforms.push('Facebook'); }
+  }
+
+  // TikTok
+  if (d.tiktokLive && tiktokSection) { tiktokSection.style.display = 'block'; platforms.push('TikTok'); }
+
+  if (platforms.length) {
+   if (liveText) { liveText.textContent = '🔴 We are LIVE now on ' + platforms.join(' & ') + '! Join the service below.'; liveText.style.color = '#16a34a'; }
+   if (liveDot) liveDot.style.background = '#16a34a';
+  }
  } else {
-  const schedule = d.schedule || 'Follow us on YouTube or Facebook to stay updated on upcoming live services.';
-  if (player) player.innerHTML = `<div class="not-live"><i class="fab fa-youtube"></i><h3 style="color:var(--white);">Not Live Right Now</h3><p style="color:rgba(255,255,255,0.75);">${escapeHtml(schedule)}</p><a href="https://youtube.com/@apostlemj.ministries" target="_blank" class="btn btn-primary"><i class="fab fa-youtube"></i>Visit Our YouTube Channel</a></div>`;
+  if (ytPlayer) ytPlayer.innerHTML = '<div class="not-live"><i class="fab fa-youtube"></i><h3 style="color:var(--white);">Not Live Right Now</h3><p style="color:rgba(255,255,255,0.75);">' + escapeHtml(schedule) + '</p><a href="https://youtube.com/@apostlemj.ministries" target="_blank" class="btn btn-primary"><i class="fab fa-youtube"></i>Visit Our YouTube Channel</a></div>';
   if (liveText) liveText.textContent = d.schedule || 'Check our social media for the next service time';
  }
 })();
 
 function subscribeNotifications() {
-  const msg = `*📺 LIVESTREAM NOTIFICATIONS — ${MINISTRY_NAME}*\n\nHello! I want to subscribe to live service notifications.\n\nPlease notify me via WhatsApp when you go LIVE on YouTube or Facebook!\n\nName: [Your Name]\nCountry: [Your Country]\n\nGod bless you!`;
-  openWhatsApp(msg);
+ const msg = '*📺 LIVESTREAM NOTIFICATIONS — ' + MINISTRY_NAME + '*\n\nHello! I want to subscribe to live service notifications.\n\nPlease notify me via WhatsApp when you go LIVE!\n\nName: [Your Name]\nCountry: [Your Country]\n\nGod bless you!';
+ openWhatsApp(msg);
 }
-// Live status is managed manually — update live-text content when going live
 </script>
 </body>
 </html>

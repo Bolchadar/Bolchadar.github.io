@@ -471,11 +471,11 @@
  <div id="sec-livestream" class="admin-section" data-title="Livestream Control">
  <div class="admin-card">
  <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-tower-broadcast" style="color:var(--gold);"></i>Livestream Control</h4>
- <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.5rem;">Use this panel to go live. Visitors on the Livestream page will see your YouTube video automatically when you set it here.</p>
+ <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.5rem;">Use this panel to go live on YouTube, Facebook, and TikTok. Visitors on the Livestream page will see the embedded player and live buttons automatically.</p>
 
  <div class="form-group">
  <label class="form-label">Are we LIVE right now?</label>
- <div style="display:flex;gap:1rem;margin-top:0.5rem;">
+ <div style="display:flex;gap:1rem;margin-top:0.5rem;flex-wrap:wrap;">
  <label style="display:flex;align-items:center;gap:0.5rem;font-weight:600;cursor:pointer;">
   <input type="radio" name="live-status" id="live-yes" value="yes"> <span style="color:#16a34a;">🔴 YES — We are LIVE</span>
  </label>
@@ -485,14 +485,30 @@
  </div>
  </div>
 
+ <h5 style="color:var(--primary);margin:1.25rem 0 0.5rem;"><i class="fab fa-youtube" style="color:#ff0000;"></i> YouTube Live</h5>
  <div class="form-group">
- <label class="form-label">YouTube Live Video URL <span style="font-size:0.8rem;color:var(--text-muted);">(paste the link when you go live)</span></label>
+ <label class="form-label">YouTube Live Video URL</label>
  <input type="text" class="form-control" id="live-url" placeholder="https://youtube.com/watch?v=...  OR  https://youtu.be/...">
+ </div>
+
+ <h5 style="color:var(--primary);margin:1.25rem 0 0.5rem;"><i class="fab fa-facebook" style="color:#1877F2;"></i> Facebook Live</h5>
+ <div class="form-group">
+ <label class="form-label">Facebook Live Video URL <span style="font-size:0.8rem;color:var(--text-muted);">(paste your Facebook live video link)</span></label>
+ <input type="text" class="form-control" id="live-fb-url" placeholder="https://www.facebook.com/watch/live/?v=... OR https://fb.watch/...">
+ </div>
+
+ <h5 style="color:var(--primary);margin:1.25rem 0 0.5rem;"><i class="fab fa-tiktok"></i> TikTok Live</h5>
+ <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.75rem;">TikTok does not allow embedding on other websites. A "Watch Live on TikTok" button will appear on the livestream page when enabled.</p>
+ <div class="form-group">
+ <label style="display:flex;align-items:center;gap:0.75rem;cursor:pointer;font-weight:600;">
+  <input type="checkbox" id="live-tiktok" style="width:18px;height:18px;cursor:pointer;">
+  <span>We are also LIVE on TikTok right now</span>
+ </label>
  </div>
 
  <div class="form-group">
  <label class="form-label">Schedule / Next Service Info <span style="font-size:0.8rem;color:var(--text-muted);">(shown when not live)</span></label>
- <input type="text" class="form-control" id="live-schedule" placeholder="e.g. Join us Sunday at 9:00 AM on YouTube & Facebook">
+ <input type="text" class="form-control" id="live-schedule" placeholder="e.g. Join us Sunday at 9:00 AM on YouTube, Facebook & TikTok">
  </div>
 
  <button onclick="saveLivestream()" class="btn btn-primary"><i class="fas fa-save"></i>Save Livestream Settings</button>
@@ -1674,11 +1690,14 @@ function loadFulfillmentList() {
 function saveLivestream() {
  const isLive = document.querySelector('input[name="live-status"]:checked').value === 'yes';
  const url = document.getElementById('live-url').value.trim();
+ const fbUrl = document.getElementById('live-fb-url').value.trim();
+ const tiktokLive = document.getElementById('live-tiktok').checked;
  const schedule = document.getElementById('live-schedule').value.trim();
- if (isLive && !url) { showToast('Please paste a YouTube URL when going live.', true); return; }
- localStorage.setItem('mj_livestream', JSON.stringify({ isLive, url, schedule, updated: Date.now() }));
+ if (isLive && !url && !fbUrl && !tiktokLive) { showToast('Please paste at least one live URL (YouTube or Facebook) or enable TikTok.', true); return; }
+ localStorage.setItem('mj_livestream', JSON.stringify({ isLive, url, fbUrl, tiktokLive, schedule, updated: Date.now() }));
  const msg = document.getElementById('live-status-msg');
- msg.textContent = isLive ? '🔴 We are now LIVE on the website!' : '⚫ Livestream set to offline.';
+ const platforms = [url && 'YouTube', fbUrl && 'Facebook', tiktokLive && 'TikTok'].filter(Boolean).join(', ');
+ msg.textContent = isLive ? '🔴 LIVE on: ' + (platforms || 'website') : '⚫ Livestream set to offline.';
  msg.style.color = isLive ? '#16a34a' : 'var(--text-muted)';
  showToast(isLive ? '🔴 Livestream activated!' : 'Livestream set to offline.');
 }
@@ -1687,6 +1706,8 @@ function loadLivestreamAdmin() {
  if (d.isLive) document.getElementById('live-yes').checked = true;
  else document.getElementById('live-no').checked = true;
  if (d.url) document.getElementById('live-url').value = d.url;
+ if (d.fbUrl) document.getElementById('live-fb-url').value = d.fbUrl;
+ if (d.tiktokLive) document.getElementById('live-tiktok').checked = true;
  if (d.schedule) document.getElementById('live-schedule').value = d.schedule;
 }
 
