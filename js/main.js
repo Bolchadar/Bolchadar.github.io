@@ -118,12 +118,13 @@ document.addEventListener('DOMContentLoaded', () =>{
  }
  if (overlay) overlay.addEventListener('click', closeNav);
 
- // Mark active link
- const current = window.location.pathname.split('/').pop() || 'index.html';
+ // Mark active link — works with clean /page/ URLs and root /
+ const pathSegment = '/' + (window.location.pathname.split('/').filter(Boolean)[0] || '');
  document.querySelectorAll('.nav-links a').forEach(a =>{
- const href = a.getAttribute('href') || '';
- if (href === current || (current === '' && href === 'index.html')) {
- a.classList.add('active');
+ const href = (a.getAttribute('href') || '').replace(/\/$/, '') || '/';
+ const seg = href === '/' ? '/' : href;
+ if (seg === pathSegment || (pathSegment === '/' && href === '/')) {
+  a.classList.add('active');
  }
  });
 

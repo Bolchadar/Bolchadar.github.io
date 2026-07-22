@@ -4,7 +4,7 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Admin Dashboard | Apostle MJ Ministries</title>
- <link rel="stylesheet" href="css/style.css">
+ <link rel="stylesheet" href="/css/style.css">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
  <style>
  body { background:#f0f2f8; }
@@ -50,7 +50,7 @@
 <!-- ===== ADMIN LOGIN ===== -->
 <div id="admin-login-screen" class="admin-login">
  <div class="admin-login-card">
- <img src="logo.jpeg" alt="SOFAN Logo" style="width:90px;height:90px;border-radius:12px;object-fit:cover;margin:0 auto 1rem;display:block;">
+ <img src="/logo.jpeg" alt="SOFAN Logo" style="width:90px;height:90px;border-radius:12px;object-fit:cover;margin:0 auto 1rem;display:block;">
  <h2 style="color:var(--primary);margin-bottom:0.5rem;">Admin Dashboard</h2>
  <p style="color:var(--text-muted);margin-bottom:2rem;font-size:0.9rem;">Apostle MJ Ministries — Staff Access Only</p>
  <div class="form-group" style="text-align:left;">
@@ -69,7 +69,7 @@
  Staff access only. Contact the administrator if you need access.
  </p>
  <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--gray-200);">
- <a href="index.html" style="color:var(--primary-light);font-size:0.85rem;"><i class="fas fa-home"></i>Back to Website</a>
+ <a href="/" style="color:var(--primary-light);font-size:0.85rem;"><i class="fas fa-home"></i>Back to Website</a>
  </div>
  </div>
 </div>
@@ -84,7 +84,7 @@
  <!-- SIDEBAR -->
  <aside class="admin-sidebar" id="admin-sidebar">
  <div class="sidebar-logo">
- <img src="logo.jpeg" alt="SOFAN" style="width:48px;height:48px;border-radius:8px;object-fit:cover;margin-bottom:0.5rem;">
+ <img src="/logo.jpeg" alt="SOFAN" style="width:48px;height:48px;border-radius:8px;object-fit:cover;margin-bottom:0.5rem;">
  <h3>Apostle MJ Ministries</h3>
  <p>Ministry Admin Panel</p>
  <button onclick="closeSidebar()" style="position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.1);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:none;" id="sidebar-close-btn"></button>
@@ -123,7 +123,7 @@
 
  <div class="sidebar-section">Admin</div>
  <a href="#" onclick="showAdminSection('sec-settings');closeSidebar();"><i class="fas fa-cog"></i>Site Settings</a>
- <a href="index.html"><i class="fas fa-globe"></i>View Website</a>
+ <a href="/"><i class="fas fa-globe"></i>View Website</a>
  <a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
  </nav>
  </aside>
@@ -802,7 +802,7 @@
  </div>
 </div>
 
-<script src="js/main.js"></script>
+<script src="/js/main.js"></script>
 <script>
 // Sidebar open/close for mobile
 // Safe JSON for HTML double-quoted onclick attributes:
