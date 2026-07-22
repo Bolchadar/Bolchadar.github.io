@@ -507,6 +507,7 @@ function showAdminSection(id) {
  if (link) link.classList.add('active');
  const title = document.getElementById('admin-section-title');
  if (title) title.textContent = sec ? sec.dataset.title || id : id;
+ history.replaceState(null, '', '#' + id);
 }
 
 function loadAdminData() {
@@ -620,7 +621,12 @@ if (window.location.pathname.includes('admin')) {
  const ls = document.getElementById('admin-login-screen');
  const db = document.getElementById('admin-dashboard');
  if (ls) ls.classList.add('hidden');
- if (db) { db.classList.remove('hidden'); loadAdminData(); }
+ if (db) {
+  db.classList.remove('hidden');
+  loadAdminData();
+  const hash = location.hash.slice(1);
+  if (hash && document.getElementById(hash)) showAdminSection(hash);
+ }
  }
  const passInput = document.getElementById('admin-pass');
  if (passInput) passInput.addEventListener('keypress', e =>{ if (e.key === 'Enter') adminLogin(); });
