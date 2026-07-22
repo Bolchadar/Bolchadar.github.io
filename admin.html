@@ -613,6 +613,8 @@
  <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:0.5rem;">Paste a GitHub Personal Access Token here so content you publish is visible on ALL devices — laptop, phone, and to website visitors.</p>
  <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:1rem;">👉 Get a token at <strong>github.com → Settings → Developer Settings → Personal access tokens → Fine-grained tokens</strong>. Select this repository and set <strong>Contents: Read and write</strong>.</p>
  <div class="form-group"><label class="form-label">GitHub Personal Access Token</label><input type="password" class="form-control" id="set-github-token" placeholder="github_pat_..."></div>
+ <button type="button" onclick="testGitHubToken()" class="btn btn-sm" style="background:#24292e;color:#fff;border-radius:50px;padding:0.45rem 1.1rem;font-size:0.88rem;cursor:pointer;margin-bottom:0.5rem;"><i class="fab fa-github"></i> Test Connection</button>
+ <div id="github-test-result" style="font-size:0.85rem;margin-top:0.5rem;padding:0.6rem 0.9rem;border-radius:8px;display:none;"></div>
 
  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-cloud-upload-alt" style="color:var(--gold);"></i> File Upload (Cloudflare)</h5>
  <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:1rem;">Paste your Cloudflare Worker URL and secret token here to enable direct file uploads on image fields.</p>
@@ -1080,6 +1082,51 @@ async function saveToGitHub(filename, data) {
   });
   if (!putRes.ok) showToast('Saved locally. GitHub sync failed — check your token in Settings.', true);
  } catch(e) { showToast('Saved locally. Could not sync to GitHub (network error).', true); }
+}
+
+async function testGitHubToken() {
+ const s = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
+ const token = (s.githubToken || document.getElementById('set-github-token').value || '').trim();
+ const result = document.getElementById('github-test-result');
+ result.style.display = 'block';
+ result.style.background = '#fef3c7';
+ result.style.color = '#92400e';
+ result.textContent = '⏳ Testing connection…';
+ if (!token) {
+  result.textContent = '❌ No token saved. Enter your GitHub token above and click Save Settings first.';
+  result.style.background = '#fee2e2'; result.style.color = '#991b1b';
+  return;
+ }
+ try {
+  const res = await fetch('https://api.github.com/repos/Bolchadar/Bolchadar.github.io', {
+   headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' }
+  });
+  if (res.status === 401) {
+   result.textContent = '❌ Token is invalid or expired. Please generate a new one on GitHub.';
+   result.style.background = '#fee2e2'; result.style.color = '#991b1b';
+   return;
+  }
+  if (res.status === 404 || res.status === 403) {
+   result.textContent = '❌ Token cannot access this repository. Make sure you selected the correct repo when creating the token.';
+   result.style.background = '#fee2e2'; result.style.color = '#991b1b';
+   return;
+  }
+  const data = await res.json();
+  const canWrite = data.permissions && data.permissions.push;
+  if (canWrite) {
+   result.textContent = '✅ Connected! Token has Read & Write access. Content will sync across all devices.';
+   result.style.background = '#d1fae5'; result.style.color = '#065f46';
+   // Try a real write to confirm
+   const testData = { _test: true, ts: Date.now() };
+   await saveToGitHub('_test.json', testData);
+  } else {
+   result.textContent = '⚠️ Token can read the repo but does NOT have write access. Go to GitHub, edit this token, and set Contents: Read and write.';
+   result.style.background = '#fef3c7'; result.style.color = '#92400e';
+  }
+ } catch(e) {
+  result.textContent = '❌ Network error: ' + e.message;
+  result.style.background = '#fee2e2'; result.style.color = '#991b1b';
+ }
 }
 
 async function uploadFile(inputId, accept) {
