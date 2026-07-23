@@ -91,27 +91,9 @@
 <section class="section section-light">
  <div class="container">
  <div class="section-header">
- <span class="label">How to Reach Us</span>
  <h2>Submit Your Prayer Request</h2>
- <p>Choose the method that works best for you. All requests are treated with confidentiality and love.</p>
+ <p>Fill in the form below. All requests are treated with confidentiality and love.</p>
  <div class="divider"></div>
- </div>
- <div class="prayer-methods">
- <div class="prayer-method">
- <i class="fas fa-laptop"></i>
- <h4>Online Form</h4>
- <p>Fill in the form below on this page — the easiest way to submit your request.</p>
- </div>
- <div class="prayer-method">
- <i class="fab fa-whatsapp"></i>
- <h4>WhatsApp</h4>
- <p>Send your prayer directly via WhatsApp if you don't want to use the website form.</p>
- </div>
- <div class="prayer-method">
- <i class="fas fa-microphone"></i>
- <h4>Audio Recording</h4>
- <p>Record your prayer request in your own voice — perfect if writing is difficult.</p>
- </div>
  </div>
 
  <div class="grid-2" style="gap:3rem;align-items:start;">
@@ -161,24 +143,6 @@
  <textarea id="prayer-request" name="prayer-request" class="form-control" rows="6" placeholder="Please share your prayer request here. God hears and answers prayer! Do not worry about what others think — this is between you and God." required></textarea>
  </div>
 
- <!-- AUDIO OPTION -->
- <div class="audio-tip">
- <i class="fas fa-info-circle" style="margin-top:2px;flex-shrink:0;"></i>
- <div>Can't write? Record your prayer request using the audio recorder below.</div>
- </div>
- <div class="recorder">
- <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1rem;"><i class="fas fa-microphone"></i>Record Your Prayer Request (Optional)</p>
- <button type="button" class="rec-btn" id="rec-btn" onclick="startRecording()">
- <i class="fas fa-microphone"></i>
- </button>
- <div class="rec-timer" id="rec-timer">00:00</div>
- <div class="rec-status" id="rec-status">Click the button to start recording</div>
- </div>
- <div id="audio-preview" class="hidden mt-2">
- <p style="font-size:0.88rem;font-weight:600;color:var(--success);">Voice recording attached</p>
- <audio id="audio-playback" controls></audio>
- </div>
-
  <input type="hidden" id="submit-choice" value="both">
 
  <div class="submit-options">
@@ -188,17 +152,6 @@
  </div>
  </div>
 
- <!-- WHATSAPP DIRECT -->
- <div class="whatsapp-direct">
- <i class="fab fa-whatsapp" style="font-size:3rem;display:block;margin-bottom:0.75rem;"></i>
- <h3>Don't Know How to Use the Website?</h3>
- <p>That's okay! You can send your prayer request directly via WhatsApp. Just click the button below and type your prayer in WhatsApp. Our team will receive it and pray for you!</p>
- <button onclick="sendPrayerViaWhatsApp()" class="btn btn-primary btn-lg">
- <i class="fab fa-whatsapp"></i>Send Prayer via WhatsApp
- </button>
- <p style="margin-top:1rem;font-size:0.85rem;color:rgba(255,255,255,0.8);">Know someone who needs prayer? Share the Prayer Center with them:</p>
- <button onclick="broadcastShare('Prayer Center — Apostle MJ Ministries','🙏 Need prayer? Submit your request to Apostle MJ Ministries Prayer Center — our team intercedes for every need.\n\nhttps://mjministries.org/prayer.html','https://mjministries.org/prayer.html')" class="btn" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.35);color:#fff;margin-top:0.25rem;"><i class="fas fa-share-alt"></i>Share Prayer Center</button>
- </div>
  </div>
 
  <!-- SIDEBAR INFO -->
