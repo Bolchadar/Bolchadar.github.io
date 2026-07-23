@@ -1193,7 +1193,8 @@ async function savePrayerToken() {
   if (putRes.ok) {
    show(true, '✅ Prayer token saved and published! Visitors can now submit prayers directly to this dashboard.');
   } else {
-   show(false, '❌ GitHub write failed. Make sure this token has Contents: Read and write permission on this repository.');
+   const errData = await putRes.json().catch(() => ({}));
+   show(false, '❌ GitHub error ' + putRes.status + ': ' + (errData.message || 'Unknown error'));
   }
  } catch(e) {
   show(false, '❌ Network error: ' + e.message);
