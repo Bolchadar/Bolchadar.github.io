@@ -1169,22 +1169,35 @@ async function savePrayerToken() {
  const result = document.getElementById('prayer-token-result');
  const show = (ok, msg) => {
   result.style.display = 'block';
-  result.style.background = ok ? '#f0fdf4' : '#fef2f2';
-  result.style.color = ok ? '#166534' : '#dc2626';
-  result.style.border = '1px solid ' + (ok ? '#86efac' : '#fca5a5');
+  result.style.background = ok ? '#f0fdf4' : ok === null ? '#eff6ff' : '#fef2f2';
+  result.style.color = ok ? '#166534' : ok === null ? '#1e40af' : '#dc2626';
+  result.style.border = '1px solid ' + (ok ? '#86efac' : ok === null ? '#bfdbfe' : '#fca5a5');
   result.textContent = msg;
  };
  if (!token) { show(false, '❌ No token entered.'); return; }
  const settings = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
  settings.prayerToken = token;
  localStorage.setItem('mj_site_settings', JSON.stringify(settings));
- result.style.display = 'block';
- result.style.background = '#eff6ff';
- result.style.color = '#1e40af';
- result.style.border = '1px solid #bfdbfe';
- result.textContent = '⏳ Publishing...';
- await saveToGitHub('prayer-key.json', { token });
- show(true, '✅ Prayer token saved! Visitors can now submit prayers directly to this dashboard.');
+ show(null, '⏳ Publishing to GitHub...');
+ // Use the prayer token itself to write prayer-key.json — no dependency on main GitHub token
+ const repo = 'Bolchadar/Bolchadar.github.io';
+ const path = 'data/prayer-key.json';
+ const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' };
+ try {
+  const getRes = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, { headers });
+  const body = { message: 'Update prayer-key.json', content: btoa(unescape(encodeURIComponent(JSON.stringify({ token })))), branch: 'main' };
+  if (getRes.ok) { const ex = await getRes.json(); body.sha = ex.sha; }
+  const putRes = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+   method: 'PUT', headers: { ...headers, 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+  });
+  if (putRes.ok) {
+   show(true, '✅ Prayer token saved and published! Visitors can now submit prayers directly to this dashboard.');
+  } else {
+   show(false, '❌ GitHub write failed. Make sure this token has Contents: Read and write permission on this repository.');
+  }
+ } catch(e) {
+  show(false, '❌ Network error: ' + e.message);
+ }
 }
 
 async function uploadFile(inputId, accept) {
