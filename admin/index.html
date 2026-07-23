@@ -636,6 +636,12 @@
  <button type="button" onclick="testGitHubToken()" class="btn btn-sm" style="background:#24292e;color:#fff;border-radius:50px;padding:0.45rem 1.1rem;font-size:0.88rem;cursor:pointer;margin-bottom:0.5rem;"><i class="fab fa-github"></i> Test Connection</button>
  <div id="github-test-result" style="font-size:0.85rem;margin-top:0.5rem;padding:0.6rem 0.9rem;border-radius:8px;display:none;"></div>
 
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i> Prayer Form Submissions</h5>
+ <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:0.5rem;">Add a token so prayer requests submitted by visitors appear directly in this dashboard — from any device. Create a <strong>Fine-grained token</strong> on GitHub with <strong>Contents: Read and write</strong> on this repo.</p>
+ <div class="form-group"><label class="form-label">Prayer Submissions Token</label><input type="password" class="form-control" id="set-prayer-token" placeholder="github_pat_..."></div>
+ <button type="button" onclick="savePrayerToken()" class="btn btn-sm" style="background:var(--primary);color:#fff;border-radius:50px;padding:0.45rem 1.1rem;font-size:0.88rem;cursor:pointer;margin-bottom:0.5rem;"><i class="fas fa-key"></i> Save &amp; Publish Token</button>
+ <div id="prayer-token-result" style="font-size:0.85rem;margin-top:0.5rem;padding:0.6rem 0.9rem;border-radius:8px;display:none;"></div>
+
  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-cloud-upload-alt" style="color:var(--gold);"></i> File Upload (Cloudflare)</h5>
  <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:1rem;">Paste your Cloudflare Worker URL and secret token here to enable direct file uploads on image fields.</p>
  <div class="form-row">
@@ -919,6 +925,7 @@ function sendFollowUp() {
  if (idx > -1) {
   prayers[idx].notes = 'Follow-up sent ' + new Date().toLocaleDateString('en-GB');
   localStorage.setItem('mj_prayers', JSON.stringify(prayers));
+  saveToGitHub('prayers.json', prayers);
  }
  closeFollowUp();
  loadAdminData();
@@ -957,6 +964,7 @@ function saveEditedPrayer() {
  prayers[idx].status = document.getElementById('edit-prayer-status').value;
  prayers[idx].notes = document.getElementById('edit-prayer-notes').value.trim();
  localStorage.setItem('mj_prayers', JSON.stringify(prayers));
+ saveToGitHub('prayers.json', prayers);
  closeEditPrayer();
  loadAdminData();
  filterPrayers('all');
@@ -967,6 +975,7 @@ function deletePrayer(id) {
  let prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
  prayers = prayers.filter(pr => pr.id !== id);
  localStorage.setItem('mj_prayers', JSON.stringify(prayers));
+ saveToGitHub('prayers.json', prayers);
  loadAdminData();
  filterPrayers('all');
  showToast('Prayer request deleted.');
@@ -1060,6 +1069,7 @@ function saveSiteSettings() {
   workerUrl: document.getElementById('set-worker-url').value.trim(),
   uploadToken: document.getElementById('set-upload-token').value.trim(),
   githubToken: document.getElementById('set-github-token').value.trim(),
+  prayerToken: document.getElementById('set-prayer-token').value.trim(),
   updated: Date.now()
  };
  localStorage.setItem('mj_site_settings', JSON.stringify(settings));
@@ -1067,7 +1077,7 @@ function saveSiteSettings() {
 }
 function loadSiteSettings() {
  const settings = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
- const map = { 'set-address': settings.address, 'set-phone-display': settings.phoneDisplay, 'set-email': settings.email, 'set-sunday': settings.sunday, 'set-wednesday': settings.wednesday, 'set-friday': settings.friday, 'set-other': settings.other, 'set-facebook': settings.facebook, 'set-youtube': settings.youtube, 'set-tiktok': settings.tiktok, 'set-desc': settings.desc, 'set-worker-url': settings.workerUrl, 'set-upload-token': settings.uploadToken, 'set-github-token': settings.githubToken };
+ const map = { 'set-address': settings.address, 'set-phone-display': settings.phoneDisplay, 'set-email': settings.email, 'set-sunday': settings.sunday, 'set-wednesday': settings.wednesday, 'set-friday': settings.friday, 'set-other': settings.other, 'set-facebook': settings.facebook, 'set-youtube': settings.youtube, 'set-tiktok': settings.tiktok, 'set-desc': settings.desc, 'set-worker-url': settings.workerUrl, 'set-upload-token': settings.uploadToken, 'set-github-token': settings.githubToken, 'set-prayer-token': settings.prayerToken };
  Object.entries(map).forEach(([id, val]) => { const el = document.getElementById(id); if (el && val) el.value = val; });
 }
 
@@ -1152,6 +1162,29 @@ async function testGitHubToken() {
  } catch(e) {
   show(false, '❌ Network error: ' + e.message);
  }
+}
+
+async function savePrayerToken() {
+ const token = document.getElementById('set-prayer-token').value.trim();
+ const result = document.getElementById('prayer-token-result');
+ const show = (ok, msg) => {
+  result.style.display = 'block';
+  result.style.background = ok ? '#f0fdf4' : '#fef2f2';
+  result.style.color = ok ? '#166534' : '#dc2626';
+  result.style.border = '1px solid ' + (ok ? '#86efac' : '#fca5a5');
+  result.textContent = msg;
+ };
+ if (!token) { show(false, '❌ No token entered.'); return; }
+ const settings = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
+ settings.prayerToken = token;
+ localStorage.setItem('mj_site_settings', JSON.stringify(settings));
+ result.style.display = 'block';
+ result.style.background = '#eff6ff';
+ result.style.color = '#1e40af';
+ result.style.border = '1px solid #bfdbfe';
+ result.textContent = '⏳ Publishing...';
+ await saveToGitHub('prayer-key.json', { token });
+ show(true, '✅ Prayer token saved! Visitors can now submit prayers directly to this dashboard.');
 }
 
 async function uploadFile(inputId, accept) {
@@ -2001,7 +2034,29 @@ function loadDonationsPage() {
 
 // Hook into loadAdminData
 const origLoad = loadAdminData;
-window.loadAdminData = function() {
+window.loadAdminData = async function() {
+ // Fetch prayers from GitHub and merge into localStorage so cross-device submissions appear
+ const _s = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
+ const _ghToken = (_s.githubToken || '').trim();
+ if (_ghToken) {
+  try {
+   const _r = await fetch('https://api.github.com/repos/Bolchadar/Bolchadar.github.io/contents/data/prayers.json', {
+    headers: { 'Authorization': 'Bearer ' + _ghToken, 'Accept': 'application/vnd.github+json' }
+   });
+   if (_r.ok) {
+    const _d = await _r.json();
+    const ghPrayers = JSON.parse(atob(_d.content.replace(/\n/g, '')));
+    const local = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
+    // Merge: GitHub is source of truth; preserve local status/notes edits
+    const merged = ghPrayers.map(gp => {
+     const lp = local.find(l => l.id === gp.id);
+     return lp ? { ...gp, status: lp.status || gp.status, notes: lp.notes || gp.notes } : gp;
+    });
+    local.forEach(lp => { if (!merged.find(m => m.id === lp.id)) merged.push(lp); });
+    localStorage.setItem('mj_prayers', JSON.stringify(merged));
+   }
+  } catch(e) {}
+ }
  origLoad();
  refreshActivity();
  loadAnnouncements();
@@ -2020,6 +2075,14 @@ window.loadAdminData = function() {
  loadDonationsPage();
  loadHistoryAdmin();
  loadGalleryAdmin();
+};
+
+// Override updatePrayerStatus to also sync to GitHub
+const _origUpdateStatus = window.updatePrayerStatus;
+window.updatePrayerStatus = function(id, status) {
+ _origUpdateStatus(id, status);
+ const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
+ saveToGitHub('prayers.json', prayers);
 };
 
 // MEMBER PROFILES

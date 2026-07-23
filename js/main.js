@@ -271,8 +271,6 @@ if (prayerForm) {
 
  if (!name || !request) { showToast('Please fill in your name and prayer request.', true); return; }
 
- // Save to localStorage for admin
- const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
  const entry = {
  id: Date.now(),
  name, phone, country, request,
@@ -281,21 +279,59 @@ if (prayerForm) {
  date: new Date().toLocaleDateString('en-GB'),
  time: new Date().toLocaleTimeString()
  };
+
+ // Save to website dashboard (GitHub) first — primary record
+ submitPrayerToServer(entry);
+
+ // Save locally as backup
+ const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
  prayers.push(entry);
  localStorage.setItem('mj_prayers', JSON.stringify(prayers));
 
- // Build WhatsApp message
+ // Build WhatsApp message for copy
     const msg = `*🙏 PRAYER REQUEST — ${MINISTRY_NAME}*\n\n*Name:* ${name}\n*Phone:* ${phone || 'Not provided'}\n*Country:* ${country || 'Not provided'}\n\n*Prayer Request:*\n${request}\n\n_Submitted via the Ministry Website_`;
 
- // Ask user what to do
+ // Send WhatsApp copy after website save
  const choice = document.getElementById('submit-choice').value;
  if (choice === 'whatsapp' || choice === 'both') {
       openWhatsApp(msg);
  }
- showToast('Your prayer request has been submitted! God bless you. ');
+ showToast('Prayer submitted! Our team will pray for you. God bless you.');
  prayerForm.reset();
  if (document.getElementById('audio-preview')) document.getElementById('audio-preview').classList.add('hidden');
  });
+}
+
+async function submitPrayerToServer(entry) {
+ try {
+  const keyRes = await fetch('/data/prayer-key.json?_v=' + Date.now());
+  if (!keyRes.ok) return;
+  const cfg = await keyRes.json();
+  const token = (cfg.token || '').trim();
+  if (!token) return;
+  const repo = 'Bolchadar/Bolchadar.github.io';
+  const path = 'data/prayers.json';
+  const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' };
+  for (let attempt = 0; attempt < 3; attempt++) {
+   const getRes = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, { headers });
+   let prayers = [], sha = null;
+   if (getRes.ok) {
+    const d = await getRes.json();
+    sha = d.sha;
+    try { prayers = JSON.parse(atob(d.content.replace(/\n/g, ''))); } catch(e) { prayers = []; }
+   } else if (getRes.status !== 404) return;
+   if (!prayers.some(p => p.id === entry.id)) prayers.push(entry);
+   const content = btoa(unescape(encodeURIComponent(JSON.stringify(prayers))));
+   const putRes = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
+    method: 'PUT',
+    headers: { ...headers, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Prayer: ' + entry.name, content, branch: 'main', ...(sha ? { sha } : {}) })
+   });
+   if (putRes.ok) return;
+   if (putRes.status !== 409) return;
+   await new Promise(r => setTimeout(r, 300 + Math.random() * 400));
+  }
+ } catch(e) {}
 }
 
 /* ===== WHATSAPP PRAYER (for non-web users) ===== */
