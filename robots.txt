@@ -1,5 +1,23 @@
 User-agent: *
-Allow: /
-Disallow: /admin.html
+Allow: /$
+Allow: /logo.jpeg
+Disallow: /about/
+Disallow: /prayer/
+Disallow: /sermons/
+Disallow: /testimony/
+Disallow: /prophecy/
+Disallow: /fulfillment/
+Disallow: /devotions/
+Disallow: /charity/
+Disallow: /media/
+Disallow: /livestream/
+Disallow: /events/
+Disallow: /membership/
+Disallow: /contact/
+Disallow: /donations/
+Disallow: /admin/
+Disallow: /data/
+Disallow: /css/
+Disallow: /js/
 
 Sitemap: https://mjministries.org/sitemap.xml
