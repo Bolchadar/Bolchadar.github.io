@@ -288,14 +288,6 @@ if (prayerForm) {
  prayers.push(entry);
  localStorage.setItem('mj_prayers', JSON.stringify(prayers));
 
- // Build WhatsApp message for copy
-    const msg = `*🙏 PRAYER REQUEST — ${MINISTRY_NAME}*\n\n*Name:* ${name}\n*Phone:* ${phone || 'Not provided'}\n*Country:* ${country || 'Not provided'}\n\n*Prayer Request:*\n${request}\n\n_Submitted via the Ministry Website_`;
-
- // Send WhatsApp copy after website save
- const choice = document.getElementById('submit-choice').value;
- if (choice === 'whatsapp' || choice === 'both') {
-      openWhatsApp(msg);
- }
  showToast('Prayer submitted! Our team will pray for you. God bless you.');
  prayerForm.reset();
  if (document.getElementById('audio-preview')) document.getElementById('audio-preview').classList.add('hidden');
