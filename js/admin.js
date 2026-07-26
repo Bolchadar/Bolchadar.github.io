@@ -1236,8 +1236,36 @@ function loadDonationsPage() {
  });
 }
 
+function loadDonationsList() {
+ const tbody = document.getElementById('donations-table-body');
+ if (!tbody) return;
+ const donations = JSON.parse(localStorage.getItem('mj_donations') || '[]');
+ tbody.innerHTML = donations.length
+  ? donations.slice().reverse().map(d => `<tr><td><strong>${escapeHtml(d.name)}</strong></td><td style="color:var(--success);font-weight:700;">${escapeHtml(d.amount)}</td><td>${escapeHtml(d.category)}</td><td>${escapeHtml(d.method)}</td><td>${escapeHtml(d.date)}</td><td>${escapeHtml(d.notes||'-')}</td></tr>`).join('')
+  : '<tr><td colspan="6" class="text-center text-muted">No donation records yet.</td></tr>';
+}
+
+function loadTestimoniesList() {
+ const tTbl = document.getElementById('testimonies-table-body');
+ if (!tTbl) return;
+ const testimonies = JSON.parse(localStorage.getItem('mj_testimonies') || '[]');
+ tTbl.innerHTML = testimonies.length ? testimonies.slice().reverse().map(t => `
+ <tr>
+ <td><strong>${escapeHtml(t.name)}</strong></td>
+ <td>${escapeHtml(t.location || '-')}</td>
+ <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(t.testimony)}</td>
+ <td><span class="badge ${t.approved?'badge-completed':'badge-pending'}">${t.approved?' Approved':'⏳ Pending'}</span></td>
+ <td>${escapeHtml(t.date)}</td>
+ <td>
+ <button class="btn-xs btn-xs-green" onclick="(window.openEnrichApprove||approveTestimony)(${t.id})">Approve</button>
+ <button class="btn-xs btn-xs-red" onclick="deleteTestimony(${t.id})" style="margin-left:4px;">Delete</button>
+ </td>
+ </tr>`).join('') : '<tr><td colspan="6" class="text-center text-muted">No testimonies yet.</td></tr>';
+}
+
 // Map each section ID to its loader — called only when that section is opened
 const SECTION_LOADERS = {
+ 'sec-testimonies':        function(){ loadTestimoniesList(); },
  'sec-announcements':      function(){ loadAnnouncements(); },
  'sec-events':             function(){ loadEventsAdmin(); },
  'sec-devotionals':        function(){ loadDevotionalsList(); },
@@ -1248,6 +1276,7 @@ const SECTION_LOADERS = {
  'sec-members':            function(){ loadMemberProfiles(); },
  'sec-church-testimonies': function(){ loadChurchTestimonies(); },
  'sec-charity':            function(){ loadCharityList(); },
+ 'sec-donations':          function(){ loadDonationsList(); },
  'sec-settings':           function(){ loadSiteSettings(); },
  'sec-page-home':          function(){ loadHomePage(); },
  'sec-page-about':         function(){ loadAboutPage(); },

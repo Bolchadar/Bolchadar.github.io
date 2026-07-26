@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Prayer Requests | Admin | Apostle MJ Ministries</title>
+ <link rel="stylesheet" href="/css/style.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+ <style>
+ body { background:#f0f2f8; }
+ .notification-badge { background:var(--danger); color:#fff; border-radius:50px; font-size:0.7rem; padding:0.1rem 0.4rem; margin-left:0.3rem; }
+ .sidebar-section { padding:1rem 1.5rem 0.5rem; font-size:0.72rem; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,0.4); font-weight:700; }
+ .search-filter { display:flex; gap:0.75rem; margin-bottom:1rem; flex-wrap:wrap; }
+ .search-filter input, .search-filter select { padding:0.5rem 0.85rem; border:1px solid var(--gray-200); border-radius:var(--radius-sm); font-size:0.85rem; outline:none; }
+ .search-filter input:focus { border-color:var(--primary-light); }
+ @media(max-width:768px){
+ .admin-card { padding:1.25rem!important; margin-bottom:1rem!important; }
+ .search-filter { flex-direction:column!important; gap:0.5rem!important; }
+ .search-filter input { min-width:0!important; width:100%!important; }
+ }
+ </style>
+</head>
+<body>
+<script>if(sessionStorage.getItem('mj_admin')!=='1'){location.replace('/admin/');}</script>
+
+<div id="admin-dashboard">
+ <div class="admin-layout">
+
+ <!-- SIDEBAR OVERLAY -->
+ <div id="admin-overlay" onclick="closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;backdrop-filter:blur(2px);"></div>
+
+ <!-- SIDEBAR -->
+ <aside class="admin-sidebar" id="admin-sidebar">
+ <div class="sidebar-logo">
+ <img src="/logo.jpeg" alt="SOFAN" style="width:48px;height:48px;border-radius:8px;object-fit:cover;margin-bottom:0.5rem;">
+ <h3>Apostle MJ Ministries</h3>
+ <p>Ministry Admin Panel</p>
+ <button onclick="closeSidebar()" style="position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.1);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:none;" id="sidebar-close-btn"></button>
+ </div>
+ <nav class="admin-nav">
+ <div class="sidebar-section">Dashboard</div>
+ <a href="/admin/"><i class="fas fa-home"></i>Overview</a>
+
+ <div class="sidebar-section">Prayer Ministry</div>
+ <a href="#" onclick="showAdminSection('sec-prayers');closeSidebar();" class="active"><i class="fas fa-hands-praying"></i>Prayer Requests <span class="notification-badge" id="badge-prayers">0</span></a>
+
+ <div class="sidebar-section">Community</div>
+ <a href="/admin/content/#sec-testimonies"><i class="fas fa-star"></i>Testimonies</a>
+ <a href="/admin/content/#sec-church-testimonies"><i class="fas fa-church"></i>Church Testimonies</a>
+ <a href="/admin/content/#sec-members"><i class="fas fa-users"></i>Members</a>
+ <a href="/admin/content/#sec-charity"><i class="fas fa-heart"></i>Charity Projects</a>
+
+ <div class="sidebar-section">Content</div>
+ <a href="/admin/content/#sec-sermons"><i class="fas fa-play-circle"></i>Upload Sermons</a>
+ <a href="/admin/content/#sec-devotionals"><i class="fas fa-book-bible"></i>Devotionals</a>
+ <a href="/admin/content/#sec-prophecy"><i class="fas fa-fire"></i>Prophecy</a>
+ <a href="/admin/content/#sec-fulfillment"><i class="fas fa-check-circle"></i>Fulfillments</a>
+ <a href="/admin/content/#sec-events"><i class="fas fa-calendar-alt"></i>Events</a>
+ <a href="/admin/content/#sec-announcements"><i class="fas fa-bullhorn"></i>Announcements</a>
+ <a href="/admin/settings/#sec-livestream"><i class="fas fa-tower-broadcast"></i>Livestream</a>
+
+ <div class="sidebar-section">Finance</div>
+ <a href="/admin/content/#sec-donations"><i class="fas fa-hand-holding-heart"></i>Donations</a>
+
+ <div class="sidebar-section">Page Content</div>
+ <a href="/admin/settings/#sec-page-home"><i class="fas fa-home"></i>Home Page</a>
+ <a href="/admin/content/#sec-gallery"><i class="fas fa-images"></i>Home Gallery</a>
+ <a href="/admin/settings/#sec-page-about"><i class="fas fa-info-circle"></i>About Page</a>
+ <a href="/admin/settings/#sec-page-history"><i class="fas fa-history"></i>Church History</a>
+ <a href="/admin/settings/#sec-page-donations"><i class="fas fa-credit-card"></i>Donations Page</a>
+
+ <div class="sidebar-section">Admin</div>
+ <a href="/admin/settings/"><i class="fas fa-cog"></i>Site Settings</a>
+ <a href="/"><i class="fas fa-globe"></i>View Website</a>
+ <a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
+ </nav>
+ </aside>
+
+ <!-- MAIN CONTENT -->
+ <main class="admin-main">
+ <div class="admin-topbar">
+ <div style="display:flex;align-items:center;gap:0.75rem;">
+ <button onclick="toggleSidebar()" style="background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--primary);padding:0.25rem;line-height:1;" aria-label="Menu"><i class="fas fa-bars"></i></button>
+ <h4 id="admin-section-title" style="color:var(--primary);margin:0;font-size:1rem;">Prayer Requests</h4>
+ </div>
+ <div style="display:flex;align-items:center;gap:0.5rem;">
+ <span class="topbar-date" id="admin-date"></span>
+ <button onclick="loadAdminData()" class="btn btn-sm btn-purple"><i class="fas fa-sync"></i><span class="topbar-label">Refresh</span></button>
+ <button onclick="adminLogout()" class="btn btn-sm" style="background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.4rem 0.85rem;font-weight:600;cursor:pointer;"><i class="fas fa-sign-out-alt"></i><span class="topbar-label">Logout</span></button>
+ </div>
+ </div>
+
+ <div class="admin-content">
+
+ <!-- PRAYER REQUESTS -->
+ <div id="sec-prayers" class="admin-section active" data-title="Prayer Requests">
+ <div class="admin-card">
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem;">
+ <h4 style="color:var(--primary);margin:0;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i>Prayer Requests</h4>
+ <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+ <button id="sync-prayers-btn" class="btn btn-sm" style="background:#0ea5e9;color:#fff;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="syncPrayersFromGitHub(true)">🔄 Sync Prayers</button>
+ <button class="btn btn-sm btn-purple" onclick="filterPrayers('all')">All <span id="count-all" class="notification-badge" style="background:var(--primary-light);">0</span></button>
+ <button class="btn btn-sm" style="background:#fef3c7;color:#92400e;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('pending')">⏳ Pending <span id="count-pending" class="notification-badge" style="background:#92400e;">0</span></button>
+ <button class="btn btn-sm" style="background:#dbeafe;color:#1e40af;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('praying')">🙏 Prayed For <span id="count-praying" class="notification-badge" style="background:#1e40af;">0</span></button>
+ <button class="btn btn-sm" style="background:#d1fae5;color:#065f46;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('completed')">✔ Answered <span id="count-answered" class="notification-badge" style="background:#065f46;">0</span></button>
+ </div>
+ </div>
+ <div class="search-filter">
+ <input type="text" id="prayer-search" placeholder=" Search by name or country..." oninput="searchPrayers()" style="flex:1;min-width:200px;">
+ </div>
+ <div class="table-wrap">
+ <table>
+ <thead><tr><th>Name</th><th>Phone</th><th>Country</th><th>Request</th><th>Status</th><th>Notes</th><th>Date</th><th>Actions</th></tr></thead>
+ <tbody id="prayers-table-body"><tr><td colspan="8" class="text-center text-muted">No prayer requests yet.</td></tr></tbody>
+ </table>
+ </div>
+ </div>
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:0.75rem;"><i class="fas fa-info-circle" style="color:var(--gold);"></i>How to Use</h4>
+ <div style="font-size:0.88rem;color:var(--text-muted);">
+ <p>• <strong>🙏 Prayed For</strong> — Click after your team has prayed for this request</p>
+ <p>• <strong>✔ Answered</strong> — Click when God answers the prayer</p>
+ <p>• <strong>💬 Follow-Up</strong> — Opens WhatsApp with a personalized message. You can edit it before sending.</p>
+ <p>• <strong><i class="fas fa-edit"></i> Edit</strong> — Edit any details of the prayer request</p>
+ <p>• <strong><i class="fas fa-share-alt"></i> Share</strong> — Share the prayer with your prayer team</p>
+ <p>• <strong><i class="fas fa-trash"></i> Delete</strong> — Permanently remove a prayer request</p>
+ <p>• Click <strong>🔄 Sync Prayers</strong> to pull new submissions from the server.</p>
+ </div>
+ </div>
+ </div>
+
+ </div><!-- end admin-content -->
+ </main>
+ </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div id="share-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:600;display:flex;align-items:center;justify-content:center;padding:1rem;">
+ <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:420px;width:100%;box-shadow:var(--shadow-lg);position:relative;">
+ <button onclick="closeShareModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">&times;</button>
+ <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-share-alt" style="color:var(--gold);"></i> Share This</h4>
+ <p id="share-preview" style="font-size:0.82rem;color:var(--text-muted);background:var(--light);padding:0.75rem;border-radius:8px;margin-bottom:1.25rem;max-height:90px;overflow:hidden;white-space:pre-wrap;"></p>
+ <div style="display:flex;flex-direction:column;gap:0.6rem;">
+ <button onclick="_doShare('wa')" class="btn" style="background:#25D366;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-whatsapp" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on WhatsApp</button>
+ <button onclick="_doShare('fb')" class="btn" style="background:#1877F2;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-facebook" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Facebook</button>
+ <button onclick="_doShare('tw')" class="btn" style="background:#1d9bf0;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-twitter" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Twitter</button>
+ <button onclick="_doShare('tg')" class="btn" style="background:#0088cc;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-telegram" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Telegram</button>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.1rem;">
+ <button onclick="_doShare('copylink')" class="btn" style="background:#ede9fe;color:var(--primary);border:none;gap:0.6rem;"><i class="fas fa-link" style="font-size:1rem;"></i>Copy Link</button>
+ <button onclick="_doShare('copy')" class="btn" style="background:var(--light);color:var(--primary);border:1px solid var(--gray-200);gap:0.6rem;"><i class="fas fa-copy" style="font-size:1rem;"></i>Copy Message</button>
+ </div>
+ </div>
+ </div>
+</div>
+
+<!-- PRAYER EDIT MODAL -->
+<div id="prayer-edit-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:1rem;">
+ <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:520px;width:100%;box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;">
+ <button onclick="closeEditPrayer()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">&times;</button>
+ <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-edit" style="color:var(--gold);"></i> Edit Prayer Request</h4>
+ <input type="hidden" id="edit-prayer-id">
+ <div class="form-group"><label class="form-label">Name</label><input type="text" class="form-control" id="edit-prayer-name" placeholder="Full name"></div>
+ <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-control" id="edit-prayer-phone" placeholder="+1234567890"></div>
+ <div class="form-group"><label class="form-label">Country</label><input type="text" class="form-control" id="edit-prayer-country" placeholder="Country"></div>
+ <div class="form-group"><label class="form-label">Prayer Request</label><textarea class="form-control" rows="4" id="edit-prayer-request" placeholder="What do they need prayer for?"></textarea></div>
+ <div class="form-group"><label class="form-label">Status</label>
+ <select class="form-control" id="edit-prayer-status">
+ <option value="pending">⏳ Pending</option>
+ <option value="praying">🙏 Prayed For</option>
+ <option value="completed">✔ Answered</option>
+ </select>
+ </div>
+ <div class="form-group"><label class="form-label">Notes</label><input type="text" class="form-control" id="edit-prayer-notes" placeholder="e.g. Follow-up sent 01/07/2025"></div>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
+ <button onclick="saveEditedPrayer()" class="btn btn-primary"><i class="fas fa-save"></i>Save Changes</button>
+ <button onclick="closeEditPrayer()" style="background:var(--gray-200);color:var(--text);border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;">Cancel</button>
+ </div>
+ </div>
+</div>
+
+<!-- PRAYER FOLLOW-UP MODAL -->
+<div id="prayer-followup-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:1rem;">
+ <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:540px;width:100%;box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;">
+ <button onclick="closeFollowUp()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">&times;</button>
+ <h4 style="color:var(--primary);margin-bottom:0.25rem;"><i class="fab fa-whatsapp" style="color:#25D366;"></i> Send Follow-Up via WhatsApp</h4>
+ <p id="followup-to" style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1.25rem;border-bottom:1px solid var(--gray-200);padding-bottom:0.75rem;"></p>
+ <div class="form-group">
+ <label class="form-label">Message <span style="font-size:0.8rem;font-weight:400;color:var(--text-muted);">(edit before sending)</span></label>
+ <textarea id="followup-message" class="form-control" rows="9" style="font-size:0.88rem;"></textarea>
+ </div>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
+ <button onclick="sendFollowUp()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Send on WhatsApp</button>
+ <button onclick="closeFollowUp()" style="background:var(--gray-200);color:var(--text);border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;">Cancel</button>
+ </div>
+ </div>
+</div>
+
+<script src="/js/main.js" defer></script>
+<script src="/js/admin.js" defer></script>
+</body>
+</html>

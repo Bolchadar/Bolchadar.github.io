@@ -9,32 +9,14 @@
  <style>
  body { background:#f0f2f8; }
  .admin-stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.25rem; margin-bottom:2rem; }
- .upload-zone { border:2px dashed var(--gray-200); border-radius:var(--radius); padding:2.5rem; text-align:center; cursor:pointer; transition:var(--transition); }
- .upload-zone:hover { border-color:var(--primary-light); background:var(--light); }
- .upload-zone i { font-size:2.5rem; color:var(--text-muted); display:block; margin-bottom:0.75rem; }
- .admin-tabs { display:flex; gap:0.25rem; flex-wrap:wrap; margin-bottom:1.5rem; }
- .admin-tab { padding:0.5rem 1rem; border-radius:var(--radius-sm); border:none; cursor:pointer; font-weight:600; font-size:0.85rem; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); transition:var(--transition); }
- .admin-tab.active, .admin-tab:hover { background:var(--gold); color:var(--primary); }
  .notification-badge { background:var(--danger); color:#fff; border-radius:50px; font-size:0.7rem; padding:0.1rem 0.4rem; margin-left:0.3rem; }
  .sidebar-section { padding:1rem 1.5rem 0.5rem; font-size:0.72rem; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,0.4); font-weight:700; }
- .sermon-upload-form .form-control { margin-bottom:0.75rem; }
- .devotional-form .form-control { margin-bottom:0.75rem; }
- .quick-action { display:flex; align-items:center; gap:0.75rem; padding:0.85rem 1rem; background:var(--white); border-radius:var(--radius-sm); font-size:0.88rem; font-weight:600; color:var(--primary); cursor:pointer; transition:var(--transition); border:1px solid var(--gray-200); }
+ .quick-action { display:flex; align-items:center; gap:0.75rem; padding:0.85rem 1rem; background:var(--white); border-radius:var(--radius-sm); font-size:0.88rem; font-weight:600; color:var(--primary); cursor:pointer; transition:var(--transition); border:1px solid var(--gray-200); text-decoration:none; }
  .quick-action:hover { background:var(--light); border-color:var(--primary-light); }
  .quick-action i { color:var(--gold); font-size:1.1rem; width:20px; }
- .search-filter { display:flex; gap:0.75rem; margin-bottom:1rem; flex-wrap:wrap; }
- .search-filter input, .search-filter select { padding:0.5rem 0.85rem; border:1px solid var(--gray-200); border-radius:var(--radius-sm); font-size:0.85rem; outline:none; }
- .search-filter input:focus, .search-filter select:focus { border-color:var(--primary-light); }
  @media(max-width:768px){
  .admin-stat-grid { grid-template-columns:repeat(2,1fr)!important; gap:0.75rem!important; }
  .admin-card { padding:1.25rem!important; margin-bottom:1rem!important; }
- .admin-tabs { gap:0.25rem!important; }
- .admin-tab { font-size:0.78rem!important; padding:0.4rem 0.75rem!important; }
- .search-filter { flex-direction:column!important; gap:0.5rem!important; }
- .search-filter input { min-width:0!important; width:100%!important; }
- .upload-zone { padding:1.5rem!important; }
- .upload-zone i { font-size:1.75rem!important; }
- #announcements-list >div { flex-wrap:wrap!important; gap:0.4rem!important; }
  .quick-action { padding:0.75rem!important; font-size:0.85rem!important; }
  }
  @media(max-width:480px){
@@ -94,35 +76,35 @@
  <a href="#" onclick="showAdminSection('sec-overview');closeSidebar();" class="active"><i class="fas fa-home"></i>Overview</a>
 
  <div class="sidebar-section">Prayer Ministry</div>
- <a href="#" onclick="showAdminSection('sec-prayers');closeSidebar();"><i class="fas fa-hands-praying"></i>Prayer Requests <span class="notification-badge" id="badge-prayers">0</span></a>
+ <a href="/admin/prayers/"><i class="fas fa-hands-praying"></i>Prayer Requests <span class="notification-badge" id="badge-prayers">0</span></a>
 
  <div class="sidebar-section">Community</div>
- <a href="#" onclick="showAdminSection('sec-testimonies');closeSidebar();"><i class="fas fa-star"></i>Testimonies</a>
- <a href="#" onclick="showAdminSection('sec-church-testimonies');closeSidebar();"><i class="fas fa-church"></i>Church Testimonies</a>
- <a href="#" onclick="showAdminSection('sec-members');closeSidebar();"><i class="fas fa-users"></i>Members</a>
- <a href="#" onclick="showAdminSection('sec-charity');closeSidebar();"><i class="fas fa-heart"></i>Charity Projects</a>
+ <a href="/admin/content/#sec-testimonies"><i class="fas fa-star"></i>Testimonies</a>
+ <a href="/admin/content/#sec-church-testimonies"><i class="fas fa-church"></i>Church Testimonies</a>
+ <a href="/admin/content/#sec-members"><i class="fas fa-users"></i>Members</a>
+ <a href="/admin/content/#sec-charity"><i class="fas fa-heart"></i>Charity Projects</a>
 
  <div class="sidebar-section">Content</div>
- <a href="#" onclick="showAdminSection('sec-sermons');closeSidebar();"><i class="fas fa-play-circle"></i>Upload Sermons</a>
- <a href="#" onclick="showAdminSection('sec-devotionals');closeSidebar();"><i class="fas fa-book-bible"></i>Devotionals</a>
- <a href="#" onclick="showAdminSection('sec-prophecy');closeSidebar();"><i class="fas fa-fire"></i>Prophecy</a>
- <a href="#" onclick="showAdminSection('sec-fulfillment');closeSidebar();"><i class="fas fa-check-circle"></i>Fulfillments</a>
- <a href="#" onclick="showAdminSection('sec-events');closeSidebar();"><i class="fas fa-calendar-alt"></i>Events</a>
- <a href="#" onclick="showAdminSection('sec-announcements');closeSidebar();"><i class="fas fa-bullhorn"></i>Announcements</a>
- <a href="#" onclick="showAdminSection('sec-livestream');closeSidebar();"><i class="fas fa-tower-broadcast"></i>Livestream</a>
+ <a href="/admin/content/#sec-sermons"><i class="fas fa-play-circle"></i>Upload Sermons</a>
+ <a href="/admin/content/#sec-devotionals"><i class="fas fa-book-bible"></i>Devotionals</a>
+ <a href="/admin/content/#sec-prophecy"><i class="fas fa-fire"></i>Prophecy</a>
+ <a href="/admin/content/#sec-fulfillment"><i class="fas fa-check-circle"></i>Fulfillments</a>
+ <a href="/admin/content/#sec-events"><i class="fas fa-calendar-alt"></i>Events</a>
+ <a href="/admin/content/#sec-announcements"><i class="fas fa-bullhorn"></i>Announcements</a>
+ <a href="/admin/settings/#sec-livestream"><i class="fas fa-tower-broadcast"></i>Livestream</a>
 
  <div class="sidebar-section">Finance</div>
- <a href="#" onclick="showAdminSection('sec-donations');closeSidebar();"><i class="fas fa-hand-holding-heart"></i>Donations</a>
+ <a href="/admin/content/#sec-donations"><i class="fas fa-hand-holding-heart"></i>Donations</a>
 
  <div class="sidebar-section">Page Content</div>
- <a href="#" onclick="showAdminSection('sec-page-home');closeSidebar();"><i class="fas fa-home"></i>Home Page</a>
- <a href="#" onclick="showAdminSection('sec-gallery');closeSidebar();"><i class="fas fa-images"></i>Home Gallery</a>
- <a href="#" onclick="showAdminSection('sec-page-about');closeSidebar();"><i class="fas fa-info-circle"></i>About Page</a>
- <a href="#" onclick="showAdminSection('sec-page-history');closeSidebar();"><i class="fas fa-history"></i>Church History</a>
- <a href="#" onclick="showAdminSection('sec-page-donations');closeSidebar();"><i class="fas fa-credit-card"></i>Donations Page</a>
+ <a href="/admin/settings/#sec-page-home"><i class="fas fa-home"></i>Home Page</a>
+ <a href="/admin/content/#sec-gallery"><i class="fas fa-images"></i>Home Gallery</a>
+ <a href="/admin/settings/#sec-page-about"><i class="fas fa-info-circle"></i>About Page</a>
+ <a href="/admin/settings/#sec-page-history"><i class="fas fa-history"></i>Church History</a>
+ <a href="/admin/settings/#sec-page-donations"><i class="fas fa-credit-card"></i>Donations Page</a>
 
  <div class="sidebar-section">Admin</div>
- <a href="#" onclick="showAdminSection('sec-settings');closeSidebar();"><i class="fas fa-cog"></i>Site Settings</a>
+ <a href="/admin/settings/"><i class="fas fa-cog"></i>Site Settings</a>
  <a href="/"><i class="fas fa-globe"></i>View Website</a>
  <a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
  </nav>
@@ -157,20 +139,20 @@
  <div class="admin-card">
  <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-bolt" style="color:var(--gold);"></i>Quick Actions</h4>
  <div style="display:flex;flex-direction:column;gap:0.75rem;">
- <div class="quick-action" onclick="showAdminSection('sec-prayers')"><i class="fas fa-hands-praying"></i>View & Manage Prayer Requests</div>
- <div class="quick-action" onclick="showAdminSection('sec-testimonies')"><i class="fas fa-star"></i>Approve Testimonies</div>
- <div class="quick-action" onclick="showAdminSection('sec-church-testimonies')"><i class="fas fa-church"></i>Post Church Testimony</div>
- <div class="quick-action" onclick="showAdminSection('sec-members')"><i class="fas fa-users"></i>View New Members / Directory</div>
- <div class="quick-action" onclick="showAdminSection('sec-charity')"><i class="fas fa-heart"></i>Post Charity Project</div>
- <div class="quick-action" onclick="showAdminSection('sec-sermons')"><i class="fas fa-upload"></i>Upload a New Sermon</div>
- <div class="quick-action" onclick="showAdminSection('sec-devotionals')"><i class="fas fa-book-bible"></i>Write Daily Devotional</div>
- <div class="quick-action" onclick="showAdminSection('sec-prophecy')"><i class="fas fa-fire"></i>Post Prophetic Word</div>
- <div class="quick-action" onclick="showAdminSection('sec-fulfillment')"><i class="fas fa-check-circle"></i>Record Fulfillment</div>
- <div class="quick-action" onclick="showAdminSection('sec-events')"><i class="fas fa-calendar-alt"></i>Manage Events</div>
- <div class="quick-action" onclick="showAdminSection('sec-announcements')"><i class="fas fa-bullhorn"></i>Post Announcement</div>
- <div class="quick-action" onclick="showAdminSection('sec-gallery')"><i class="fas fa-images"></i>Edit Homepage Gallery Photos</div>
- <div class="quick-action" onclick="showAdminSection('sec-livestream')"><i class="fas fa-tower-broadcast"></i>Control Livestream</div>
- <div class="quick-action" onclick="showAdminSection('sec-settings')"><i class="fas fa-cog"></i>Site Settings</div>
+ <a href="/admin/prayers/" class="quick-action"><i class="fas fa-hands-praying"></i>View &amp; Manage Prayer Requests</a>
+ <a href="/admin/content/#sec-testimonies" class="quick-action"><i class="fas fa-star"></i>Approve Testimonies</a>
+ <a href="/admin/content/#sec-church-testimonies" class="quick-action"><i class="fas fa-church"></i>Post Church Testimony</a>
+ <a href="/admin/content/#sec-members" class="quick-action"><i class="fas fa-users"></i>View New Members / Directory</a>
+ <a href="/admin/content/#sec-charity" class="quick-action"><i class="fas fa-heart"></i>Post Charity Project</a>
+ <a href="/admin/content/#sec-sermons" class="quick-action"><i class="fas fa-upload"></i>Upload a New Sermon</a>
+ <a href="/admin/content/#sec-devotionals" class="quick-action"><i class="fas fa-book-bible"></i>Write Daily Devotional</a>
+ <a href="/admin/content/#sec-prophecy" class="quick-action"><i class="fas fa-fire"></i>Post Prophetic Word</a>
+ <a href="/admin/content/#sec-fulfillment" class="quick-action"><i class="fas fa-check-circle"></i>Record Fulfillment</a>
+ <a href="/admin/content/#sec-events" class="quick-action"><i class="fas fa-calendar-alt"></i>Manage Events</a>
+ <a href="/admin/content/#sec-announcements" class="quick-action"><i class="fas fa-bullhorn"></i>Post Announcement</a>
+ <a href="/admin/content/#sec-gallery" class="quick-action"><i class="fas fa-images"></i>Edit Homepage Gallery Photos</a>
+ <a href="/admin/settings/#sec-livestream" class="quick-action"><i class="fas fa-tower-broadcast"></i>Control Livestream</a>
+ <a href="/admin/settings/" class="quick-action"><i class="fas fa-cog"></i>Site Settings</a>
  </div>
  </div>
  <div class="admin-card">
@@ -182,630 +164,8 @@
  </div>
  </div>
 
- <!-- PRAYER REQUESTS -->
- <div id="sec-prayers" class="admin-section" data-title="Prayer Requests">
- <div class="admin-card">
- <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem;">
- <h4 style="color:var(--primary);margin:0;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i>Prayer Requests</h4>
- <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
- <button id="sync-prayers-btn" class="btn btn-sm" style="background:#0ea5e9;color:#fff;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="syncPrayersFromGitHub(true)">🔄 Sync Prayers</button>
- <button class="btn btn-sm btn-purple" onclick="filterPrayers('all')">All <span id="count-all" class="notification-badge" style="background:var(--primary-light);">0</span></button>
- <button class="btn btn-sm" style="background:#fef3c7;color:#92400e;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('pending')">⏳ Pending <span id="count-pending" class="notification-badge" style="background:#92400e;">0</span></button>
- <button class="btn btn-sm" style="background:#dbeafe;color:#1e40af;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('praying')">🙏 Prayed For <span id="count-praying" class="notification-badge" style="background:#1e40af;">0</span></button>
- <button class="btn btn-sm" style="background:#d1fae5;color:#065f46;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('completed')">✔ Answered <span id="count-answered" class="notification-badge" style="background:#065f46;">0</span></button>
- </div>
- </div>
- <div class="search-filter">
- <input type="text" id="prayer-search" placeholder=" Search by name or country..." oninput="searchPrayers()" style="flex:1;min-width:200px;">
- </div>
- <div class="table-wrap">
- <table>
- <thead><tr><th>Name</th><th>Phone</th><th>Country</th><th>Request</th><th>Status</th><th>Notes</th><th>Date</th><th>Actions</th></tr></thead>
- <tbody id="prayers-table-body"><tr><td colspan="8" class="text-center text-muted">No prayer requests yet.</td></tr></tbody>
- </table>
- </div>
- </div>
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:0.75rem;"><i class="fas fa-info-circle" style="color:var(--gold);"></i>How to Use</h4>
- <div style="font-size:0.88rem;color:var(--text-muted);">
- <p>• <strong>🙏 Prayed For</strong> — Click after your team has prayed for this request</p>
- <p>• <strong>✔ Answered</strong> — Click when God answers the prayer</p>
- <p>• <strong>💬 Follow-Up</strong> — Opens WhatsApp with a personalized message for that person. You can edit it before sending.</p>
- <p>• <strong><i class="fas fa-edit"></i> Edit</strong> — Edit any details of the prayer request (name, phone, country, request, status, notes)</p>
- <p>• <strong><i class="fas fa-share-alt"></i> Share</strong> — Share the prayer request with your prayer team via WhatsApp, Facebook, Telegram, or copy it</p>
- <p>• <strong><i class="fas fa-trash"></i> Delete</strong> — Permanently remove a prayer request</p>
- <p>• Follow-up notes are saved automatically so you can track what was sent.</p>
- </div>
- </div>
- </div>
-
- <!-- TESTIMONIES -->
- <div id="sec-testimonies" class="admin-section" data-title="Testimonies">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-star" style="color:var(--gold);"></i>Submitted Testimonies</h4>
- <div class="table-wrap">
- <table>
- <thead><tr><th>Name</th><th>Location</th><th>Testimony</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
- <tbody id="testimonies-table-body"><tr><td colspan="6" class="text-center text-muted">No testimonies yet.</td></tr></tbody>
- </table>
- </div>
- </div>
- </div>
-
- <!-- MEMBERS -->
- <div id="sec-members" class="admin-section" data-title="Members">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-id-card" style="color:var(--gold);"></i>Add to Public Member Directory</h4>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Full Name <span class="required">*</span></label><input type="text" class="form-control" id="mp-name" placeholder="Member's full name"></div>
- <div class="form-group"><label class="form-label">Photo URL</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" id="mp-photo" placeholder="https://... (paste or upload)" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('mp-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
- </div>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Gender</label><select class="form-control" id="mp-gender"><option>Male</option><option>Female</option></select></div>
- <div class="form-group"><label class="form-label">Ministry / Department</label><input type="text" class="form-control" id="mp-dept" placeholder="e.g. Worship Team, Youth"></div>
- </div>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Position / Role</label><input type="text" class="form-control" id="mp-position" placeholder="e.g. Elder, Deacon, Choir Leader"></div>
- <div class="form-group"><label class="form-label">Membership Status</label><select class="form-control" id="mp-status"><option>Active Member</option><option>Leadership</option><option>Elder</option><option>Deacon</option><option>Minister</option><option>New Member</option></select></div>
- </div>
- <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
- <button id="mp-save-btn" onclick="saveMemberProfile()" class="btn btn-primary"><i class="fas fa-plus"></i>Add to Directory</button>
- <button id="mp-cancel-btn" onclick="cancelEdit('memberProfile')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
- </div>
- </div>
- <div class="admin-card mt-3">
- <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-address-book" style="color:var(--gold);"></i>Public Directory</h4>
- <div id="member-profiles-list"><p style="color:var(--text-muted);font-size:0.9rem;">No member profiles in directory yet.</p></div>
- </div>
- <div class="admin-card mt-3">
- <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem;">
- <h4 style="color:var(--primary);margin:0;"><i class="fas fa-users" style="color:var(--gold);"></i>Registered Members</h4>
- <button onclick="exportMembers()" class="btn btn-sm btn-purple"><i class="fas fa-download"></i>Export</button>
- </div>
- <div class="table-wrap">
- <table>
- <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Country</th><th>Department</th><th>Registered</th></tr></thead>
- <tbody id="members-table-body"><tr><td colspan="6" class="text-center text-muted">No members registered yet.</td></tr></tbody>
- </table>
- </div>
- </div>
- </div>
-
- <!-- UPLOAD SERMONS -->
- <div id="sec-sermons" class="admin-section" data-title="Upload Sermons">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-upload" style="color:var(--gold);"></i>Upload New Sermon</h4>
- <div class="sermon-upload-form">
- <div class="form-row">
- <div class="form-group"><label class="form-label">Sermon Title</label><input type="text" class="form-control" placeholder="Enter sermon title" id="sermon-title"></div>
- <div class="form-group"><label class="form-label">Speaker</label><input type="text" class="form-control" value="Apostle MJ" id="sermon-speaker"></div>
- </div>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Category / Topic</label><select class="form-control" id="sermon-topic"><option>Faith</option><option>Healing</option><option>Prayer</option><option>Salvation</option><option>Holy Spirit</option><option>Family</option><option>Prosperity</option><option>Worship</option><option>Other</option></select></div>
- <div class="form-group"><label class="form-label">Date Preached</label><input type="date" class="form-control" id="sermon-date"></div>
- </div>
- <div class="form-group"><label class="form-label">YouTube Video URL</label><input type="url" class="form-control" placeholder="https://youtube.com/watch?v=..." id="sermon-url"></div>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Preacher Photo URL</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" placeholder="https://... (paste or upload)" id="sermon-preacher-photo" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('sermon-preacher-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
- <div class="form-group"><label class="form-label">Scripture Reference</label><input type="text" class="form-control" placeholder="e.g. Romans 8:28" id="sermon-scripture"></div>
- </div>
- <div class="form-group"><label class="form-label">Sermon Description</label><textarea class="form-control" rows="4" placeholder="Brief description of the sermon..." id="sermon-desc"></textarea></div>
- <div class="form-group"><label class="form-label">Audio URL <span style="font-size:0.8rem;color:var(--text-muted);">(SoundCloud, Dropbox, or direct MP3 link — leave blank if none)</span></label><input type="url" class="form-control" placeholder="https://soundcloud.com/..." id="sermon-audio"></div>
- <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
- <button id="sermon-save-btn" onclick="saveSermon()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish Sermon</button>
- <button id="sermon-cancel-btn" onclick="cancelEdit('sermon')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
- </div>
- </div>
- </div>
- <div class="admin-card mt-3">
- <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Published Sermons</h4>
- <div id="sermons-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">No sermons uploaded yet.</p></div>
- </div>
- </div>
-
- <!-- DEVOTIONALS -->
- <div id="sec-devotionals" class="admin-section" data-title="Daily Devotionals">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-book-bible" style="color:var(--gold);"></i>Write Daily Devotional</h4>
- <div class="devotional-form">
- <div class="form-row">
- <div class="form-group"><label class="form-label">Devotional Date</label><input type="date" class="form-control" id="dev-date"></div>
- <div class="form-group"><label class="form-label">Topic</label><input type="text" class="form-control" placeholder="e.g. Walking in Faith" id="dev-topic"></div>
- </div>
- <div class="form-group"><label class="form-label">Scripture Reference</label><input type="text" class="form-control" placeholder="e.g. Hebrews 11:1" id="dev-ref"></div>
- <div class="form-group"><label class="form-label">Scripture Text</label><textarea class="form-control" rows="3" placeholder="Type the scripture verse here..." id="dev-verse"></textarea></div>
- <div class="form-group"><label class="form-label">Devotional Message</label><textarea class="form-control" rows="10" placeholder="Write the full devotional message here..." id="dev-message"></textarea></div>
- <div class="form-group"><label class="form-label">Prayer Points (one per line)</label><textarea class="form-control" rows="4" placeholder="1. Thank God for...\n2. Ask for...\n3. Pray for..." id="dev-prayers"></textarea></div>
- <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
- <button id="dev-save-btn" onclick="saveDevotional()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
- <button id="dev-cancel-btn" onclick="cancelEdit('devotional')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
- <button onclick="shareDevotionalWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share on WhatsApp / More</button>
- </div>
- </div>
- </div>
- <div class="admin-card mt-3">
- <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Published Devotionals</h4>
- <div id="devotionals-list"><p style="color:var(--text-muted);font-size:0.9rem;">No devotionals published yet.</p></div>
- </div>
- </div>
-
- <!-- EVENTS -->
- <div id="sec-events" class="admin-section" data-title="Events">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-calendar-alt" style="color:var(--gold);"></i>Add New Event</h4>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Event Name</label><input type="text" class="form-control" placeholder="e.g. Annual Revival Conference" id="evt-name"></div>
- <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-control" id="evt-date"></div>
- </div>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Time</label><input type="text" class="form-control" placeholder="e.g. 9:00 AM - 5:00 PM" id="evt-time"></div>
- <div class="form-group"><label class="form-label">Venue / Location</label><input type="text" class="form-control" placeholder="e.g. Church Grounds, Juba" id="evt-venue"></div>
- </div>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Ticket / Entry</label><input type="text" class="form-control" placeholder="e.g. Free" id="evt-ticket"></div>
- <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="evt-category"><option>Revival</option><option>Conference</option><option>Youth</option><option>Outreach</option><option>Charity</option><option>Seminar</option><option>Worship</option><option>Other</option></select></div>
- </div>
- <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" rows="4" placeholder="Describe the event..." id="evt-desc"></textarea></div>
- <div class="form-group"><label class="form-label">Event Poster / Photo</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" placeholder="https://... (paste URL or upload)" id="evt-photo" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('evt-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
- <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
- <button id="evt-save-btn" onclick="saveEvent()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish Event</button>
- <button id="evt-cancel-btn" onclick="cancelEdit('event')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
- </div>
- </div>
- <div class="admin-card mt-3">
- <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Upcoming Events</h4>
- <div id="events-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">No events published yet.</p></div>
- </div>
- </div>
-
- <!-- PHOTO GALLERY -->
- <div id="sec-gallery" class="admin-section" data-title="Photo Gallery">
- <div class="admin-card">
-  <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-images" style="color:var(--gold);"></i> Homepage Gallery — "Life at Apostle MJ Ministries"</h4>
-  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Add, replace or remove photos shown in the gallery section on the homepage. Upload new photos to replace the old ones.</p>
-  <div class="form-group">
-  <label class="form-label">Add Photo(s)</label>
-  <div style="display:flex;gap:0.5rem;align-items:center;">
-   <input type="url" class="form-control" id="gal-url" placeholder="https://... (paste URL or upload)" style="flex:1;min-width:0;">
-   <button type="button" onclick="uploadFile('gal-url','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button>
-  </div>
-  </div>
-  <div class="form-group"><label class="form-label">Caption (optional)</label><input type="text" class="form-control" id="gal-caption" placeholder="e.g. Sunday Service, Crusade 2026"></div>
-  <button onclick="addGalleryPhoto()" class="btn btn-primary"><i class="fas fa-plus"></i> Add to Gallery</button>
-  <button onclick="uploadMultipleToGallery()" class="btn" style="margin-left:0.5rem;background:var(--primary-light);color:#fff;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-images"></i> Upload Multiple</button>
- </div>
- <div class="admin-card mt-3">
-  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-th" style="color:var(--gold);"></i> Current Gallery Photos</h4>
-  <div id="gallery-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">Loading gallery...</p></div>
- </div>
- </div>
-
- <!-- ANNOUNCEMENTS -->
- <div id="sec-announcements" class="admin-section" data-title="Announcements">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-bullhorn" style="color:var(--gold);"></i>Post Announcement</h4>
- <div class="form-group"><label class="form-label">Announcement Title</label><input type="text" class="form-control" placeholder="e.g. Sunday Service Time Change" id="ann-title"></div>
- <div class="form-group"><label class="form-label">Announcement Text</label><textarea class="form-control" rows="5" placeholder="Write your announcement here..." id="ann-text"></textarea></div>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Event Date (optional)</label><input type="date" class="form-control" id="ann-event-date"></div>
- <div class="form-group"><label class="form-label">Featured Photo URL</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" placeholder="https://... (paste or upload)" id="ann-photo" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('ann-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
- </div>
- <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" placeholder="https://youtube.com/..." id="ann-video"></div>
- <div class="form-group"><label class="form-label">Share To</label>
- <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;">
- <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.9rem;"><input type="checkbox" checked>WhatsApp</label>
- <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.9rem;"><input type="checkbox" checked>Website Ticker</label>
- <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.9rem;"><input type="checkbox">Facebook</label>
- </div>
- </div>
- <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
- <button id="ann-save-btn" onclick="postAnnouncement()" class="btn btn-primary"><i class="fas fa-paper-plane"></i>Post Announcement</button>
- <button id="ann-cancel-btn" onclick="cancelEdit('announcement')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
- </div>
- </div>
-
- <!-- CURRENT ANNOUNCEMENTS -->
- <div class="admin-card mt-3">
- <h4 style="color:var(--primary);margin-bottom:1rem;">Current Announcements (Ticker)</h4>
- <div id="announcements-list" style="font-size:0.9rem;"><p style="color:var(--text-muted);">No announcements yet.</p></div>
- </div>
- </div>
-
- <!-- PROPHECY -->
- <div id="sec-prophecy" class="admin-section" data-title="Post Prophetic Word">
- <div class="admin-card">
-  <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-fire" style="color:var(--gold);"></i>Post a Prophetic Word</h4>
-  <div class="form-row">
-  <div class="form-group"><label class="form-label">Title / Heading <span class="required">*</span></label><input type="text" class="form-control" placeholder="e.g. A Word for the Nation" id="proph-title"></div>
-  <div class="form-group"><label class="form-label">Date Given</label><input type="date" class="form-control" id="proph-date"></div>
-  </div>
-  <div class="form-row">
-  <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="proph-category"><option>General</option><option>National</option><option>Church</option><option>Personal</option><option>Healing</option><option>Revival</option></select></div>
-  <div class="form-group"><label class="form-label">Scripture Reference</label><input type="text" class="form-control" placeholder="e.g. Jeremiah 29:11" id="proph-scripture"></div>
-  </div>
-  <div class="form-group"><label class="form-label">Prophetic Word <span class="required">*</span></label><textarea class="form-control" rows="10" placeholder="Type the prophetic word here..." id="proph-word"></textarea></div>
-  <div class="form-row">
-  <div class="form-group"><label class="form-label">Prophet Photo URL</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" placeholder="https://... (paste or upload)" id="proph-photo" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('proph-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
-  <div class="form-group"><label class="form-label">Prophecy Video URL (YouTube)</label><input type="url" class="form-control" placeholder="https://youtube.com/..." id="proph-video"></div>
-  </div>
-  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-  <button id="proph-save-btn" onclick="saveProphecy()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
-  <button id="proph-cancel-btn" onclick="cancelEdit('prophecy')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
-  <button onclick="shareProphecyWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share on WhatsApp / More</button>
-  </div>
- </div>
- <div class="admin-card mt-3">
-  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Published Prophecies</h4>
-  <div id="prophecy-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">No prophetic words published yet.</p></div>
- </div>
- </div>
-
- <!-- FULFILLMENTS -->
- <div id="sec-fulfillment" class="admin-section" data-title="Record Fulfilled Prophecy">
- <div class="admin-card">
-  <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-check-circle" style="color:#10b981;"></i>Record a Fulfilled Prophecy</h4>
-  <div class="form-row">
-  <div class="form-group"><label class="form-label">Fulfillment Title <span class="required">*</span></label><input type="text" class="form-control" placeholder="e.g. National Peace Prophecy Fulfilled" id="ful-title"></div>
-  <div class="form-group"><label class="form-label">Date Fulfilled</label><input type="date" class="form-control" id="ful-date"></div>
-  </div>
-  <div class="form-row">
-  <div class="form-group"><label class="form-label">Date Originally Prophesied</label><input type="date" class="form-control" id="ful-propdate"></div>
-  <div class="form-group"></div>
-  </div>
-  <div class="form-group"><label class="form-label">Original Prophecy (brief quote)</label><textarea class="form-control" rows="3" placeholder="Paste or summarise the original prophetic word..." id="ful-original"></textarea></div>
-  <div class="form-group"><label class="form-label">How It Was Fulfilled <span class="required">*</span></label><textarea class="form-control" rows="8" placeholder="Describe how this prophecy came to pass..." id="ful-how"></textarea></div>
-  <div class="form-group"><label class="form-label">Photos <span style="font-size:0.8rem;color:var(--text-muted);">(paste image URLs, one per line — or upload multiple)</span></label><textarea class="form-control" rows="3" placeholder="https://image1.jpg&#10;https://image2.jpg" id="ful-photos"></textarea><button type="button" onclick="uploadMultiple('ful-photos','image/*')" class="btn" style="margin-top:0.4rem;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.9rem;font-size:0.82rem;"><i class="fas fa-images"></i> Upload Photos</button></div>
-  <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" placeholder="https://youtube.com/..." id="ful-video"></div>
-  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-  <button id="ful-save-btn" onclick="saveFulfillment()" class="btn btn-primary"><i class="fas fa-save"></i>Save & Publish</button>
-  <button id="ful-cancel-btn" onclick="cancelEdit('fulfillment')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
-  <button onclick="shareFulfillmentAdminWA()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Share on WhatsApp / More</button>
-  </div>
- </div>
- <div class="admin-card mt-3">
-  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Recorded Fulfillments</h4>
-  <div id="fulfillment-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">No fulfillments recorded yet.</p></div>
- </div>
- </div>
-
- <!-- LIVESTREAM -->
- <div id="sec-livestream" class="admin-section" data-title="Livestream Control">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-tower-broadcast" style="color:var(--gold);"></i>Livestream Control</h4>
- <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.5rem;">Use this panel to go live on YouTube, Facebook, and TikTok. Visitors on the Livestream page will see the embedded player and live buttons automatically.</p>
-
- <div class="form-group">
- <label class="form-label">Are we LIVE right now?</label>
- <div style="display:flex;gap:1rem;margin-top:0.5rem;flex-wrap:wrap;">
- <label style="display:flex;align-items:center;gap:0.5rem;font-weight:600;cursor:pointer;">
-  <input type="radio" name="live-status" id="live-yes" value="yes"> <span style="color:#16a34a;">🔴 YES — We are LIVE</span>
- </label>
- <label style="display:flex;align-items:center;gap:0.5rem;font-weight:600;cursor:pointer;">
-  <input type="radio" name="live-status" id="live-no" value="no" checked> <span style="color:var(--text-muted);">⚫ NO — Not live right now</span>
- </label>
- </div>
- </div>
-
- <h5 style="color:var(--primary);margin:1.25rem 0 0.5rem;"><i class="fab fa-youtube" style="color:#ff0000;"></i> YouTube Live</h5>
- <div class="form-group">
- <label class="form-label">YouTube Live Video URL</label>
- <input type="text" class="form-control" id="live-url" placeholder="https://youtube.com/watch?v=...  OR  https://youtu.be/...">
- </div>
-
- <h5 style="color:var(--primary);margin:1.25rem 0 0.5rem;"><i class="fab fa-facebook" style="color:#1877F2;"></i> Facebook Live</h5>
- <div class="form-group">
- <label class="form-label">Facebook Live Video URL <span style="font-size:0.8rem;color:var(--text-muted);">(paste your Facebook live video link)</span></label>
- <input type="text" class="form-control" id="live-fb-url" placeholder="https://www.facebook.com/watch/live/?v=... OR https://fb.watch/...">
- </div>
-
- <h5 style="color:var(--primary);margin:1.25rem 0 0.5rem;"><i class="fab fa-tiktok"></i> TikTok Live</h5>
- <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.75rem;">TikTok does not allow embedding on other websites. A "Watch Live on TikTok" button will appear on the livestream page when enabled.</p>
- <div class="form-group">
- <label style="display:flex;align-items:center;gap:0.75rem;cursor:pointer;font-weight:600;">
-  <input type="checkbox" id="live-tiktok" style="width:18px;height:18px;cursor:pointer;">
-  <span>We are also LIVE on TikTok right now</span>
- </label>
- </div>
- <div class="form-group">
- <label class="form-label">TikTok Live URL <span style="font-size:0.8rem;color:var(--text-muted);">(paste your TikTok live link)</span></label>
- <input type="text" class="form-control" id="live-tiktok-url" placeholder="https://www.tiktok.com/@yourusername/live">
- </div>
-
- <div class="form-group">
- <label class="form-label">Schedule / Next Service Info <span style="font-size:0.8rem;color:var(--text-muted);">(shown when not live)</span></label>
- <input type="text" class="form-control" id="live-schedule" placeholder="e.g. Join us Sunday at 9:00 AM on YouTube, Facebook & TikTok">
- </div>
-
- <button onclick="saveLivestream()" class="btn btn-primary"><i class="fas fa-save"></i>Save Livestream Settings</button>
- <div id="live-status-msg" style="margin-top:1rem;font-size:0.9rem;color:var(--text-muted);"></div>
- </div>
- </div>
-
- <!-- DONATIONS -->
- <div id="sec-donations" class="admin-section" data-title="Donations & Giving">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-hand-holding-heart" style="color:var(--gold);"></i>Record a Donation</h4>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Donor Name</label><input type="text" class="form-control" placeholder="Donor name" id="don-name"></div>
- <div class="form-group"><label class="form-label">Amount</label><input type="text" class="form-control" placeholder="e.g. $50 or 500 KES" id="don-amount"></div>
- </div>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="don-cat"><option>Tithe</option><option>Offering</option><option>Missions</option><option>Charity</option><option>Building Fund</option></select></div>
- <div class="form-group"><label class="form-label">Payment Method</label><select class="form-control" id="don-method"><option>M-Pesa</option><option>MTN MoMo</option><option>Bank Transfer</option><option>Cash</option><option>PayPal</option><option>Western Union</option></select></div>
- </div>
- <div class="form-group"><label class="form-label">Notes</label><input type="text" class="form-control" placeholder="Any notes..." id="don-notes"></div>
- <button onclick="saveDonation()" class="btn btn-primary"><i class="fas fa-save"></i>Record Donation</button>
- </div>
-
- <div class="admin-card mt-3">
- <h4 style="color:var(--primary);margin-bottom:1.25rem;">Donation Records</h4>
- <div class="table-wrap">
- <table>
- <thead><tr><th>Donor</th><th>Amount</th><th>Category</th><th>Method</th><th>Date</th><th>Notes</th></tr></thead>
- <tbody id="donations-table-body"><tr><td colspan="6" class="text-center text-muted">No donation records yet.</td></tr></tbody>
- </table>
- </div>
- </div>
- </div>
-
- <!-- CHURCH TESTIMONIES -->
- <div id="sec-church-testimonies" class="admin-section" data-title="Church Testimonies">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-church" style="color:var(--gold);"></i>Post Church Testimony</h4>
- <div class="form-group"><label class="form-label">Title <span class="required">*</span></label><input type="text" class="form-control" id="ct-title" placeholder="e.g. God Healed Sister Mary!"></div>
- <div class="form-group"><label class="form-label">Person's Name <span style="font-size:0.8rem;color:var(--text-muted);">(optional — leave blank for anonymous)</span></label><input type="text" class="form-control" id="ct-name" placeholder="First name or initials"></div>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-control" id="ct-date"></div>
- <div class="form-group"><label class="form-label">Category</label><select class="form-control" id="ct-category"><option>Healing</option><option>Financial Breakthrough</option><option>Salvation & New Life</option><option>Marriage & Family</option><option>Deliverance</option><option>Answered Prayer</option><option>Other</option></select></div>
- </div>
- <div class="form-group"><label class="form-label">Testimony <span class="required">*</span></label><textarea class="form-control" rows="8" id="ct-testimony" placeholder="Write the full testimony here..."></textarea></div>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Featured Photo URL</label><div style="display:flex;gap:0.5rem;align-items:center;"><input type="url" class="form-control" id="ct-photo" placeholder="https://... (paste or upload)" style="flex:1;min-width:0;"><button type="button" onclick="uploadFile('ct-photo','image/*')" class="btn" style="flex-shrink:0;white-space:nowrap;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.75rem;font-size:0.82rem;"><i class="fas fa-upload"></i> Upload</button></div></div>
- <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" id="ct-video" placeholder="https://youtube.com/..."></div>
- </div>
- <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
- <button id="ct-save-btn" onclick="saveChurchTestimony()" class="btn btn-primary"><i class="fas fa-save"></i>Publish Testimony</button>
- <button id="ct-cancel-btn" onclick="cancelEdit('churchTestimony')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
- </div>
- </div>
- <div class="admin-card mt-3">
- <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Published Church Testimonies</h4>
- <div id="church-testimonies-list"><p style="color:var(--text-muted);font-size:0.9rem;">No church testimonies posted yet.</p></div>
- </div>
- </div>
-
- <!-- CHARITY PROJECTS -->
- <div id="sec-charity" class="admin-section" data-title="Charity Projects">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-hand-holding-heart" style="color:var(--gold);"></i>Post Charity Project</h4>
- <div class="form-row">
- <div class="form-group"><label class="form-label">Project Title <span class="required">*</span></label><input type="text" class="form-control" id="ch-title" placeholder="e.g. Back to School Drive 2024"></div>
- <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-control" id="ch-date"></div>
- </div>
- <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-control" id="ch-location" placeholder="e.g. Juba, South Sudan"></div>
- <div class="form-group"><label class="form-label">Description <span class="required">*</span></label><textarea class="form-control" rows="6" id="ch-desc" placeholder="Describe the charity project and its impact..."></textarea></div>
- <div class="form-group"><label class="form-label">Photos <span style="font-size:0.8rem;color:var(--text-muted);">(paste image URLs, one per line — or upload multiple)</span></label><textarea class="form-control" rows="3" id="ch-photos" placeholder="https://image1.jpg&#10;https://image2.jpg"></textarea><button type="button" onclick="uploadMultiple('ch-photos','image/*')" class="btn" style="margin-top:0.4rem;background:var(--primary);color:#fff;border:none;padding:0.5rem 0.9rem;font-size:0.82rem;"><i class="fas fa-images"></i> Upload Photos</button></div>
- <div class="form-group"><label class="form-label">Video URL (YouTube, optional)</label><input type="url" class="form-control" id="ch-video" placeholder="https://youtube.com/..."></div>
- <div class="form-group"><label class="form-label">Donation Info <span style="font-size:0.8rem;color:var(--text-muted);">(optional — how people can contribute)</span></label><input type="text" class="form-control" id="ch-donation" placeholder="e.g. Give via M-Pesa 0712345678 — Ref: BACKTOSCHOOL"></div>
- <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
- <button id="ch-save-btn" onclick="saveCharity()" class="btn btn-primary"><i class="fas fa-save"></i>Publish Project</button>
- <button id="ch-cancel-btn" onclick="cancelEdit('charity')" class="btn" style="display:none;background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-times"></i> Cancel Edit</button>
- </div>
- </div>
- <div class="admin-card mt-3">
- <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-list" style="color:var(--gold);"></i>Charity Projects</h4>
- <div id="charity-admin-list"><p style="color:var(--text-muted);font-size:0.9rem;">No charity projects posted yet.</p></div>
- </div>
- </div>
-
- <!-- SITE SETTINGS -->
- <div id="sec-settings" class="admin-section" data-title="Site Settings">
- <div class="admin-card">
- <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-cog" style="color:var(--gold);"></i>Site Settings</h4>
- <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">These settings update the contact page and footer. You can change service times, address, phone number display, and description.</p>
-
- <div class="form-row">
-  <div class="form-group"><label class="form-label">Church Address / Location</label><input type="text" class="form-control" id="set-address" placeholder="e.g. Juba, South Sudan"></div>
-  <div class="form-group"><label class="form-label">Display Phone Number</label><input type="text" class="form-control" id="set-phone-display" placeholder="e.g. +211 921 444 658"></div>
- </div>
- <div class="form-group"><label class="form-label">Ministry Email</label><input type="email" class="form-control" id="set-email" placeholder="e.g. info@mjministries.org"></div>
-
- <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Service Schedule</h5>
- <div class="form-row">
-  <div class="form-group"><label class="form-label">Sunday Service</label><input type="text" class="form-control" id="set-sunday" placeholder="e.g. 9:00 AM – 12:00 PM"></div>
-  <div class="form-group"><label class="form-label">Wednesday Bible Study</label><input type="text" class="form-control" id="set-wednesday" placeholder="e.g. 6:00 PM – 8:00 PM"></div>
- </div>
- <div class="form-row">
-  <div class="form-group"><label class="form-label">Friday Prayer Night</label><input type="text" class="form-control" id="set-friday" placeholder="e.g. 7:00 PM – 9:00 PM"></div>
-  <div class="form-group"><label class="form-label">Other Service Info</label><input type="text" class="form-control" id="set-other" placeholder="e.g. Special Saturday meetings announced weekly"></div>
- </div>
-
- <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Social Media Links</h5>
- <div class="form-row">
-  <div class="form-group"><label class="form-label">Facebook Page URL</label><input type="url" class="form-control" id="set-facebook" placeholder="https://facebook.com/..."></div>
-  <div class="form-group"><label class="form-label">YouTube Channel URL</label><input type="url" class="form-control" id="set-youtube" placeholder="https://youtube.com/@..."></div>
- </div>
- <div class="form-row">
-  <div class="form-group"><label class="form-label">TikTok URL</label><input type="url" class="form-control" id="set-tiktok" placeholder="https://tiktok.com/..."></div>
-  <div class="form-group"><label class="form-label">Website Description (short)</label><input type="text" class="form-control" id="set-desc" placeholder="e.g. Spreading the Gospel of Jesus Christ"></div>
- </div>
-
- <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fab fa-github" style="color:var(--gold);"></i> Cross-Device Sync (GitHub)</h5>
- <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:0.5rem;">Paste a GitHub Personal Access Token here so content you publish is visible on ALL devices — laptop, phone, and to website visitors.</p>
- <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:1rem;">👉 Get a token at <strong>github.com → Settings → Developer Settings → Personal access tokens → Fine-grained tokens</strong>. Select this repository and set <strong>Contents: Read and write</strong>.</p>
- <div class="form-group"><label class="form-label">GitHub Personal Access Token</label><input type="password" class="form-control" id="set-github-token" placeholder="github_pat_..."></div>
- <button type="button" onclick="testGitHubToken()" class="btn btn-sm" style="background:#24292e;color:#fff;border-radius:50px;padding:0.45rem 1.1rem;font-size:0.88rem;cursor:pointer;margin-bottom:0.5rem;"><i class="fab fa-github"></i> Test Connection</button>
- <div id="github-test-result" style="font-size:0.85rem;margin-top:0.5rem;padding:0.6rem 0.9rem;border-radius:8px;display:none;"></div>
-
- <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i> Prayer Form Submissions</h5>
- <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:0.5rem;">Add a token so prayer requests submitted by visitors appear directly in this dashboard — from any device. Create a <strong>Fine-grained token</strong> on GitHub with <strong>Contents: Read and write</strong> on this repo.</p>
- <div class="form-group"><label class="form-label">Prayer Submissions Token</label><input type="password" class="form-control" id="set-prayer-token" placeholder="github_pat_..."></div>
- <button type="button" onclick="savePrayerToken()" class="btn btn-sm" style="background:var(--primary);color:#fff;border-radius:50px;padding:0.45rem 1.1rem;font-size:0.88rem;cursor:pointer;margin-bottom:0.5rem;"><i class="fas fa-key"></i> Save &amp; Publish Token</button>
- <div id="prayer-token-result" style="font-size:0.85rem;margin-top:0.5rem;padding:0.6rem 0.9rem;border-radius:8px;display:none;"></div>
-
- <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-cloud-upload-alt" style="color:var(--gold);"></i> File Upload (Cloudflare)</h5>
- <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:1rem;">Paste your Cloudflare Worker URL and secret token here to enable direct file uploads on image fields.</p>
- <div class="form-row">
-  <div class="form-group"><label class="form-label">Cloudflare Worker URL</label><input type="url" class="form-control" id="set-worker-url" placeholder="https://mj-upload.YOUR-ACCOUNT.workers.dev"></div>
-  <div class="form-group"><label class="form-label">Upload Token (secret)</label><input type="text" class="form-control" id="set-upload-token" placeholder="Your UPLOAD_SECRET value"></div>
- </div>
-
- <button onclick="saveSiteSettings()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save Settings</button>
- </div>
- </div>
-
- <!-- HOME PAGE CONTENT -->
- <div id="sec-page-home" class="admin-section" data-title="Edit Home Page">
- <div class="admin-card">
-  <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-home" style="color:var(--gold);"></i> Home Page Content</h4>
-  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Edit the hero section and scripture shown on the homepage. Changes take effect immediately when visitors load the site.</p>
-  <div class="form-group"><label class="form-label">Hero Title</label><input type="text" class="form-control" id="ph-hero-title" placeholder="Touching Lives Through the Power of God"></div>
-  <div class="form-group"><label class="form-label">Hero Subtitle</label><textarea class="form-control" id="ph-hero-subtitle" rows="3" placeholder="A Spirit-filled ministry dedicated to spreading the Gospel..."></textarea></div>
-  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-bible" style="color:var(--gold);"></i> Scripture of the Day</h5>
-  <div class="form-group"><label class="form-label">Scripture Text</label><textarea class="form-control" id="ph-scripture" rows="3" placeholder='"For God so loved the world that He gave His only begotten Son..."'></textarea></div>
-  <div class="form-group"><label class="form-label">Scripture Reference</label><input type="text" class="form-control" id="ph-scripture-ref" placeholder="— John 3:16"></div>
-  <button onclick="saveHomePage()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save Home Page</button>
- </div>
- </div>
-
- <!-- ABOUT PAGE CONTENT -->
- <div id="sec-page-about" class="admin-section" data-title="Edit About Page">
- <div class="admin-card">
-  <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-info-circle" style="color:var(--gold);"></i> About Page Content</h4>
-  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Edit the biography, vision, mission, and core message shown on the About page.</p>
-  <h5 style="color:var(--primary);margin-bottom:0.75rem;">Apostle MJ Biography</h5>
-  <div class="form-group"><label class="form-label">Biography Text</label><p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.4rem;">Separate paragraphs with a blank line between them.</p><textarea class="form-control" id="pa-bio" rows="8" placeholder="Apostle MJ is a Spirit-filled servant of God..."></textarea></div>
-  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Vision Card</h5>
-  <div class="form-group"><label class="form-label">Vision Text</label><textarea class="form-control" id="pa-vision" rows="2" placeholder="To lead people to Jesus Christ and establish them in His Kingdom."></textarea></div>
-  <div class="form-group"><label class="form-label">Vision Scripture References</label><input type="text" class="form-control" id="pa-vision-ref" placeholder="John 14:6 • Matthew 28:19–20"></div>
-  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Mission Card</h5>
-  <div class="form-group"><label class="form-label">Mission Text</label><textarea class="form-control" id="pa-mission" rows="2" placeholder="To preach repentance, faith in Jesus Christ, and the love of God to all people and nations."></textarea></div>
-  <div class="form-group"><label class="form-label">Mission Scripture References</label><input type="text" class="form-control" id="pa-mission-ref" placeholder="Mark 1:15 • Acts 2:38 • Matthew 22:37–39"></div>
-  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Core Message Card</h5>
-  <div class="form-group"><label class="form-label">Core Message Text</label><input type="text" class="form-control" id="pa-core-msg" placeholder="Repent. Believe. Love."></div>
-  <div class="form-group"><label class="form-label">Core Message Scripture References</label><input type="text" class="form-control" id="pa-core-ref" placeholder="Luke 24:47 • John 13:34"></div>
-  <button onclick="saveAboutPage()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save About Page</button>
- </div>
- </div>
-
- <!-- CHURCH HISTORY TIMELINE -->
- <div id="sec-page-history" class="admin-section" data-title="Church History">
- <div class="admin-card">
-  <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-history" style="color:var(--gold);"></i> Church History Timeline</h4>
-  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Add, edit or remove timeline entries shown on the About page. Changes appear on the website after saving.</p>
-  <div id="history-items-admin" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.25rem;"></div>
-  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-  <button onclick="addHistoryItem()" class="btn" style="background:var(--primary-light);color:#fff;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-plus"></i> Add Entry</button>
-  <button onclick="saveHistoryContent()" class="btn btn-primary"><i class="fas fa-save"></i> Save History</button>
-  </div>
- </div>
- </div>
-
- <!-- DONATIONS PAGE CONTENT -->
- <div id="sec-page-donations" class="admin-section" data-title="Edit Donations Page">
- <div class="admin-card">
-  <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-credit-card" style="color:var(--gold);"></i> Donations Page Content</h4>
-  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Update payment details shown on the Donations page. Leave a field blank to keep the current default.</p>
-  <h5 style="color:var(--primary);margin-bottom:0.75rem;"><i class="fas fa-mobile-alt" style="color:var(--gold);"></i> Mobile Money</h5>
-  <div class="form-group"><label class="form-label">Mobile Money Instructions</label><textarea class="form-control" id="pd-mobile" rows="3" placeholder="Mobile Money details are available on request. Please contact us via WhatsApp..."></textarea></div>
-  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-university" style="color:var(--gold);"></i> Bank Transfer</h5>
-  <div class="form-row">
-  <div class="form-group"><label class="form-label">Account Name</label><input type="text" class="form-control" id="pd-acc-name" placeholder="Apostle MJ Ministries"></div>
-  <div class="form-group"><label class="form-label">Bank Name</label><input type="text" class="form-control" id="pd-bank-name" placeholder="Equity Bank"></div>
-  </div>
-  <div class="form-row">
-  <div class="form-group"><label class="form-label">Branch</label><input type="text" class="form-control" id="pd-branch" placeholder="Juba Branch"></div>
-  <div class="form-group"><label class="form-label">SWIFT / BIC Code</label><input type="text" class="form-control" id="pd-swift" placeholder="EQBLSSJJ"></div>
-  </div>
-  <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-globe" style="color:var(--gold);"></i> International Giving</h5>
-  <div class="form-group"><label class="form-label">PayPal Email</label><input type="email" class="form-control" id="pd-paypal" placeholder="apostlemjmanyiel@gmail.com"></div>
-  <div class="form-row">
-  <div class="form-group"><label class="form-label">WorldRemit / WU Recipient Name</label><input type="text" class="form-control" id="pd-wr-name" placeholder="Ministry Name"></div>
-  <div class="form-group"><label class="form-label">WorldRemit / WU Country</label><input type="text" class="form-control" id="pd-wr-country" placeholder="South Sudan"></div>
-  </div>
-  <button onclick="saveDonationsPage()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save Donations Page</button>
- </div>
- </div>
-
  </div><!-- end admin-content -->
  </main>
- </div>
-
- <!-- SHARE MODAL -->
- <div id="share-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:600;display:flex;align-items:center;justify-content:center;padding:1rem;">
- <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:420px;width:100%;box-shadow:var(--shadow-lg);position:relative;">
-  <button onclick="closeShareModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">&times;</button>
-  <h4 style="color:var(--primary);margin-bottom:1rem;"><i class="fas fa-share-alt" style="color:var(--gold);"></i> Share This</h4>
-  <p id="share-preview" style="font-size:0.82rem;color:var(--text-muted);background:var(--light);padding:0.75rem;border-radius:8px;margin-bottom:1.25rem;max-height:90px;overflow:hidden;white-space:pre-wrap;"></p>
-  <div style="display:flex;flex-direction:column;gap:0.6rem;">
-  <button onclick="_doShare('wa')" class="btn" style="background:#25D366;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-whatsapp" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on WhatsApp (any contact)</button>
-  <button onclick="_doShare('fb')" class="btn" style="background:#1877F2;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-facebook" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Facebook</button>
-  <button onclick="_doShare('tw')" class="btn" style="background:#1d9bf0;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-twitter" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Twitter</button>
-  <button onclick="_doShare('tg')" class="btn" style="background:#0088cc;color:#fff;justify-content:flex-start;gap:0.85rem;"><i class="fab fa-telegram" style="font-size:1.1rem;width:20px;text-align:center;"></i>Share on Telegram</button>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.1rem;">
-   <button onclick="_doShare('copylink')" class="btn" style="background:#ede9fe;color:var(--primary);border:none;gap:0.6rem;"><i class="fas fa-link" style="font-size:1rem;"></i>Copy Link</button>
-   <button onclick="_doShare('copy')" class="btn" style="background:var(--light);color:var(--primary);border:1px solid var(--gray-200);gap:0.6rem;"><i class="fas fa-copy" style="font-size:1rem;"></i>Copy Message</button>
-  </div>
-  </div>
- </div>
- </div>
-
- <!-- ENRICH APPROVE MODAL -->
- <div id="enrich-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;">
- <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:500px;width:100%;box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;">
- <button onclick="closeEnrichModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);">&times;</button>
- <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-star" style="color:var(--gold);"></i> Approve &amp; Enrich Testimony</h4>
- <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">You can optionally add a title, featured photo, or video before publishing.</p>
- <div class="form-group"><label class="form-label">Title (optional)</label><input type="text" class="form-control" id="enrich-title" placeholder="e.g. God Provided a Job!"></div>
- <div class="form-group"><label class="form-label">Featured Photo URL (optional)</label><input type="url" class="form-control" id="enrich-photo" placeholder="https://... (hosted image link)"></div>
- <div class="form-group"><label class="form-label">Video URL / YouTube (optional)</label><input type="url" class="form-control" id="enrich-video" placeholder="https://youtube.com/..."></div>
- <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;">
- <button onclick="doApproveTestimony()" class="btn btn-primary"><i class="fas fa-check"></i>Approve &amp; Publish</button>
- <button onclick="closeEnrichModal()" class="btn" style="background:var(--gray-200);color:var(--text);">Cancel</button>
- </div>
- </div>
- </div>
-
- <!-- PRAYER EDIT MODAL -->
- <div id="prayer-edit-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:1rem;">
- <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:520px;width:100%;box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;">
-  <button onclick="closeEditPrayer()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">&times;</button>
-  <h4 style="color:var(--primary);margin-bottom:1.25rem;"><i class="fas fa-edit" style="color:var(--gold);"></i> Edit Prayer Request</h4>
-  <input type="hidden" id="edit-prayer-id">
-  <div class="form-group"><label class="form-label">Name</label><input type="text" class="form-control" id="edit-prayer-name" placeholder="Full name"></div>
-  <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-control" id="edit-prayer-phone" placeholder="+1234567890"></div>
-  <div class="form-group"><label class="form-label">Country</label><input type="text" class="form-control" id="edit-prayer-country" placeholder="Country"></div>
-  <div class="form-group"><label class="form-label">Prayer Request</label><textarea class="form-control" rows="4" id="edit-prayer-request" placeholder="What do they need prayer for?"></textarea></div>
-  <div class="form-group"><label class="form-label">Status</label>
-   <select class="form-control" id="edit-prayer-status">
-    <option value="pending">⏳ Pending</option>
-    <option value="praying">🙏 Prayed For</option>
-    <option value="completed">✔ Answered</option>
-   </select>
-  </div>
-  <div class="form-group"><label class="form-label">Notes</label><input type="text" class="form-control" id="edit-prayer-notes" placeholder="e.g. Follow-up sent 01/07/2025"></div>
-  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
-  <button onclick="saveEditedPrayer()" class="btn btn-primary"><i class="fas fa-save"></i>Save Changes</button>
-  <button onclick="closeEditPrayer()" style="background:var(--gray-200);color:var(--text);border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;">Cancel</button>
-  </div>
- </div>
- </div>
-
- <!-- PRAYER FOLLOW-UP MODAL -->
- <div id="prayer-followup-modal" class="hidden" style="position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:1rem;">
- <div style="background:var(--white);border-radius:var(--radius);padding:2rem;max-width:540px;width:100%;box-shadow:var(--shadow-lg);position:relative;max-height:90vh;overflow-y:auto;">
-  <button onclick="closeFollowUp()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1;">&times;</button>
-  <h4 style="color:var(--primary);margin-bottom:0.25rem;"><i class="fab fa-whatsapp" style="color:#25D366;"></i> Send Follow-Up via WhatsApp</h4>
-  <p id="followup-to" style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1.25rem;border-bottom:1px solid var(--gray-200);padding-bottom:0.75rem;"></p>
-  <div class="form-group">
-  <label class="form-label">Message <span style="font-size:0.8rem;font-weight:400;color:var(--text-muted);">(edit before sending)</span></label>
-  <textarea id="followup-message" class="form-control" rows="9" style="font-size:0.88rem;"></textarea>
-  </div>
-  <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem;">
-  <button onclick="sendFollowUp()" class="btn btn-whatsapp"><i class="fab fa-whatsapp"></i>Send on WhatsApp</button>
-  <button onclick="closeFollowUp()" style="background:var(--gray-200);color:var(--text);border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;">Cancel</button>
-  </div>
- </div>
  </div>
 </div>
 
@@ -813,11 +173,3 @@
 <script src="/js/admin.js" defer></script>
 </body>
 </html>
-
-
-
-
-
-
-
-

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Settings | Admin | Apostle MJ Ministries</title>
+ <link rel="stylesheet" href="/css/style.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+ <style>
+ body { background:#f0f2f8; }
+ .notification-badge { background:var(--danger); color:#fff; border-radius:50px; font-size:0.7rem; padding:0.1rem 0.4rem; margin-left:0.3rem; }
+ .sidebar-section { padding:1rem 1.5rem 0.5rem; font-size:0.72rem; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,0.4); font-weight:700; }
+ @media(max-width:768px){
+ .admin-card { padding:1.25rem!important; margin-bottom:1rem!important; }
+ }
+ </style>
+</head>
+<body>
+<script>if(sessionStorage.getItem('mj_admin')!=='1'){location.replace('/admin/');}</script>
+
+<div id="admin-dashboard">
+ <div class="admin-layout">
+
+ <!-- SIDEBAR OVERLAY -->
+ <div id="admin-overlay" onclick="closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;backdrop-filter:blur(2px);"></div>
+
+ <!-- SIDEBAR -->
+ <aside class="admin-sidebar" id="admin-sidebar">
+ <div class="sidebar-logo">
+ <img src="/logo.jpeg" alt="SOFAN" style="width:48px;height:48px;border-radius:8px;object-fit:cover;margin-bottom:0.5rem;">
+ <h3>Apostle MJ Ministries</h3>
+ <p>Ministry Admin Panel</p>
+ <button onclick="closeSidebar()" style="position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.1);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:none;" id="sidebar-close-btn"></button>
+ </div>
+ <nav class="admin-nav">
+ <div class="sidebar-section">Dashboard</div>
+ <a href="/admin/"><i class="fas fa-home"></i>Overview</a>
+
+ <div class="sidebar-section">Prayer Ministry</div>
+ <a href="/admin/prayers/"><i class="fas fa-hands-praying"></i>Prayer Requests <span class="notification-badge" id="badge-prayers">0</span></a>
+
+ <div class="sidebar-section">Community</div>
+ <a href="/admin/content/#sec-testimonies"><i class="fas fa-star"></i>Testimonies</a>
+ <a href="/admin/content/#sec-church-testimonies"><i class="fas fa-church"></i>Church Testimonies</a>
+ <a href="/admin/content/#sec-members"><i class="fas fa-users"></i>Members</a>
+ <a href="/admin/content/#sec-charity"><i class="fas fa-heart"></i>Charity Projects</a>
+
+ <div class="sidebar-section">Content</div>
+ <a href="/admin/content/#sec-sermons"><i class="fas fa-play-circle"></i>Upload Sermons</a>
+ <a href="/admin/content/#sec-devotionals"><i class="fas fa-book-bible"></i>Devotionals</a>
+ <a href="/admin/content/#sec-prophecy"><i class="fas fa-fire"></i>Prophecy</a>
+ <a href="/admin/content/#sec-fulfillment"><i class="fas fa-check-circle"></i>Fulfillments</a>
+ <a href="/admin/content/#sec-events"><i class="fas fa-calendar-alt"></i>Events</a>
+ <a href="/admin/content/#sec-announcements"><i class="fas fa-bullhorn"></i>Announcements</a>
+ <a href="#" onclick="showAdminSection('sec-livestream');closeSidebar();"><i class="fas fa-tower-broadcast"></i>Livestream</a>
+
+ <div class="sidebar-section">Finance</div>
+ <a href="/admin/content/#sec-donations"><i class="fas fa-hand-holding-heart"></i>Donations</a>
+
+ <div class="sidebar-section">Page Content</div>
+ <a href="#" onclick="showAdminSection('sec-page-home');closeSidebar();"><i class="fas fa-home"></i>Home Page</a>
+ <a href="/admin/content/#sec-gallery"><i class="fas fa-images"></i>Home Gallery</a>
+ <a href="#" onclick="showAdminSection('sec-page-about');closeSidebar();"><i class="fas fa-info-circle"></i>About Page</a>
+ <a href="#" onclick="showAdminSection('sec-page-history');closeSidebar();"><i class="fas fa-history"></i>Church History</a>
+ <a href="#" onclick="showAdminSection('sec-page-donations');closeSidebar();"><i class="fas fa-credit-card"></i>Donations Page</a>
+
+ <div class="sidebar-section">Admin</div>
+ <a href="#" onclick="showAdminSection('sec-settings');closeSidebar();" class="active"><i class="fas fa-cog"></i>Site Settings</a>
+ <a href="/"><i class="fas fa-globe"></i>View Website</a>
+ <a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
+ </nav>
+ </aside>
+
+ <!-- MAIN CONTENT -->
+ <main class="admin-main">
+ <div class="admin-topbar">
+ <div style="display:flex;align-items:center;gap:0.75rem;">
+ <button onclick="toggleSidebar()" style="background:none;border:none;cursor:pointer;font-size:1.3rem;color:var(--primary);padding:0.25rem;line-height:1;" aria-label="Menu"><i class="fas fa-bars"></i></button>
+ <h4 id="admin-section-title" style="color:var(--primary);margin:0;font-size:1rem;">Site Settings</h4>
+ </div>
+ <div style="display:flex;align-items:center;gap:0.5rem;">
+ <span class="topbar-date" id="admin-date"></span>
+ <button onclick="loadAdminData()" class="btn btn-sm btn-purple"><i class="fas fa-sync"></i><span class="topbar-label">Refresh</span></button>
+ <button onclick="adminLogout()" class="btn btn-sm" style="background:#fee2e2;color:#991b1b;border:none;border-radius:50px;padding:0.4rem 0.85rem;font-weight:600;cursor:pointer;"><i class="fas fa-sign-out-alt"></i><span class="topbar-label">Logout</span></button>
+ </div>
+ </div>
+
+ <div class="admin-content">
+
+ <!-- SITE SETTINGS -->
+ <div id="sec-settings" class="admin-section active" data-title="Site Settings">
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-cog" style="color:var(--gold);"></i>Site Settings</h4>
+ <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">These settings update the contact page and footer. You can change service times, address, phone number display, and description.</p>
+
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Church Address / Location</label><input type="text" class="form-control" id="set-address" placeholder="e.g. Juba, South Sudan"></div>
+ <div class="form-group"><label class="form-label">Display Phone Number</label><input type="text" class="form-control" id="set-phone-display" placeholder="e.g. +211 921 444 658"></div>
+ </div>
+ <div class="form-group"><label class="form-label">Ministry Email</label><input type="email" class="form-control" id="set-email" placeholder="e.g. info@mjministries.org"></div>
+
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Service Schedule</h5>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Sunday Service</label><input type="text" class="form-control" id="set-sunday" placeholder="e.g. 9:00 AM – 12:00 PM"></div>
+ <div class="form-group"><label class="form-label">Wednesday Bible Study</label><input type="text" class="form-control" id="set-wednesday" placeholder="e.g. 6:00 PM – 8:00 PM"></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Friday Prayer Night</label><input type="text" class="form-control" id="set-friday" placeholder="e.g. 7:00 PM – 9:00 PM"></div>
+ <div class="form-group"><label class="form-label">Other Service Info</label><input type="text" class="form-control" id="set-other" placeholder="e.g. Special Saturday meetings announced weekly"></div>
+ </div>
+
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Social Media Links</h5>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Facebook Page URL</label><input type="url" class="form-control" id="set-facebook" placeholder="https://facebook.com/..."></div>
+ <div class="form-group"><label class="form-label">YouTube Channel URL</label><input type="url" class="form-control" id="set-youtube" placeholder="https://youtube.com/@..."></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">TikTok URL</label><input type="url" class="form-control" id="set-tiktok" placeholder="https://tiktok.com/..."></div>
+ <div class="form-group"><label class="form-label">Website Description (short)</label><input type="text" class="form-control" id="set-desc" placeholder="e.g. Spreading the Gospel of Jesus Christ"></div>
+ </div>
+
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fab fa-github" style="color:var(--gold);"></i> Cross-Device Sync (GitHub)</h5>
+ <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:0.5rem;">Paste a GitHub Personal Access Token here so content you publish is visible on ALL devices — laptop, phone, and to website visitors.</p>
+ <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:1rem;">👉 Get a token at <strong>github.com → Settings → Developer Settings → Personal access tokens → Fine-grained tokens</strong>. Select this repository and set <strong>Contents: Read and write</strong>.</p>
+ <div class="form-group"><label class="form-label">GitHub Personal Access Token</label><input type="password" class="form-control" id="set-github-token" placeholder="github_pat_..."></div>
+ <button type="button" onclick="testGitHubToken()" class="btn btn-sm" style="background:#24292e;color:#fff;border-radius:50px;padding:0.45rem 1.1rem;font-size:0.88rem;cursor:pointer;margin-bottom:0.5rem;"><i class="fab fa-github"></i> Test Connection</button>
+ <div id="github-test-result" style="font-size:0.85rem;margin-top:0.5rem;padding:0.6rem 0.9rem;border-radius:8px;display:none;"></div>
+
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i> Prayer Form Submissions</h5>
+ <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:0.5rem;">Add a token so prayer requests submitted by visitors appear directly in this dashboard — from any device. Create a <strong>Fine-grained token</strong> on GitHub with <strong>Contents: Read and write</strong> on this repo.</p>
+ <div class="form-group"><label class="form-label">Prayer Submissions Token</label><input type="password" class="form-control" id="set-prayer-token" placeholder="github_pat_..."></div>
+ <button type="button" onclick="savePrayerToken()" class="btn btn-sm" style="background:var(--primary);color:#fff;border-radius:50px;padding:0.45rem 1.1rem;font-size:0.88rem;cursor:pointer;margin-bottom:0.5rem;"><i class="fas fa-key"></i> Save &amp; Publish Token</button>
+ <div id="prayer-token-result" style="font-size:0.85rem;margin-top:0.5rem;padding:0.6rem 0.9rem;border-radius:8px;display:none;"></div>
+
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-cloud-upload-alt" style="color:var(--gold);"></i> File Upload (Cloudflare)</h5>
+ <p style="color:var(--text-muted);font-size:0.82rem;margin-bottom:1rem;">Paste your Cloudflare Worker URL and secret token here to enable direct file uploads on image fields.</p>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Cloudflare Worker URL</label><input type="url" class="form-control" id="set-worker-url" placeholder="https://mj-upload.YOUR-ACCOUNT.workers.dev"></div>
+ <div class="form-group"><label class="form-label">Upload Token (secret)</label><input type="text" class="form-control" id="set-upload-token" placeholder="Your UPLOAD_SECRET value"></div>
+ </div>
+
+ <button onclick="saveSiteSettings()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save Settings</button>
+ </div>
+ </div>
+
+ <!-- LIVESTREAM -->
+ <div id="sec-livestream" class="admin-section" data-title="Livestream Control">
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:1.5rem;"><i class="fas fa-tower-broadcast" style="color:var(--gold);"></i>Livestream Control</h4>
+ <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.5rem;">Use this panel to go live on YouTube, Facebook, and TikTok. Visitors on the Livestream page will see the embedded player and live buttons automatically.</p>
+
+ <div class="form-group">
+ <label class="form-label">Are we LIVE right now?</label>
+ <div style="display:flex;gap:1rem;margin-top:0.5rem;flex-wrap:wrap;">
+ <label style="display:flex;align-items:center;gap:0.5rem;font-weight:600;cursor:pointer;">
+ <input type="radio" name="live-status" id="live-yes" value="yes"> <span style="color:#16a34a;">🔴 YES — We are LIVE</span>
+ </label>
+ <label style="display:flex;align-items:center;gap:0.5rem;font-weight:600;cursor:pointer;">
+ <input type="radio" name="live-status" id="live-no" value="no" checked> <span style="color:var(--text-muted);">⚫ NO — Not live right now</span>
+ </label>
+ </div>
+ </div>
+
+ <h5 style="color:var(--primary);margin:1.25rem 0 0.5rem;"><i class="fab fa-youtube" style="color:#ff0000;"></i> YouTube Live</h5>
+ <div class="form-group">
+ <label class="form-label">YouTube Live Video URL</label>
+ <input type="text" class="form-control" id="live-url" placeholder="https://youtube.com/watch?v=...  OR  https://youtu.be/...">
+ </div>
+
+ <h5 style="color:var(--primary);margin:1.25rem 0 0.5rem;"><i class="fab fa-facebook" style="color:#1877F2;"></i> Facebook Live</h5>
+ <div class="form-group">
+ <label class="form-label">Facebook Live Video URL <span style="font-size:0.8rem;color:var(--text-muted);">(paste your Facebook live video link)</span></label>
+ <input type="text" class="form-control" id="live-fb-url" placeholder="https://www.facebook.com/watch/live/?v=... OR https://fb.watch/...">
+ </div>
+
+ <h5 style="color:var(--primary);margin:1.25rem 0 0.5rem;"><i class="fab fa-tiktok"></i> TikTok Live</h5>
+ <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.75rem;">TikTok does not allow embedding on other websites. A "Watch Live on TikTok" button will appear on the livestream page when enabled.</p>
+ <div class="form-group">
+ <label style="display:flex;align-items:center;gap:0.75rem;cursor:pointer;font-weight:600;">
+ <input type="checkbox" id="live-tiktok" style="width:18px;height:18px;cursor:pointer;">
+ <span>We are also LIVE on TikTok right now</span>
+ </label>
+ </div>
+ <div class="form-group">
+ <label class="form-label">TikTok Live URL <span style="font-size:0.8rem;color:var(--text-muted);">(paste your TikTok live link)</span></label>
+ <input type="text" class="form-control" id="live-tiktok-url" placeholder="https://www.tiktok.com/@yourusername/live">
+ </div>
+
+ <div class="form-group">
+ <label class="form-label">Schedule / Next Service Info <span style="font-size:0.8rem;color:var(--text-muted);">(shown when not live)</span></label>
+ <input type="text" class="form-control" id="live-schedule" placeholder="e.g. Join us Sunday at 9:00 AM on YouTube, Facebook &amp; TikTok">
+ </div>
+
+ <button onclick="saveLivestream()" class="btn btn-primary"><i class="fas fa-save"></i>Save Livestream Settings</button>
+ <div id="live-status-msg" style="margin-top:1rem;font-size:0.9rem;color:var(--text-muted);"></div>
+ </div>
+ </div>
+
+ <!-- HOME PAGE CONTENT -->
+ <div id="sec-page-home" class="admin-section" data-title="Edit Home Page">
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-home" style="color:var(--gold);"></i> Home Page Content</h4>
+ <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Edit the hero section and scripture shown on the homepage. Changes take effect immediately when visitors load the site.</p>
+ <div class="form-group"><label class="form-label">Hero Title</label><input type="text" class="form-control" id="ph-hero-title" placeholder="Touching Lives Through the Power of God"></div>
+ <div class="form-group"><label class="form-label">Hero Subtitle</label><textarea class="form-control" id="ph-hero-subtitle" rows="3" placeholder="A Spirit-filled ministry dedicated to spreading the Gospel..."></textarea></div>
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-bible" style="color:var(--gold);"></i> Scripture of the Day</h5>
+ <div class="form-group"><label class="form-label">Scripture Text</label><textarea class="form-control" id="ph-scripture" rows="3" placeholder='"For God so loved the world that He gave His only begotten Son..."'></textarea></div>
+ <div class="form-group"><label class="form-label">Scripture Reference</label><input type="text" class="form-control" id="ph-scripture-ref" placeholder="— John 3:16"></div>
+ <button onclick="saveHomePage()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save Home Page</button>
+ </div>
+ </div>
+
+ <!-- ABOUT PAGE CONTENT -->
+ <div id="sec-page-about" class="admin-section" data-title="Edit About Page">
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-info-circle" style="color:var(--gold);"></i> About Page Content</h4>
+ <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Edit the biography, vision, mission, and core message shown on the About page.</p>
+ <h5 style="color:var(--primary);margin-bottom:0.75rem;">Apostle MJ Biography</h5>
+ <div class="form-group"><label class="form-label">Biography Text</label><p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.4rem;">Separate paragraphs with a blank line between them.</p><textarea class="form-control" id="pa-bio" rows="8" placeholder="Apostle MJ is a Spirit-filled servant of God..."></textarea></div>
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Vision Card</h5>
+ <div class="form-group"><label class="form-label">Vision Text</label><textarea class="form-control" id="pa-vision" rows="2" placeholder="To lead people to Jesus Christ and establish them in His Kingdom."></textarea></div>
+ <div class="form-group"><label class="form-label">Vision Scripture References</label><input type="text" class="form-control" id="pa-vision-ref" placeholder="John 14:6 • Matthew 28:19–20"></div>
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Mission Card</h5>
+ <div class="form-group"><label class="form-label">Mission Text</label><textarea class="form-control" id="pa-mission" rows="2" placeholder="To preach repentance, faith in Jesus Christ, and the love of God to all people and nations."></textarea></div>
+ <div class="form-group"><label class="form-label">Mission Scripture References</label><input type="text" class="form-control" id="pa-mission-ref" placeholder="Mark 1:15 • Acts 2:38 • Matthew 22:37–39"></div>
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;">Core Message Card</h5>
+ <div class="form-group"><label class="form-label">Core Message Text</label><input type="text" class="form-control" id="pa-core-msg" placeholder="Repent. Believe. Love."></div>
+ <div class="form-group"><label class="form-label">Core Message Scripture References</label><input type="text" class="form-control" id="pa-core-ref" placeholder="Luke 24:47 • John 13:34"></div>
+ <button onclick="saveAboutPage()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save About Page</button>
+ </div>
+ </div>
+
+ <!-- CHURCH HISTORY TIMELINE -->
+ <div id="sec-page-history" class="admin-section" data-title="Church History">
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-history" style="color:var(--gold);"></i> Church History Timeline</h4>
+ <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Add, edit or remove timeline entries shown on the About page. Changes appear on the website after saving.</p>
+ <div id="history-items-admin" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.25rem;"></div>
+ <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+ <button onclick="addHistoryItem()" class="btn" style="background:var(--primary-light);color:#fff;border:none;border-radius:50px;padding:0.6rem 1.25rem;font-weight:600;cursor:pointer;"><i class="fas fa-plus"></i> Add Entry</button>
+ <button onclick="saveHistoryContent()" class="btn btn-primary"><i class="fas fa-save"></i> Save History</button>
+ </div>
+ </div>
+ </div>
+
+ <!-- DONATIONS PAGE CONTENT -->
+ <div id="sec-page-donations" class="admin-section" data-title="Edit Donations Page">
+ <div class="admin-card">
+ <h4 style="color:var(--primary);margin-bottom:0.5rem;"><i class="fas fa-credit-card" style="color:var(--gold);"></i> Donations Page Content</h4>
+ <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">Update payment details shown on the Donations page. Leave a field blank to keep the current default.</p>
+ <h5 style="color:var(--primary);margin-bottom:0.75rem;"><i class="fas fa-mobile-alt" style="color:var(--gold);"></i> Mobile Money</h5>
+ <div class="form-group"><label class="form-label">Mobile Money Instructions</label><textarea class="form-control" id="pd-mobile" rows="3" placeholder="Mobile Money details are available on request. Please contact us via WhatsApp..."></textarea></div>
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-university" style="color:var(--gold);"></i> Bank Transfer</h5>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Account Name</label><input type="text" class="form-control" id="pd-acc-name" placeholder="Apostle MJ Ministries"></div>
+ <div class="form-group"><label class="form-label">Bank Name</label><input type="text" class="form-control" id="pd-bank-name" placeholder="Equity Bank"></div>
+ </div>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">Branch</label><input type="text" class="form-control" id="pd-branch" placeholder="Juba Branch"></div>
+ <div class="form-group"><label class="form-label">SWIFT / BIC Code</label><input type="text" class="form-control" id="pd-swift" placeholder="EQBLSSJJ"></div>
+ </div>
+ <h5 style="color:var(--primary);margin:1.5rem 0 0.75rem;"><i class="fas fa-globe" style="color:var(--gold);"></i> International Giving</h5>
+ <div class="form-group"><label class="form-label">PayPal Email</label><input type="email" class="form-control" id="pd-paypal" placeholder="apostlemjmanyiel@gmail.com"></div>
+ <div class="form-row">
+ <div class="form-group"><label class="form-label">WorldRemit / WU Recipient Name</label><input type="text" class="form-control" id="pd-wr-name" placeholder="Ministry Name"></div>
+ <div class="form-group"><label class="form-label">WorldRemit / WU Country</label><input type="text" class="form-control" id="pd-wr-country" placeholder="South Sudan"></div>
+ </div>
+ <button onclick="saveDonationsPage()" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i>Save Donations Page</button>
+ </div>
+ </div>
+
+ </div><!-- end admin-content -->
+ </main>
+ </div>
+</div>
+
+<script src="/js/main.js" defer></script>
+<script src="/js/admin.js" defer></script>
+</body>
+</html>
