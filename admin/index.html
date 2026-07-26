@@ -2049,27 +2049,40 @@ function loadDonationsPage() {
  });
 }
 
-// Hook into loadAdminData — kept synchronous to avoid page freezes
+// Map each section ID to its loader — called only when that section is opened
+const SECTION_LOADERS = {
+ 'sec-announcements':      function(){ loadAnnouncements(); },
+ 'sec-events':             function(){ loadEventsAdmin(); },
+ 'sec-devotionals':        function(){ loadDevotionalsList(); },
+ 'sec-sermons':            function(){ loadSermonsList(); },
+ 'sec-prophecy':           function(){ loadProphecyList(); },
+ 'sec-fulfillment':        function(){ loadFulfillmentList(); },
+ 'sec-livestream':         function(){ loadLivestreamAdmin(); },
+ 'sec-members':            function(){ loadMemberProfiles(); },
+ 'sec-church-testimonies': function(){ loadChurchTestimonies(); },
+ 'sec-charity':            function(){ loadCharityList(); },
+ 'sec-settings':           function(){ loadSiteSettings(); },
+ 'sec-page-home':          function(){ loadHomePage(); },
+ 'sec-page-about':         function(){ loadAboutPage(); },
+ 'sec-page-donations':     function(){ loadDonationsPage(); },
+ 'sec-page-history':       function(){ loadHistoryAdmin(); },
+ 'sec-gallery':            function(){ loadGalleryAdmin(); },
+};
+
+// Override showAdminSection to lazy-load the opened section
+const _origShowSection = window.showAdminSection;
+window.showAdminSection = function(id) {
+ _origShowSection(id);
+ if (SECTION_LOADERS[id]) SECTION_LOADERS[id]();
+};
+
+// loadAdminData: only render stats + active section (not all 18 at once)
 const origLoad = loadAdminData;
 window.loadAdminData = function() {
  origLoad();
  refreshActivity();
- loadAnnouncements();
- loadEventsAdmin();
- loadDevotionalsList();
- loadSermonsList();
- loadProphecyList();
- loadFulfillmentList();
- loadLivestreamAdmin();
- loadMemberProfiles();
- loadChurchTestimonies();
- loadCharityList();
- loadSiteSettings();
- loadHomePage();
- loadAboutPage();
- loadDonationsPage();
- loadHistoryAdmin();
- loadGalleryAdmin();
+ var active = document.querySelector('.admin-section.active');
+ if (active && SECTION_LOADERS[active.id]) SECTION_LOADERS[active.id]();
 };
 
 // Override updatePrayerStatus to also sync to GitHub
