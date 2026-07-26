@@ -188,6 +188,7 @@
  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem;">
  <h4 style="color:var(--primary);margin:0;"><i class="fas fa-hands-praying" style="color:var(--gold);"></i>Prayer Requests</h4>
  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+ <button id="sync-prayers-btn" class="btn btn-sm" style="background:#0ea5e9;color:#fff;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="syncPrayersFromGitHub(true)">🔄 Sync Prayers</button>
  <button class="btn btn-sm btn-purple" onclick="filterPrayers('all')">All <span id="count-all" class="notification-badge" style="background:var(--primary-light);">0</span></button>
  <button class="btn btn-sm" style="background:#fef3c7;color:#92400e;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('pending')">⏳ Pending <span id="count-pending" class="notification-badge" style="background:#92400e;">0</span></button>
  <button class="btn btn-sm" style="background:#dbeafe;color:#1e40af;border:none;border-radius:50px;padding:0.4rem 1rem;cursor:pointer;" onclick="filterPrayers('praying')">🙏 Prayed For <span id="count-praying" class="notification-badge" style="background:#1e40af;">0</span></button>
@@ -2048,31 +2049,9 @@ function loadDonationsPage() {
  });
 }
 
-// Hook into loadAdminData
+// Hook into loadAdminData — kept synchronous to avoid page freezes
 const origLoad = loadAdminData;
-window.loadAdminData = async function() {
- // Fetch prayers from GitHub and merge into localStorage so cross-device submissions appear
- const _s = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
- const _ghToken = (_s.githubToken || '').trim();
- if (_ghToken) {
-  try {
-   const _r = await fetch('https://api.github.com/repos/Bolchadar/Bolchadar.github.io/contents/data/prayers.json', {
-    headers: { 'Authorization': 'Bearer ' + _ghToken, 'Accept': 'application/vnd.github+json' }
-   });
-   if (_r.ok) {
-    const _d = await _r.json();
-    const ghPrayers = JSON.parse(atob(_d.content.replace(/\n/g, '')));
-    const local = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
-    // Merge: GitHub is source of truth; preserve local status/notes edits
-    const merged = ghPrayers.map(gp => {
-     const lp = local.find(l => l.id === gp.id);
-     return lp ? { ...gp, status: lp.status || gp.status, notes: lp.notes || gp.notes } : gp;
-    });
-    local.forEach(lp => { if (!merged.find(m => m.id === lp.id)) merged.push(lp); });
-    localStorage.setItem('mj_prayers', JSON.stringify(merged));
-   }
-  } catch(e) {}
- }
+window.loadAdminData = function() {
  origLoad();
  refreshActivity();
  loadAnnouncements();
@@ -2100,6 +2079,56 @@ window.updatePrayerStatus = function(id, status) {
  const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
  saveToGitHub('prayers.json', prayers);
 };
+
+// Fetch prayers from GitHub once — runs on page load and when admin clicks Sync
+let _prayerSyncing = false;
+async function syncPrayersFromGitHub(showFeedback) {
+ if (_prayerSyncing) return;
+ _prayerSyncing = true;
+ const btn = document.getElementById('sync-prayers-btn');
+ if (btn) { btn.disabled = true; btn.textContent = '⏳ Syncing...'; }
+ try {
+  const s = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
+  const token = (s.githubToken || '').trim();
+  if (!token) {
+   if (showFeedback) showToast('No GitHub token configured in Settings.', true);
+   return;
+  }
+  const controller = new AbortController();
+  const tid = setTimeout(() => controller.abort(), 8000);
+  const r = await fetch('https://api.github.com/repos/Bolchadar/Bolchadar.github.io/contents/data/prayers.json', {
+   headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' },
+   signal: controller.signal
+  });
+  clearTimeout(tid);
+  if (r.ok) {
+   const d = await r.json();
+   const ghPrayers = JSON.parse(atob(d.content.replace(/\n/g, '')));
+   const local = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
+   const merged = ghPrayers.map(gp => {
+    const lp = local.find(l => l.id === gp.id);
+    return lp ? { ...gp, status: lp.status || gp.status, notes: lp.notes || gp.notes } : gp;
+   });
+   local.forEach(lp => { if (!merged.find(m => m.id === lp.id)) merged.push(lp); });
+   localStorage.setItem('mj_prayers', JSON.stringify(merged));
+   loadAdminData();
+   filterPrayers('all');
+   if (showFeedback) showToast('Prayers synced from server. ' + ghPrayers.length + ' total.');
+  } else if (r.status === 404) {
+   if (showFeedback) showToast('No prayers submitted yet.');
+  } else {
+   if (showFeedback) showToast('Sync failed (' + r.status + '). Check GitHub token in Settings.', true);
+  }
+ } catch(e) {
+  if (showFeedback && e.name !== 'AbortError') showToast('Sync error: ' + e.message, true);
+ } finally {
+  _prayerSyncing = false;
+  if (btn) { btn.disabled = false; btn.textContent = '🔄 Sync Prayers'; }
+ }
+}
+
+// Auto-sync on page load
+document.addEventListener('DOMContentLoaded', function() { syncPrayersFromGitHub(false); });
 
 // MEMBER PROFILES
 function editMemberProfile(id) {
