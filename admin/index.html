@@ -2119,9 +2119,7 @@ async function syncPrayersFromGitHub(showFeedback) {
    });
    local.forEach(lp => { if (!merged.find(m => m.id === lp.id)) merged.push(lp); });
    localStorage.setItem('mj_prayers', JSON.stringify(merged));
-   origLoad();
    filterPrayers('all');
-   refreshActivity();
    if (showFeedback) showToast('Prayers synced. ' + ghPrayers.length + ' total.');
   } else if (r.status === 404) {
    if (showFeedback) showToast('No prayers submitted yet.');
@@ -2136,10 +2134,7 @@ async function syncPrayersFromGitHub(showFeedback) {
  }
 }
 
-// Auto-sync 2 seconds after page settles — delay avoids blocking initial render
-document.addEventListener('DOMContentLoaded', function() {
- setTimeout(function() { syncPrayersFromGitHub(false); }, 2000);
-});
+// No auto-sync — use the Sync Prayers button to pull from server
 
 // MEMBER PROFILES
 function editMemberProfile(id) {
