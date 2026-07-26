@@ -2080,7 +2080,7 @@ window.updatePrayerStatus = function(id, status) {
  saveToGitHub('prayers.json', prayers);
 };
 
-// Fetch prayers from GitHub once — runs on page load and when admin clicks Sync
+// Fetch prayers from GitHub — uses main token if set, otherwise falls back to prayer token
 let _prayerSyncing = false;
 async function syncPrayersFromGitHub(showFeedback) {
  if (_prayerSyncing) return;
@@ -2088,10 +2088,18 @@ async function syncPrayersFromGitHub(showFeedback) {
  const btn = document.getElementById('sync-prayers-btn');
  if (btn) { btn.disabled = true; btn.textContent = '⏳ Syncing...'; }
  try {
+  // Try main GitHub token first (laptop/configured device)
   const s = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
-  const token = (s.githubToken || '').trim();
+  let token = (s.githubToken || '').trim();
+  // Fallback: use prayer submissions token from prayer-key.json (works on any device)
   if (!token) {
-   if (showFeedback) showToast('No GitHub token configured in Settings.', true);
+   try {
+    const kr = await fetch('/data/prayer-key.json?_v=' + Date.now());
+    if (kr.ok) { const kd = await kr.json(); token = (kd.a || '') + (kd.b || ''); }
+   } catch(e) {}
+  }
+  if (!token) {
+   if (showFeedback) showToast('No token available. Save a GitHub token in Settings.', true);
    return;
   }
   const controller = new AbortController();
@@ -2111,7 +2119,6 @@ async function syncPrayersFromGitHub(showFeedback) {
    });
    local.forEach(lp => { if (!merged.find(m => m.id === lp.id)) merged.push(lp); });
    localStorage.setItem('mj_prayers', JSON.stringify(merged));
-   // Only re-render prayer table and stats — not the whole dashboard
    origLoad();
    filterPrayers('all');
    refreshActivity();
@@ -2119,7 +2126,7 @@ async function syncPrayersFromGitHub(showFeedback) {
   } else if (r.status === 404) {
    if (showFeedback) showToast('No prayers submitted yet.');
   } else {
-   if (showFeedback) showToast('Sync failed (' + r.status + '). Check GitHub token in Settings.', true);
+   if (showFeedback) showToast('Sync failed (' + r.status + ').', true);
   }
  } catch(e) {
   if (showFeedback && e.name !== 'AbortError') showToast('Sync error: ' + e.message, true);
@@ -2129,7 +2136,10 @@ async function syncPrayersFromGitHub(showFeedback) {
  }
 }
 
-// Sync Prayers button only — no auto-sync on load to keep page fast
+// Auto-sync 2 seconds after page settles — delay avoids blocking initial render
+document.addEventListener('DOMContentLoaded', function() {
+ setTimeout(function() { syncPrayersFromGitHub(false); }, 2000);
+});
 
 // MEMBER PROFILES
 function editMemberProfile(id) {
