@@ -1062,6 +1062,36 @@ footer {
   .sidebar-logo { position: relative; }
   th, td { padding: 0.6rem 0.75rem; font-size: 0.82rem; }
 
+  /* Admin tables become stacked cards on phones instead of horizontal-scroll tables */
+  .table-wrap { overflow-x: visible; }
+  .table-wrap table { min-width: 0; }
+  .table-wrap thead { display: none; }
+  .table-wrap table, .table-wrap tbody, .table-wrap tr, .table-wrap td { display: block; width: 100%; }
+  .table-wrap tr {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.75rem;
+    padding: 0.6rem 0.85rem;
+  }
+  .table-wrap td {
+    border-bottom: none;
+    padding: 0.35rem 0;
+    white-space: normal !important;
+    max-width: none !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+  }
+  .table-wrap td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+  }
+
   /* SCRIPTURE CARD */
   .scripture-card { padding: 1.5rem; }
   .scripture-text { font-size: 1rem; }

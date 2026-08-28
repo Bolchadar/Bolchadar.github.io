@@ -46,14 +46,14 @@ function prayerStatusLabel(s) {
 function prayerRow(p) {
  const pid = parseInt(p.id, 10);
  return `<tr id="prayer-row-${pid}">
- <td><strong>${escapeHtml(p.name)}</strong></td>
- <td>${escapeHtml(p.phone||'-')}</td>
- <td>${escapeHtml(p.country||'-')}</td>
- <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(p.request)}">${escapeHtml(p.request)}</td>
- <td><span class="badge badge-${p.status}">${prayerStatusLabel(p.status)}</span></td>
- <td style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.8rem;color:var(--text-muted);" title="${escapeHtml(p.notes||'')}">${escapeHtml(p.notes||'—')}</td>
- <td>${escapeHtml(p.date)}</td>
- <td style="white-space:nowrap;">
+ <td data-label="Name"><strong>${escapeHtml(p.name)}</strong></td>
+ <td data-label="Phone">${escapeHtml(p.phone||'-')}</td>
+ <td data-label="Country">${escapeHtml(p.country||'-')}</td>
+ <td data-label="Request" style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(p.request)}">${escapeHtml(p.request)}</td>
+ <td data-label="Status"><span class="badge badge-${p.status}">${prayerStatusLabel(p.status)}</span></td>
+ <td data-label="Notes" style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.8rem;color:var(--text-muted);" title="${escapeHtml(p.notes||'')}">${escapeHtml(p.notes||'—')}</td>
+ <td data-label="Date">${escapeHtml(p.date)}</td>
+ <td data-label="Actions" style="white-space:nowrap;">
   <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${pid},'praying')" title="Mark as Prayed For">🙏 Prayed</button>
   <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${pid},'completed')" style="margin-left:3px;" title="Mark as Answered">✔ Answered</button>
   <button class="btn-xs" style="background:#25D366;color:#fff;margin-left:3px;" onclick="openFollowUp(${pid})" title="Send Follow-Up via WhatsApp">💬 Follow-Up</button>
@@ -758,7 +758,7 @@ function saveDonation() {
  localStorage.setItem('mj_donations', JSON.stringify(donations));
  // Add to table
  const tbody = document.getElementById('donations-table-body');
- const row = `<tr><td><strong>${escapeHtml(d.name)}</strong></td><td style="color:var(--success);font-weight:700;">${escapeHtml(d.amount)}</td><td>${escapeHtml(d.category)}</td><td>${escapeHtml(d.method)}</td><td>${escapeHtml(d.date)}</td><td>${escapeHtml(d.notes||'-')}</td></tr>`;
+ const row = `<tr><td data-label="Name"><strong>${escapeHtml(d.name)}</strong></td><td data-label="Amount" style="color:var(--success);font-weight:700;">${escapeHtml(d.amount)}</td><td data-label="Category">${escapeHtml(d.category)}</td><td data-label="Method">${escapeHtml(d.method)}</td><td data-label="Date">${escapeHtml(d.date)}</td><td data-label="Notes">${escapeHtml(d.notes||'-')}</td></tr>`;
  if (tbody.querySelector('td[colspan]')) tbody.innerHTML = '';
  tbody.insertAdjacentHTML('afterbegin', row);
  showToast('Donation recorded!');
@@ -1241,7 +1241,7 @@ function loadDonationsList() {
  if (!tbody) return;
  const donations = JSON.parse(localStorage.getItem('mj_donations') || '[]');
  tbody.innerHTML = donations.length
-  ? donations.slice().reverse().map(d => `<tr><td><strong>${escapeHtml(d.name)}</strong></td><td style="color:var(--success);font-weight:700;">${escapeHtml(d.amount)}</td><td>${escapeHtml(d.category)}</td><td>${escapeHtml(d.method)}</td><td>${escapeHtml(d.date)}</td><td>${escapeHtml(d.notes||'-')}</td></tr>`).join('')
+  ? donations.slice().reverse().map(d => `<tr><td data-label="Name"><strong>${escapeHtml(d.name)}</strong></td><td data-label="Amount" style="color:var(--success);font-weight:700;">${escapeHtml(d.amount)}</td><td data-label="Category">${escapeHtml(d.category)}</td><td data-label="Method">${escapeHtml(d.method)}</td><td data-label="Date">${escapeHtml(d.date)}</td><td data-label="Notes">${escapeHtml(d.notes||'-')}</td></tr>`).join('')
   : '<tr><td colspan="6" class="text-center text-muted">No donation records yet.</td></tr>';
 }
 
@@ -1251,12 +1251,12 @@ function loadTestimoniesList() {
  const testimonies = JSON.parse(localStorage.getItem('mj_testimonies') || '[]');
  tTbl.innerHTML = testimonies.length ? testimonies.slice().reverse().map(t => `
  <tr>
- <td><strong>${escapeHtml(t.name)}</strong></td>
- <td>${escapeHtml(t.location || '-')}</td>
- <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(t.testimony)}</td>
- <td><span class="badge ${t.approved?'badge-completed':'badge-pending'}">${t.approved?' Approved':'⏳ Pending'}</span></td>
- <td>${escapeHtml(t.date)}</td>
- <td>
+ <td data-label="Name"><strong>${escapeHtml(t.name)}</strong></td>
+ <td data-label="Location">${escapeHtml(t.location || '-')}</td>
+ <td data-label="Testimony" style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(t.testimony)}</td>
+ <td data-label="Status"><span class="badge ${t.approved?'badge-completed':'badge-pending'}">${t.approved?' Approved':'⏳ Pending'}</span></td>
+ <td data-label="Date">${escapeHtml(t.date)}</td>
+ <td data-label="Actions">
  <button class="btn-xs btn-xs-green" onclick="(window.openEnrichApprove||approveTestimony)(${t.id})">Approve</button>
  <button class="btn-xs btn-xs-red" onclick="deleteTestimony(${t.id})" style="margin-left:4px;">Delete</button>
  </td>
