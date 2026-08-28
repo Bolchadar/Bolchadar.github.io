@@ -507,7 +507,7 @@ async function adminLogin() {
  const entered = hashPassword(pass.value);
  if (entered === ADMIN_PASSWORD_HASH) {
   _loginAttempts = 0;
-  sessionStorage.setItem('mj_admin', '1');
+  localStorage.setItem('mj_admin', '1');
   document.getElementById('admin-login-screen').classList.add('hidden');
   document.getElementById('admin-dashboard').classList.remove('hidden');
   loadAdminData();
@@ -525,7 +525,7 @@ async function adminLogin() {
 }
 
 function adminLogout() {
- sessionStorage.removeItem('mj_admin');
+ localStorage.removeItem('mj_admin');
  location.reload();
 }
 
@@ -648,7 +648,7 @@ function deleteTestimony(id) {
 // Check admin session
 if (window.location.pathname.includes('admin')) {
  document.addEventListener('DOMContentLoaded', () =>{
- if (sessionStorage.getItem('mj_admin') === '1') {
+ if (localStorage.getItem('mj_admin') === '1') {
  const ls = document.getElementById('admin-login-screen');
  const db = document.getElementById('admin-dashboard');
  if (ls) ls.classList.add('hidden');
