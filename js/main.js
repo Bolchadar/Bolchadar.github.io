@@ -294,36 +294,15 @@ if (prayerForm) {
  });
 }
 
+const PRAYER_API_URL = 'https://mjprayerproxy.bolchadartong.workers.dev/submit-prayer';
+
 async function submitPrayerToServer(entry) {
  try {
-  const keyRes = await fetch('/data/prayer-key.json?_v=' + Date.now());
-  if (!keyRes.ok) return;
-  const cfg = await keyRes.json();
-  // Token stored split across two fields to bypass secret scanning
-  const token = (cfg.a || '') + (cfg.b || '');
-  if (!token) return;
-  const repo = 'Bolchadar/Bolchadar.github.io';
-  const path = 'data/prayers.json';
-  const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' };
-  for (let attempt = 0; attempt < 3; attempt++) {
-   const getRes = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, { headers });
-   let prayers = [], sha = null;
-   if (getRes.ok) {
-    const d = await getRes.json();
-    sha = d.sha;
-    try { prayers = JSON.parse(atob(d.content.replace(/\n/g, ''))); } catch(e) { prayers = []; }
-   } else if (getRes.status !== 404) return;
-   if (!prayers.some(p => p.id === entry.id)) prayers.push(entry);
-   const content = btoa(unescape(encodeURIComponent(JSON.stringify(prayers))));
-   const putRes = await fetch('https://api.github.com/repos/' + repo + '/contents/' + path, {
-    method: 'PUT',
-    headers: { ...headers, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: 'Prayer: ' + entry.name, content, branch: 'main', ...(sha ? { sha } : {}) })
-   });
-   if (putRes.ok) return;
-   if (putRes.status !== 409) return;
-   await new Promise(r => setTimeout(r, 300 + Math.random() * 400));
-  }
+  await fetch(PRAYER_API_URL, {
+   method: 'POST',
+   headers: { 'Content-Type': 'application/json' },
+   body: JSON.stringify(entry)
+  });
  } catch(e) {}
 }
 

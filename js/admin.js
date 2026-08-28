@@ -1309,7 +1309,9 @@ window.updatePrayerStatus = function(id, status) {
  saveToGitHub('prayers.json', prayers);
 };
 
-// Fetch prayers from GitHub — uses main token if set, otherwise falls back to prayer token
+// Fetch prayers from the public repo. Reading is unauthenticated (the repo is public) —
+// no token is needed here. Writes (status/edit/delete) still go through saveToGitHub()
+// using the admin's own token from Settings.
 let _prayerSyncing = false;
 async function syncPrayersFromGitHub(showFeedback) {
  if (_prayerSyncing) return;
@@ -1317,30 +1319,14 @@ async function syncPrayersFromGitHub(showFeedback) {
  const btn = document.getElementById('sync-prayers-btn');
  if (btn) { btn.disabled = true; btn.textContent = '⏳ Syncing...'; }
  try {
-  // Try main GitHub token first (laptop/configured device)
-  const s = JSON.parse(localStorage.getItem('mj_site_settings') || '{}');
-  let token = (s.githubToken || '').trim();
-  // Fallback: use prayer submissions token from prayer-key.json (works on any device)
-  if (!token) {
-   try {
-    const kr = await fetch('/data/prayer-key.json?_v=' + Date.now());
-    if (kr.ok) { const kd = await kr.json(); token = (kd.a || '') + (kd.b || ''); }
-   } catch(e) {}
-  }
-  if (!token) {
-   if (showFeedback) showToast('No token available. Save a GitHub token in Settings.', true);
-   return;
-  }
   const controller = new AbortController();
   const tid = setTimeout(() => controller.abort(), 8000);
-  const r = await fetch('https://api.github.com/repos/Bolchadar/Bolchadar.github.io/contents/data/prayers.json', {
-   headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' },
+  const r = await fetch('https://raw.githubusercontent.com/Bolchadar/Bolchadar.github.io/main/data/prayers.json?_v=' + Date.now(), {
    signal: controller.signal
   });
   clearTimeout(tid);
   if (r.ok) {
-   const d = await r.json();
-   const ghPrayers = JSON.parse(atob(d.content.replace(/\n/g, '')));
+   const ghPrayers = await r.json();
    const local = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
    const merged = ghPrayers.map(gp => {
     const lp = local.find(l => l.id === gp.id);
