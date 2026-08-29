@@ -1322,20 +1322,23 @@ async function syncPrayersFromGitHub(showFeedback) {
   const controller = new AbortController();
   const tid = setTimeout(() => controller.abort(), 8000);
   const r = await fetch('https://raw.githubusercontent.com/Bolchadar/Bolchadar.github.io/main/data/prayers.json?_v=' + Date.now(), {
-   signal: controller.signal
+   signal: controller.signal,
+   cache: 'no-store'
   });
   clearTimeout(tid);
   if (r.ok) {
    const ghPrayers = await r.json();
-   const local = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
-   const merged = ghPrayers.map(gp => {
-    const lp = local.find(l => l.id === gp.id);
+   const localById = new Map(JSON.parse(localStorage.getItem('mj_prayers') || '[]').map(l => [l.id, l]));
+   // data/prayers.json on GitHub is the single source of truth. Take exactly what
+   // it holds (so deletes made on another device disappear here too) and only
+   // carry over this admin's own status/notes for entries that still exist.
+   const synced = ghPrayers.map(gp => {
+    const lp = localById.get(gp.id);
     return lp ? { ...gp, status: lp.status || gp.status, notes: lp.notes || gp.notes } : gp;
    });
-   local.forEach(lp => { if (!merged.find(m => m.id === lp.id)) merged.push(lp); });
-   localStorage.setItem('mj_prayers', JSON.stringify(merged));
-   filterPrayers('all');
-   if (showFeedback) showToast('Prayers synced. ' + ghPrayers.length + ' total.');
+   localStorage.setItem('mj_prayers', JSON.stringify(synced));
+   loadAdminData();
+   if (showFeedback) showToast('Prayers synced. ' + synced.length + ' total.');
   } else if (r.status === 404) {
    if (showFeedback) showToast('No prayers submitted yet.');
   } else {
@@ -1349,7 +1352,12 @@ async function syncPrayersFromGitHub(showFeedback) {
  }
 }
 
-// No auto-sync — use the Sync Prayers button to pull from server
+// Auto-sync prayers from the server every time the admin dashboard opens, so
+// every device shows the same list without anyone tapping "Sync Prayers".
+// The button stays for an on-demand refresh.
+document.addEventListener('DOMContentLoaded', () => {
+ if (localStorage.getItem('mj_admin') === '1') syncPrayersFromGitHub(false);
+});
 
 // MEMBER PROFILES
 function editMemberProfile(id) {
