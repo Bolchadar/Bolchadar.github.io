@@ -35,17 +35,37 @@ export default {
     };
 
     for (let attempt = 0; attempt < 3; attempt++) {
-      const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, { headers });
+      // Ask GitHub for the raw file, not the base64 blob — avoids the contents API's
+      // 1 MB inline limit (which used to return empty content and silently wipe the list).
+      const getRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+        headers: { ...headers, 'Accept': 'application/vnd.github.raw+json' },
+        cache: 'no-store'
+      });
       let prayers = [], sha;
       if (getRes.ok) {
-        const d = await getRes.json();
-        sha = d.sha;
-        try { prayers = JSON.parse(atob(d.content.replace(/\n/g, ''))); } catch { prayers = []; }
+        const text = await getRes.text();
+        try {
+          prayers = JSON.parse(text);
+        } catch {
+          // The existing file is unreadable. Do NOT start from an empty array —
+          // that would overwrite every stored prayer. Abort instead.
+          return json({ error: 'Existing prayer list could not be parsed; not overwriting.' }, 502);
+        }
+        if (!Array.isArray(prayers)) return json({ error: 'Prayer list is not an array; not overwriting.' }, 502);
+        // The raw response has no sha; fetch just the metadata for it.
+        const metaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+          headers: { ...headers, 'Accept': 'application/vnd.github.object+json' },
+          cache: 'no-store'
+        });
+        if (metaRes.ok) sha = (await metaRes.json()).sha;
       } else if (getRes.status !== 404) {
         return json({ error: 'Could not read current prayers.' }, 502);
       }
+      // A real 404 means the file does not exist yet — fall through and create it.
 
       prayers.push(entry);
+      // UTF-8 safe base64 encode. The matching decode above uses response.text(),
+      // which already decodes UTF-8 — the two must stay in sync.
       const content = btoa(unescape(encodeURIComponent(JSON.stringify(prayers))));
       const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
         method: 'PUT',

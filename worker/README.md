@@ -5,6 +5,10 @@ wired up in `js/main.js` via `PRAYER_API_URL`. The `GITHUB_TOKEN` secret is set
 in the Cloudflare dashboard under this Worker's Settings → Variables and
 Secrets. The steps below are for redeploying or recreating it if ever needed.
 
+> **⚠️ Redeploy needed.** `prayer-submit.js` was fixed (Sep 2026) for a bug that
+> corrupted and periodically wiped `data/prayers.json`. Run `npx wrangler deploy`
+> from this folder to push the fix live. See "Fix history" at the bottom.
+
 Replaces the old `data/prayer-key.json` approach, which committed a live GitHub
 token in plaintext to the public repo (GitHub auto-revoked it, breaking prayer
 sync/submission). This Worker holds the GitHub token as a server-side secret —
@@ -51,3 +55,25 @@ through this Worker instead of talking to GitHub directly.
   that admin's browser — that path was never exposed and needs no change.
 - CORS on the Worker is locked to `https://mjministries.org`. Update
   `ALLOWED_ORIGIN` in `prayer-submit.js` if the site's origin changes.
+
+## Fix history
+
+**Sep 2026 — prayer list corruption / disappearing requests.** The Worker wrote
+`data/prayers.json` with `btoa(unescape(encodeURIComponent(...)))` (UTF-8 safe)
+but read it back with a plain `atob(...)` that skipped the UTF-8 decode. Every
+prayer containing a non-ASCII character (curly quote from a phone keyboard, 🙏,
+accented letters…) was re-mangled on each new submission, and the `request`
+field roughly doubled in size every time. Once the file passed ~1 MB the GitHub
+contents API stopped returning inline content, the read threw, and the old
+`catch { prayers = [] }` fallback overwrote the whole file with a single entry —
+wiping every stored prayer. This happened at least three times (Jul 24, Jul 27,
+Aug 28), losing ~60 requests.
+
+Fixes in `prayer-submit.js`:
+- read the file via `Accept: application/vnd.github.raw+json` (proper UTF-8, no
+  1 MB inline limit) instead of decoding base64 by hand;
+- on any read/parse failure, **abort with 502** instead of falling back to an
+  empty array, so a bad read can never overwrite good data.
+
+`data/prayers.json` was rebuilt from git history: all unique entries recovered
+and de-mangled back to readable text.
