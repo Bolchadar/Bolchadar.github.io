@@ -49,7 +49,7 @@ function prayerRow(p) {
  <td data-label="Name"><strong>${escapeHtml(p.name)}</strong></td>
  <td data-label="Phone">${escapeHtml(p.phone||'-')}</td>
  <td data-label="Country">${escapeHtml(p.country||'-')}</td>
- <td data-label="Request" class="cell-clip" title="${escapeHtml(p.request)}">${escapeHtml(p.request)}</td>
+ <td data-label="Request" class="cell-clip prayer-view" title="Click to read the full request" onclick="viewPrayer(${pid})">${escapeHtml(p.request)}</td>
  <td data-label="Status"><span class="badge badge-${p.status}">${prayerStatusLabel(p.status)}</span></td>
  <td data-label="Notes" class="cell-clip" style="font-size:0.8rem;color:var(--text-muted);" title="${escapeHtml(p.notes||'')}">${escapeHtml(p.notes||'—')}</td>
  <td data-label="Date">${escapeHtml(p.date)}</td>
@@ -175,6 +175,35 @@ function sharePrayer(id) {
  const statusLabel = p.status === 'praying' ? '🙏 Being Prayed For' : p.status === 'completed' ? '✔ Answered' : '⏳ Pending';
  const msg = `*🙏 Prayer Request – ${MINISTRY_NAME}*\n\nPlease join us in prayer for:\n*${p.name}* (${p.country||'Unknown'})\n\n*Request:* ${p.request}\n*Status:* ${statusLabel}\n\n_"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God."_\n— Philippians 4:6\n\n🌐 mjministries.org`;
  openShareModal(`Prayer for ${p.name}`, msg, 'https://mjministries.org/prayer/');
+}
+
+// Read-only full view of a single prayer request (click the Request cell).
+function viewPrayer(id) {
+ const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
+ const p = prayers.find(pr => pr.id === id);
+ const modal = document.getElementById('prayer-view-modal');
+ if (!p || !modal) return;
+ const set = (elId, val) => { const el = document.getElementById(elId); if (el) el.textContent = val; };
+ set('pv-name', p.name || '—');
+ set('pv-meta', [p.country, p.date, p.time].filter(Boolean).join('  ·  '));
+ set('pv-status', prayerStatusLabel(p.status));
+ set('pv-request', p.request || '—');
+ set('pv-notes', p.notes || '—');
+ const phoneEl = document.getElementById('pv-phone');
+ if (phoneEl) {
+  if (p.phone) {
+   const clean = p.phone.replace(/[^\d+]/g, '');
+   phoneEl.innerHTML = `<a href="https://wa.me/${clean}" target="_blank" rel="noopener noreferrer" style="color:var(--primary);">${escapeHtml(p.phone)}</a>`;
+  } else { phoneEl.textContent = 'No phone number on file'; }
+ }
+ const editBtn = document.getElementById('pv-edit-btn');
+ if (editBtn) editBtn.onclick = () => { closePrayerView(); editPrayer(id); };
+ modal.classList.remove('hidden');
+ modal.style.display = 'flex';
+}
+function closePrayerView() {
+ const modal = document.getElementById('prayer-view-modal');
+ if (modal) { modal.classList.add('hidden'); modal.style.display = 'none'; }
 }
 
 // ===== EDIT STATE & HELPERS =====

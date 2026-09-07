@@ -542,7 +542,7 @@ function loadAdminData() {
  <td data-label="Name"><strong>${escapeHtml(p.name)}</strong></td>
  <td data-label="Phone">${escapeHtml(p.phone || '-')}</td>
  <td data-label="Country">${escapeHtml(p.country || '-')}</td>
- <td data-label="Request" class="cell-clip" title="${escapeHtml(p.request)}">${escapeHtml(p.request)}</td>
+ <td data-label="Request" class="cell-clip prayer-view" title="Click to read the full request" onclick="viewPrayer(${pid})">${escapeHtml(p.request)}</td>
  <td data-label="Status"><span class="badge badge-${p.status}">${prayerLabel(p.status)}</span></td>
  <td data-label="Notes" class="cell-clip" style="font-size:0.8rem;color:var(--text-muted);" title="${escapeHtml(p.notes||'')}">${escapeHtml(p.notes||'—')}</td>
  <td data-label="Date">${escapeHtml(p.date)}</td>

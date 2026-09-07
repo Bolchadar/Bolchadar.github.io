@@ -874,6 +874,8 @@ tr:hover td { background: var(--light); }
    so a few long requests can't stretch the whole table wide. Hover shows the
    full text via the title tooltip; the mobile card view un-clips them. */
 td.cell-clip { max-width: 12rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+td.prayer-view { cursor: pointer; color: var(--primary-light); }
+td.prayer-view:hover { text-decoration: underline; }
 
 /* ===== FOOTER ===== */
 footer {
