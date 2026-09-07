@@ -856,14 +856,24 @@ audio { width: 100%; margin-top: 1rem; border-radius: var(--radius-sm); }
 .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .table-wrap table { min-width: 600px; }
 table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-th { background: var(--light); color: var(--primary); font-weight: 700; padding: 0.75rem 1rem; text-align: left; border-bottom: 2px solid var(--gray-200); font-size: 0.83rem; text-transform: uppercase; letter-spacing: 0.5px; }
-td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--gray-200); vertical-align: middle; }
+th { background: var(--light); color: var(--primary); font-weight: 700; padding: 0.7rem 0.65rem; text-align: left; border-bottom: 2px solid var(--gray-200); font-size: 0.83rem; text-transform: uppercase; letter-spacing: 0.5px; }
+td { padding: 0.7rem 0.65rem; border-bottom: 1px solid var(--gray-200); vertical-align: middle; }
 tr:hover td { background: var(--light); }
-.btn-xs { padding: 0.3rem 0.75rem; font-size: 0.78rem; border-radius: 4px; cursor: pointer; border: none; font-weight: 600; }
+.btn-xs { padding: 0.3rem 0.6rem; font-size: 0.78rem; border-radius: 4px; cursor: pointer; border: none; font-weight: 600; white-space: nowrap; }
 .btn-xs-green  { background: #d1fae5; color: #065f46; }
 .btn-xs-blue   { background: #dbeafe; color: #1e40af; }
 .btn-xs-red    { background: #fee2e2; color: #991b1b; }
 .btn-xs-purple { background: var(--light); color: var(--primary-light); }
+
+/* Action buttons wrap onto multiple lines instead of widening the table
+   (which forced a horizontal scroll on laptops). */
+.row-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+.row-actions .btn-xs { margin: 0; }
+
+/* Long free-text cells (Request, Notes) stay clipped to one line on desktop
+   so a few long requests can't stretch the whole table wide. Hover shows the
+   full text via the title tooltip; the mobile card view un-clips them. */
+td.cell-clip { max-width: 12rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ===== FOOTER ===== */
 footer {

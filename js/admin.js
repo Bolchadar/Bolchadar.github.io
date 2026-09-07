@@ -49,18 +49,18 @@ function prayerRow(p) {
  <td data-label="Name"><strong>${escapeHtml(p.name)}</strong></td>
  <td data-label="Phone">${escapeHtml(p.phone||'-')}</td>
  <td data-label="Country">${escapeHtml(p.country||'-')}</td>
- <td data-label="Request" style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(p.request)}">${escapeHtml(p.request)}</td>
+ <td data-label="Request" class="cell-clip" title="${escapeHtml(p.request)}">${escapeHtml(p.request)}</td>
  <td data-label="Status"><span class="badge badge-${p.status}">${prayerStatusLabel(p.status)}</span></td>
- <td data-label="Notes" style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:0.8rem;color:var(--text-muted);" title="${escapeHtml(p.notes||'')}">${escapeHtml(p.notes||'—')}</td>
+ <td data-label="Notes" class="cell-clip" style="font-size:0.8rem;color:var(--text-muted);" title="${escapeHtml(p.notes||'')}">${escapeHtml(p.notes||'—')}</td>
  <td data-label="Date">${escapeHtml(p.date)}</td>
- <td data-label="Actions" style="white-space:nowrap;">
+ <td data-label="Actions"><div class="row-actions">
   <button class="btn-xs btn-xs-blue" onclick="updatePrayerStatus(${pid},'praying')" title="Mark as Prayed For">🙏 Prayed</button>
-  <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${pid},'completed')" style="margin-left:3px;" title="Mark as Answered">✔ Answered</button>
-  <button class="btn-xs" style="background:#25D366;color:#fff;margin-left:3px;" onclick="openFollowUp(${pid})" title="Send Follow-Up via WhatsApp">💬 Follow-Up</button>
-  <button class="btn-xs" style="background:var(--primary);color:#fff;margin-left:3px;" onclick="editPrayer(${pid})" title="Edit this prayer request"><i class="fas fa-edit"></i></button>
-  <button class="btn-xs" style="background:#6d28d9;color:#fff;margin-left:3px;" onclick="sharePrayer(${pid})" title="Share this prayer request"><i class="fas fa-share-alt"></i></button>
-  <button class="btn-xs" style="background:#ef4444;color:#fff;margin-left:3px;" onclick="deletePrayer(${pid})" title="Delete this prayer request"><i class="fas fa-trash"></i></button>
- </td></tr>`;
+  <button class="btn-xs btn-xs-green" onclick="updatePrayerStatus(${pid},'completed')" title="Mark as Answered">✔ Answered</button>
+  <button class="btn-xs" style="background:#25D366;color:#fff;" onclick="openFollowUp(${pid})" title="Send Follow-Up via WhatsApp">💬</button>
+  <button class="btn-xs" style="background:var(--primary);color:#fff;" onclick="editPrayer(${pid})" title="Edit this prayer request"><i class="fas fa-edit"></i></button>
+  <button class="btn-xs" style="background:#6d28d9;color:#fff;" onclick="sharePrayer(${pid})" title="Share this prayer request"><i class="fas fa-share-alt"></i></button>
+  <button class="btn-xs" style="background:#ef4444;color:#fff;" onclick="deletePrayer(${pid})" title="Delete this prayer request"><i class="fas fa-trash"></i></button>
+ </div></td></tr>`;
 }
 function filterPrayers(status) {
  const prayers = JSON.parse(localStorage.getItem('mj_prayers') || '[]');
