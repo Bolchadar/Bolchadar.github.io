@@ -773,6 +773,9 @@ function refreshActivity() {
  const testimonies = JSON.parse(localStorage.getItem('mj_testimonies') || '[]');
  const churchTests = JSON.parse(localStorage.getItem('mj_church_testimonies') || '[]');
  const members = JSON.parse(localStorage.getItem('mj_members') || '[]');
+ // Sidebar badge first, before any early return — every admin page has it.
+ const badge = document.getElementById('badge-prayers');
+ if (badge) badge.textContent = prayers.filter(p =>p.status === 'pending').length;
  const container = document.getElementById('recent-activity');
  if (!container) return;
  const activities = [];
@@ -785,10 +788,6 @@ function refreshActivity() {
  } else {
  container.innerHTML = '<p style="font-size:0.88rem;">No recent activity. The ministry is just getting started! </p>';
  }
- // Update badge
- const pending = prayers.filter(p =>p.status === 'pending').length;
- const badge = document.getElementById('badge-prayers');
- if (badge) badge.textContent = pending;
 }
 function editProphecy(id) {
  const list = JSON.parse(localStorage.getItem('mj_prophecies') || '[]');

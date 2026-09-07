@@ -561,6 +561,9 @@ function loadAdminData() {
  setCount('count-pending', prayers.filter(p=>p.status==='pending').length);
  setCount('count-praying', prayers.filter(p=>p.status==='praying').length);
  setCount('count-answered', prayers.filter(p=>p.status==='completed').length);
+ // Sidebar badge — also updated here so the dedicated Prayer Requests page
+ // (which has no "recent activity" panel) keeps it in sync, not just the dashboard.
+ setCount('badge-prayers', prayers.filter(p=>p.status==='pending').length);
  }
 
  // Testimonies table
